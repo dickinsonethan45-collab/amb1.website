@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Amblock</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0a0f1a;
+    --bg-panel:#111927;
+    --line:#1f2b3d;
+    --slate:#1b2536;
+    --grey:#8b9bb4;
+    --grey-dim:#5a6b85;
+    --ice:#e8edf5;
+    --blue:#4f8bff;
+    --blue-bright:#7db3ff;
+    --cyan:#3fd8ff;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--bg);
+    color:var(--ice);
+    font-family:'Inter',sans-serif;
+    overflow-x:hidden;
+  }
+  ::selection{background:var(--blue);color:#000;}
+
+  /* background grid */
+  .grid-bg{
+    position:fixed;inset:0;z-index:0;
+    background-image:
+      linear-gradient(var(--line) 1px, transparent 1px),
+      linear-gradient(90deg, var(--line) 1px, transparent 1px);
+    background-size:64px 64px;
+    opacity:0.35;
+    -webkit-mask-image:radial-gradient(ellipse 80% 60% at 50% 0%, #000 40%, transparent 100%);
+    mask-image:radial-gradient(ellipse 80% 60% at 50% 0%, #000 40%, transparent 100%);
+    pointer-events:none;
+  }
+  .glow{
+    position:fixed;
+    top:-20%;left:50%;
+    transform:translateX(-50%);
+    width:900px;height:900px;
+    background:radial-gradient(circle, rgba(79,139,255,0.18) 0%, transparent 70%);
+    z-index:0;
+    pointer-events:none;
+  }
+
+  nav{
+    position:fixed;top:0;left:0;right:0;
+    z-index:50;
+    display:flex;align-items:center;justify-content:space-between;
+    padding:22px 48px;
+    background:rgba(10,15,26,0.7);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--line);
+  }
+  .nav-logo{
+    font-family:'JetBrains Mono',monospace;
+    font-weight:700;
+    letter-spacing:0.5px;
+    font-size:16px;
+    display:flex;align-items:center;gap:8px;
+  }
+  .nav-logo .dot{
+    width:8px;height:8px;border-radius:50%;
+    background:var(--cyan);
+    box-shadow:0 0 10px var(--cyan);
+  }
+  .nav-links{
+    display:flex;gap:36px;
+    font-family:'JetBrains Mono',monospace;
+    font-size:13px;
+    color:var(--grey);
+  }
+  .nav-links a{
+    color:var(--grey);
+    text-decoration:none;
+    position:relative;
+    transition:color .2s ease;
+  }
+  .nav-links a::before{content:"// ";color:var(--grey-dim);}
+  .nav-links a:hover{color:var(--ice);}
+
+  section{
+    position:relative;z-index:1;
+    padding:0 48px;
+  }
+
+  /* HERO */
+  .hero{
+    min-height:100vh;
+    display:flex;flex-direction:column;
+    justify-content:center;
+    max-width:1100px;
+    margin:0 auto;
+    padding-top:80px;
+  }
+  .eyebrow{
+    font-family:'JetBrains Mono',monospace;
+    font-size:13px;
+    color:var(--cyan);
+    display:flex;align-items:center;gap:10px;
+    margin-bottom:28px;
+    letter-spacing:1px;
+  }
+  .eyebrow .bracket{color:var(--grey-dim);}
+  .eyebrow .cursor-blink{
+    width:8px;height:16px;background:var(--cyan);
+    animation:blink 1s step-end infinite;
+  }
+  @keyframes blink{50%{opacity:0;}}
+
+  .hero h1{
+    font-family:'JetBrains Mono',monospace;
+    font-weight:800;
+    font-size:clamp(56px, 11vw, 148px);
+    line-height:0.95;
+    letter-spacing:-2px;
+    background:linear-gradient(180deg, #ffffff 0%, var(--blue-bright) 55%, var(--blue) 100%);
+    -webkit-background-clip:text;
+    background-clip:text;
+    color:transparent;
+  }
+  .hero .sub{
+    margin-top:28px;
+    max-width:620px;
+    font-size:18px;
+    line-height:1.6;
+    color:var(--grey);
+  }
+  .hero .sub strong{color:var(--ice);font-weight:600;}
+
+  .hero-cta{
+    margin-top:40px;
+    display:flex;gap:16px;
+    flex-wrap:wrap;
+  }
+  .btn{
+    font-family:'JetBrains Mono',monospace;
+    font-size:13px;
+    padding:14px 26px;
+    border-radius:6px;
+    text-decoration:none;
+    display:inline-flex;align-items:center;gap:10px;
+    transition:all .2s ease;
+    border:1px solid var(--line);
+  }
+  .btn-primary{
+    background:var(--blue);
+    color:#04101f;
+    font-weight:700;
+    border-color:var(--blue);
+  }
+  .btn-primary:hover{
+    background:var(--blue-bright);
+    box-shadow:0 0 24px rgba(79,139,255,0.5);
+  }
+  .btn-ghost{
+    color:var(--grey);
+    background:transparent;
+  }
+  .btn-ghost:hover{
+    color:var(--ice);
+    border-color:var(--grey-dim);
+  }
+
+  /* terminal card floating in hero */
+  .term{
+    margin-top:64px;
+    max-width:640px;
+    background:var(--bg-panel);
+    border:1px solid var(--line);
+    border-radius:10px;
+    overflow:hidden;
+    box-shadow:0 30px 60px -20px rgba(0,0,0,0.6);
+  }
+  .term-bar{
+    display:flex;align-items:center;gap:8px;
+    padding:12px 16px;
+    background:var(--slate);
+    border-bottom:1px solid var(--line);
+  }
+  .term-bar span{
+    width:10px;height:10px;border-radius:50%;
+    background:var(--grey-dim);
+  }
+  .term-bar .title{
+    margin-left:8px;
+    font-family:'JetBrains Mono',monospace;
+    font-size:12px;
+    color:var(--grey);
+  }
+  .term-body{
+    padding:20px 22px;
+    font-family:'JetBrains Mono',monospace;
+    font-size:13.5px;
+    line-height:1.9;
+    color:var(--grey);
+  }
+  .term-body .p{color:var(--cyan);}
+  .term-body .c{color:var(--grey-dim);}
+  .term-body .out{color:var(--ice);}
+
+  /* SECTIONS */
+  .section-inner{
+    max-width:1100px;
+    margin:0 auto;
+    padding:140px 0;
+    border-top:1px solid var(--line);
+  }
+  .tag{
+    font-family:'JetBrains Mono',monospace;
+    font-size:13px;
+    color:var(--blue-bright);
+    letter-spacing:1px;
+    margin-bottom:18px;
+    display:block;
+  }
+  .section-inner h2{
+    font-family:'JetBrains Mono',monospace;
+    font-size:clamp(30px,4vw,44px);
+    font-weight:700;
+    margin-bottom:24px;
+    letter-spacing:-0.5px;
+  }
+  .section-inner p.lead{
+    color:var(--grey);
+    font-size:17px;
+    line-height:1.75;
+    max-width:640px;
+  }
+
+  .placeholder-grid{
+    margin-top:56px;
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+    gap:22px;
+  }
+  .card{
+    background:var(--bg-panel);
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:28px;
+    transition:border-color .2s ease, transform .2s ease;
+  }
+  .card:hover{
+    border-color:var(--blue);
+    transform:translateY(-4px);
+  }
+  .card .idx{
+    font-family:'JetBrains Mono',monospace;
+    font-size:12px;
+    color:var(--grey-dim);
+    margin-bottom:14px;
+  }
+  .card h3{
+    font-family:'JetBrains Mono',monospace;
+    font-size:17px;
+    margin-bottom:10px;
+    color:var(--ice);
+  }
+  .card p{
+    color:var(--grey);
+    font-size:14px;
+    line-height:1.6;
+  }
+
+  footer{
+    border-top:1px solid var(--line);
+    padding:48px;
+    text-align:center;
+    font-family:'JetBrains Mono',monospace;
+    font-size:12.5px;
+    color:var(--grey-dim);
+    position:relative;z-index:1;
+  }
+  footer .dot{color:var(--cyan);}
+
+  @media(max-width:720px){
+    nav{padding:18px 22px;}
+    .nav-links{display:none;}
+    section{padding:0 22px;}
+    .term{margin-top:44px;}
+  }
+</style>
+</head>
+<body>
+
+<div class="grid-bg"></div>
+<div class="glow"></div>
+
+<nav>
+  <div class="nav-logo"><span class="dot"></span>AMBLOCK</div>
+  <div class="nav-links">
+    <a href="#about">about</a>
+    <a href="#work">work</a>
+    <a href="#contact">contact</a>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="eyebrow">
+    <span class="bracket">[</span>status: online<span class="cursor-blink"></span><span class="bracket">]</span>
+  </div>
+  <h1>AMBLOCK</h1>
+  <p class="sub">This site is still being built out &mdash; <strong>content coming soon.</strong> For now, consider this the shell: structure, style, and a spot for everything Amblock is about to go.</p>
+
+  <div class="hero-cta">
+    <a href="#work" class="btn btn-primary">view work →</a>
+    <a href="#contact" class="btn btn-ghost">get in touch</a>
+  </div>
+
+  <div class="term">
+    <div class="term-bar">
+      <span></span><span></span><span></span>
+      <div class="title">amblock — zsh</div>
+    </div>
+    <div class="term-body">
+      <div><span class="p">➜</span> whoami</div>
+      <div class="out">amblock</div>
+      <div style="margin-top:6px;"><span class="p">➜</span> status --site</div>
+      <div class="out">under construction <span class="c">// details incoming</span></div>
+    </div>
+  </div>
+</section>
+
+<section id="about">
+  <div class="section-inner">
+    <span class="tag">01 / about</span>
+    <h2>Placeholder — tell me what goes here.</h2>
+    <p class="lead">This is where your bio, background, or story lives. Send over the details and I'll drop them in — could be a short intro, a longer write-up, or a mix of text and stats.</p>
+  </div>
+</section>
+
+<section id="work">
+  <div class="section-inner">
+    <span class="tag">02 / work</span>
+    <h2>Projects go here.</h2>
+    <p class="lead">Placeholder cards below — swap these for real projects, write-ups, or links whenever you're ready.</p>
+    <div class="placeholder-grid">
+      <div class="card">
+        <div class="idx">001</div>
+        <h3>Project name</h3>
+        <p>Short description of what it is and what it does.</p>
+      </div>
+      <div class="card">
+        <div class="idx">002</div>
+        <h3>Project name</h3>
+        <p>Short description of what it is and what it does.</p>
+      </div>
+      <div class="card">
+        <div class="idx">003</div>
+        <h3>Project name</h3>
+        <p>Short description of what it is and what it does.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="contact">
+  <div class="section-inner">
+    <span class="tag">03 / contact</span>
+    <h2>Let's talk.</h2>
+    <p class="lead">Drop your email, Discord, GitHub, or whatever you want people to reach you on — I'll wire it up here.</p>
+    <div class="hero-cta">
+      <a href="#" class="btn btn-primary">email →</a>
+      <a href="#" class="btn btn-ghost">github</a>
+      <a href="#" class="btn btn-ghost">discord</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <span class="dot">●</span> amblock.dev <span class="dot">·</span> built and ready for content
+</footer>
+
+</body>
+</html>
