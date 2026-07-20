@@ -130,18 +130,6 @@
   .term-body .c{color:var(--grey-dim);}
   .term-body .out{color:var(--ice);}
 
-  .hexband{
-    position:relative;z-index:2;border-top:1px solid var(--line);border-bottom:1px solid var(--line);
-    background:var(--bg-panel);padding:16px 0;overflow:hidden;
-  }
-  .hexband .track{
-    display:flex;width:max-content;animation:scrollhex 38s linear infinite;
-    font-family:'JetBrains Mono',monospace;font-size:12.5px;color:var(--grey-dim);letter-spacing:2px;
-  }
-  .hexband .track span{padding:0 18px;white-space:nowrap;}
-  .hexband .track span.hi{color:var(--blue-bright);}
-  @keyframes scrollhex{from{transform:translateX(0);}to{transform:translateX(-50%);}}
-
   .section-inner{max-width:1120px;margin:0 auto;padding:150px 0;}
   .tag{font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--blue-bright);letter-spacing:1.5px;margin-bottom:20px;display:flex;align-items:center;gap:10px;}
   .tag::before{content:"";width:24px;height:1px;background:var(--blue-bright);}
@@ -257,6 +245,51 @@
     color:var(--grey-dim);
   }
 
+  /* custodians */
+  .cust-grid{
+    margin-top:60px;
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(230px,1fr));
+    gap:18px;
+  }
+  .cust-card{
+    background:var(--bg-panel);
+    border:1px solid var(--line);
+    border-radius:12px;
+    padding:24px;
+    display:flex;
+    align-items:center;
+    gap:16px;
+    transition:border-color .3s ease, transform .3s cubic-bezier(.16,1,.3,1);
+  }
+  .cust-card:hover{border-color:var(--line-bright);transform:translateY(-4px);}
+  .cust-avatar{
+    width:44px;height:44px;
+    border-radius:10px;
+    flex-shrink:0;
+    display:flex;align-items:center;justify-content:center;
+    font-family:'JetBrains Mono',monospace;
+    font-weight:700;
+    font-size:16px;
+    color:var(--bg);
+    background:linear-gradient(150deg, var(--cyan), var(--blue));
+  }
+  .cust-info h4{
+    font-family:'JetBrains Mono',monospace;
+    font-size:15px;
+    color:var(--ice);
+    font-weight:600;
+    margin-bottom:4px;
+  }
+  .cust-info .role{
+    font-family:'JetBrains Mono',monospace;
+    font-size:12px;
+    color:var(--grey-dim);
+    letter-spacing:0.3px;
+  }
+  .cust-card.lead .cust-avatar{background:linear-gradient(150deg, var(--cyan), var(--violet));}
+  .cust-card.lead .role{color:var(--blue-bright);}
+
   footer{
     border-top:1px solid var(--line);padding:36px 48px;display:flex;justify-content:space-between;align-items:center;
     flex-wrap:wrap;gap:12px;font-family:'JetBrains Mono',monospace;font-size:12.5px;color:var(--grey-dim);position:relative;z-index:2;
@@ -294,13 +327,14 @@
   <div class="nav-links">
     <a href="#about"><span class="n">01</span>about</a>
     <a href="#competitions"><span class="n">02</span>competitions</a>
-    <a href="#contact"><span class="n">03</span>contact</a>
+    <a href="#custodians"><span class="n">03</span>custodians</a>
+    <a href="#contact"><span class="n">04</span>contact</a>
   </div>
 </nav>
 
 <section class="hero" id="top">
   <div class="eyebrow reveal">
-    <span class="bracket">[</span>animal company drip department<span class="cursor-blink"></span><span class="bracket">]</span>
+    <span class="bracket">[</span>animal company content creator<span class="cursor-blink"></span><span class="bracket">]</span>
   </div>
 
   <div class="hero-top reveal">
@@ -308,7 +342,7 @@
     <h1 style="font-size:clamp(44px,9vw,120px);">AMBLOCK</h1>
   </div>
 
-  <p class="sub reveal">Animal Company content creator on <strong>TikTok</strong> and <strong>YouTube</strong>. Runs the drip department, hosts Company Coins competitions twice a week over on Discord, and keeps the community geared up.</p>
+  <p class="sub reveal">Animal Company content creator on <strong>TikTok</strong> and <strong>YouTube</strong>. Part of the drip department, and hosts Company Coins competitions twice a week over on Discord.</p>
 
   <div class="hero-cta reveal">
     <a href="https://youtube.com/@amblockac1?si=boX7pAB4f9ZMvJtR" target="_blank" rel="noopener" class="btn btn-primary magnetic">watch on youtube →</a>
@@ -316,29 +350,11 @@
     <a href="https://discord.gg/g7uAaEcah6" target="_blank" rel="noopener" class="btn btn-ghost magnetic">join discord</a>
   </div>
 
-  <div class="term reveal">
-    <div class="term-bar">
-      <span></span><span></span><span></span>
-      <div class="title">amblock — zsh</div>
-    </div>
-    <div class="term-body">
-      <div><span class="p">➜</span> whoami</div>
-      <div class="out">amblock <span class="c">// animal company drip department</span></div>
-      <div style="margin-top:6px;"><span class="p">➜</span> events --list</div>
-      <div class="out">company coins competitions <span class="c">// every week, on discord</span></div>
-    </div>
-  </div>
-</section>
-
-<div class="hexband">
-  <div class="track" id="hexTrack"></div>
-</div>
-
 <section id="about">
   <div class="section-inner reveal">
     <span class="tag">about</span>
-    <h2>Head of the drip department.</h2>
-    <p class="lead">Amblock makes Animal Company content across TikTok and YouTube — clips, drip checks, and community events. Alongside content, Amblock runs a Discord server built around the game, with regular Company Coins competitions to keep the community geared up and competing.</p>
+    <h2>In the drip department.</h2>
+    <p class="lead">Amblock makes Animal Company content across TikTok and YouTube — clips, drip checks, and community events. Part of the drip department, and hosts a Discord community around the game with regular Company Coins competitions to keep people geared up and competing.</p>
 
     <div class="stats">
       <div class="stat"><div class="num"><span>2×</span></div><div class="label">COMPS PER WEEK</div></div>
@@ -385,6 +401,80 @@
   </div>
 </section>
 
+<section id="custodians">
+  <div class="section-inner reveal">
+    <span class="tag">custodians</span>
+    <h2>Discord custodians.</h2>
+    <p class="lead">The team keeping the server running — moderation, events, and everything in between.</p>
+
+    <div class="cust-grid">
+      <div class="cust-card lead">
+        <div class="cust-avatar">K</div>
+        <div class="cust-info">
+          <h4>Kaz</h4>
+          <div class="role">Community Blockling · Lead Custodian</div>
+        </div>
+      </div>
+      <div class="cust-card">
+        <div class="cust-avatar">J</div>
+        <div class="cust-info">
+          <h4>JustMango</h4>
+          <div class="role">Head Custodian</div>
+        </div>
+      </div>
+      <div class="cust-card">
+        <div class="cust-avatar">D</div>
+        <div class="cust-info">
+          <h4>Dafound</h4>
+          <div class="role">Server Custodian</div>
+        </div>
+      </div>
+      <div class="cust-card">
+        <div class="cust-avatar">J</div>
+        <div class="cust-info">
+          <h4>James</h4>
+          <div class="role">Server Custodian</div>
+        </div>
+      </div>
+      <div class="cust-card">
+        <div class="cust-avatar">S</div>
+        <div class="cust-info">
+          <h4>ScoobyMonk</h4>
+          <div class="role">Server Custodian</div>
+        </div>
+      </div>
+      <div class="cust-card">
+        <div class="cust-avatar">A</div>
+        <div class="cust-info">
+          <h4>ACEE</h4>
+          <div class="role">Junior Custodian</div>
+        </div>
+      </div>
+      <div class="cust-card">
+        <div class="cust-avatar">G</div>
+        <div class="cust-info">
+          <h4>Goobert.AC</h4>
+          <div class="role">Junior Custodian</div>
+        </div>
+      </div>
+      <div class="cust-card">
+        <div class="cust-avatar">J</div>
+        <div class="cust-info">
+          <h4>joshuanorth</h4>
+          <div class="role">Junior Custodian</div>
+        </div>
+      </div>
+      <div class="cust-card">
+        <div class="cust-avatar">R</div>
+        <div class="cust-info">
+          <h4>Remvrgt</h4>
+          <div class="role">Silver Creator</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
 <section id="contact">
   <div class="section-inner reveal">
     <span class="tag">contact</span>
@@ -403,7 +493,7 @@
 </section>
 
 <footer>
-  <div>amblock <span class="dot">·</span> animal company drip department</div>
+  <div>amblock <span class="dot">·</span> animal company content creator</div>
   <div class="uptime"><span class="pip"></span>competitions running weekly</div>
 </footer>
 
@@ -445,19 +535,6 @@
     });
     btn.addEventListener('mouseleave', () => { btn.style.transform = 'translate(0,0)'; });
   });
-
-  const hexTrack = document.getElementById('hexTrack');
-  function randHex(len){
-    let s = '';
-    for (let i=0;i<len;i++) s += Math.floor(Math.random()*16).toString(16);
-    return s.toUpperCase();
-  }
-  let hexStr = '';
-  for (let i=0;i<40;i++){
-    const hi = i % 7 === 0;
-    hexStr += `<span class="${hi ? 'hi' : ''}">0x${randHex(8)}</span>`;
-  }
-  hexTrack.innerHTML = hexStr + hexStr;
 
   const canvas = document.getElementById('bg-canvas');
   const ctx = canvas.getContext('2d');
