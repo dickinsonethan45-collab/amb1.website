@@ -177,6 +177,86 @@
   .contact-panel .l{font-family:'JetBrains Mono',monospace;color:var(--grey);font-size:14px;}
   .contact-panel .l strong{color:var(--ice);display:block;font-size:20px;margin-bottom:6px;font-weight:700;}
 
+  /* avatar */
+  .avatar-wrap{
+    position:relative;
+    width:132px;height:132px;
+    border-radius:20px;
+    padding:3px;
+    background:linear-gradient(150deg, var(--cyan), var(--blue) 60%, var(--violet));
+    flex-shrink:0;
+    box-shadow:0 20px 50px -18px rgba(61,127,255,0.55);
+  }
+  .avatar-wrap img{
+    width:100%;height:100%;
+    border-radius:17px;
+    object-fit:cover;
+    display:block;
+    background:var(--bg-panel);
+  }
+  .hero-top{
+    display:flex;
+    align-items:center;
+    gap:26px;
+    margin-bottom:8px;
+  }
+  .nav-logo img{
+    width:26px;height:26px;
+    border-radius:7px;
+    object-fit:cover;
+    margin-right:2px;
+  }
+
+  /* competitions */
+  .comp-table{
+    margin-top:60px;
+    border:1px solid var(--line);
+    border-radius:12px;
+    overflow:hidden;
+  }
+  .comp-row{
+    display:grid;
+    grid-template-columns:90px 1fr 140px;
+    align-items:center;
+    padding:22px 28px;
+    background:var(--bg-panel);
+    border-bottom:1px solid var(--line);
+    transition:background .25s ease;
+  }
+  .comp-row:last-child{border-bottom:none;}
+  .comp-row:hover{background:var(--bg-panel-2);}
+  .comp-row.head{
+    background:var(--slate,var(--bg-panel-2));
+    font-family:'JetBrains Mono',monospace;
+    font-size:11.5px;
+    color:var(--grey-dim);
+    letter-spacing:1px;
+    padding:14px 28px;
+  }
+  .comp-week{
+    font-family:'JetBrains Mono',monospace;
+    font-weight:700;
+    font-size:15px;
+    color:var(--cyan);
+  }
+  .comp-desc{
+    font-size:14.5px;
+    color:var(--grey);
+  }
+  .comp-prize{
+    font-family:'JetBrains Mono',monospace;
+    font-weight:700;
+    font-size:16px;
+    color:var(--ice);
+    text-align:right;
+  }
+  .comp-note{
+    margin-top:22px;
+    font-family:'JetBrains Mono',monospace;
+    font-size:13px;
+    color:var(--grey-dim);
+  }
+
   footer{
     border-top:1px solid var(--line);padding:36px 48px;display:flex;justify-content:space-between;align-items:center;
     flex-wrap:wrap;gap:12px;font-family:'JetBrains Mono',monospace;font-size:12.5px;color:var(--grey-dim);position:relative;z-index:2;
@@ -193,6 +273,12 @@
     .term{margin-top:48px;}
     .contact-panel{padding:28px;flex-direction:column;align-items:flex-start;}
     footer{padding:28px 22px;flex-direction:column;align-items:flex-start;}
+    .hero-top{gap:16px;}
+    .avatar-wrap{width:84px;height:84px;border-radius:16px;}
+    .avatar-wrap img{border-radius:13px;}
+    .comp-row{grid-template-columns:50px 1fr;row-gap:6px;padding:18px 20px;}
+    .comp-prize{grid-column:2;text-align:left;}
+    .comp-row.head{display:none;}
   }
 </style>
 </head>
@@ -204,24 +290,30 @@
 <div class="cursor-glow" id="cursorGlow"></div>
 
 <nav id="nav">
-  <a href="#top" class="nav-logo"><span class="dot"></span>AMBLOCK</a>
+  <a href="#top" class="nav-logo"><img src="amblock_pfp.png" alt=""><span class="dot"></span>AMBLOCK</a>
   <div class="nav-links">
     <a href="#about"><span class="n">01</span>about</a>
-    <a href="#work"><span class="n">02</span>work</a>
+    <a href="#competitions"><span class="n">02</span>competitions</a>
     <a href="#contact"><span class="n">03</span>contact</a>
   </div>
 </nav>
 
 <section class="hero" id="top">
   <div class="eyebrow reveal">
-    <span class="bracket">[</span>status: online<span class="cursor-blink"></span><span class="bracket">]</span>
+    <span class="bracket">[</span>animal company drip department<span class="cursor-blink"></span><span class="bracket">]</span>
   </div>
-  <h1 class="reveal">AMBLOCK</h1>
-  <p class="sub reveal">This site is still being built out &mdash; <strong>content coming soon.</strong> For now, consider this the shell: structure, motion, and a spot for everything Amblock is about to go.</p>
+
+  <div class="hero-top reveal">
+    <div class="avatar-wrap"><img src="amblock_pfp.png" alt="Amblock"></div>
+    <h1 style="font-size:clamp(44px,9vw,120px);">AMBLOCK</h1>
+  </div>
+
+  <p class="sub reveal">Animal Company content creator on <strong>TikTok</strong> and <strong>YouTube</strong>. Runs the drip department, hosts Company Coins competitions twice a week over on Discord, and keeps the community geared up.</p>
 
   <div class="hero-cta reveal">
-    <a href="#work" class="btn btn-primary magnetic">view work →</a>
-    <a href="#contact" class="btn btn-ghost magnetic">get in touch</a>
+    <a href="https://youtube.com/@amblockac1?si=boX7pAB4f9ZMvJtR" target="_blank" rel="noopener" class="btn btn-primary magnetic">watch on youtube →</a>
+    <a href="https://www.tiktok.com/@amblockac" target="_blank" rel="noopener" class="btn btn-ghost magnetic">tiktok</a>
+    <a href="https://discord.gg/g7uAaEcah6" target="_blank" rel="noopener" class="btn btn-ghost magnetic">join discord</a>
   </div>
 
   <div class="term reveal">
@@ -231,9 +323,9 @@
     </div>
     <div class="term-body">
       <div><span class="p">➜</span> whoami</div>
-      <div class="out">amblock</div>
-      <div style="margin-top:6px;"><span class="p">➜</span> status --site</div>
-      <div class="out">under construction <span class="c">// content incoming</span></div>
+      <div class="out">amblock <span class="c">// animal company drip department</span></div>
+      <div style="margin-top:6px;"><span class="p">➜</span> events --list</div>
+      <div class="out">company coins competitions <span class="c">// every week, on discord</span></div>
     </div>
   </div>
 </section>
@@ -245,39 +337,50 @@
 <section id="about">
   <div class="section-inner reveal">
     <span class="tag">about</span>
-    <h2>Placeholder — tell me what goes here.</h2>
-    <p class="lead">This is where your bio, background, or story lives. Send over the details and I'll drop them in — a short intro, a longer write-up, stats, whatever fits.</p>
+    <h2>Head of the drip department.</h2>
+    <p class="lead">Amblock makes Animal Company content across TikTok and YouTube — clips, drip checks, and community events. Alongside content, Amblock runs a Discord server built around the game, with regular Company Coins competitions to keep the community geared up and competing.</p>
 
     <div class="stats">
-      <div class="stat"><div class="num"><span>—</span></div><div class="label">STAT LABEL</div></div>
-      <div class="stat"><div class="num"><span>—</span></div><div class="label">STAT LABEL</div></div>
-      <div class="stat"><div class="num"><span>—</span></div><div class="label">STAT LABEL</div></div>
-      <div class="stat"><div class="num"><span>—</span></div><div class="label">STAT LABEL</div></div>
+      <div class="stat"><div class="num"><span>2×</span></div><div class="label">COMPS PER WEEK</div></div>
+      <div class="stat"><div class="num"><span>2K</span></div><div class="label">TOP WEEKLY PRIZE (CC)</div></div>
+      <div class="stat"><div class="num"><span>3</span></div><div class="label">ROTATING PRIZE TIERS</div></div>
+      <div class="stat"><div class="num"><span>AC</span></div><div class="label">ANIMAL COMPANY</div></div>
     </div>
   </div>
 </section>
 
-<section id="work">
+<section id="competitions">
   <div class="section-inner reveal">
-    <span class="tag">work</span>
-    <h2>Projects go here.</h2>
-    <p class="lead">Placeholder cards below — swap these for real projects, write-ups, or links whenever you're ready.</p>
-    <div class="placeholder-grid">
-      <div class="card">
-        <div class="idx">001</div>
-        <h3>Project name</h3>
-        <p>Short description of what it is and what it does.</p>
+    <span class="tag">competitions</span>
+    <h2>Company Coins competitions.</h2>
+    <p class="lead">Hosted twice every week in the Discord. Prize pool rotates on a three-week cycle — the longer you stick around, the bigger it gets.</p>
+
+    <div class="comp-table">
+      <div class="comp-row head">
+        <div>WEEK</div>
+        <div>DETAILS</div>
+        <div style="text-align:right;">PRIZE</div>
       </div>
-      <div class="card">
-        <div class="idx">002</div>
-        <h3>Project name</h3>
-        <p>Short description of what it is and what it does.</p>
+      <div class="comp-row">
+        <div class="comp-week">A</div>
+        <div class="comp-desc">Base week — kicks off the rotation.</div>
+        <div class="comp-prize">500 CC</div>
       </div>
-      <div class="card">
-        <div class="idx">003</div>
-        <h3>Project name</h3>
-        <p>Short description of what it is and what it does.</p>
+      <div class="comp-row">
+        <div class="comp-week">B</div>
+        <div class="comp-desc">Prize pool steps up.</div>
+        <div class="comp-prize">1,800 CC</div>
       </div>
+      <div class="comp-row">
+        <div class="comp-week">C</div>
+        <div class="comp-desc">Peak week — biggest payout of the cycle.</div>
+        <div class="comp-prize">2,000 CC</div>
+      </div>
+    </div>
+    <p class="comp-note">Held twice weekly · full rules and sign-up in the Discord server</p>
+
+    <div class="hero-cta" style="margin-top:36px;">
+      <a href="https://discord.gg/g7uAaEcah6" target="_blank" rel="noopener" class="btn btn-primary magnetic">join the discord →</a>
     </div>
   </div>
 </section>
@@ -285,23 +388,23 @@
 <section id="contact">
   <div class="section-inner reveal">
     <span class="tag">contact</span>
-    <h2>Let's talk.</h2>
-    <p class="lead">Drop your email, Discord, GitHub, or whatever you want people to reach you on — I'll wire it up here.</p>
+    <h2>Find the drip department.</h2>
+    <p class="lead">Content drops on TikTok and YouTube. Competitions, community, and everything else happens in the Discord.</p>
 
     <div class="contact-panel">
-      <div class="l"><strong>Ready when you are.</strong>Send links or handles and this becomes live.</div>
+      <div class="l"><strong>Amblock · Animal Company</strong>TikTok · YouTube · Discord</div>
       <div class="hero-cta" style="margin-top:0;">
-        <a href="#" class="btn btn-primary magnetic">email →</a>
-        <a href="#" class="btn btn-ghost magnetic">github</a>
-        <a href="#" class="btn btn-ghost magnetic">discord</a>
+        <a href="https://www.tiktok.com/@amblockac" target="_blank" rel="noopener" class="btn btn-primary magnetic">tiktok →</a>
+        <a href="https://youtube.com/@amblockac1?si=boX7pAB4f9ZMvJtR" target="_blank" rel="noopener" class="btn btn-ghost magnetic">youtube</a>
+        <a href="https://discord.gg/g7uAaEcah6" target="_blank" rel="noopener" class="btn btn-ghost magnetic">discord</a>
       </div>
     </div>
   </div>
 </section>
 
 <footer>
-  <div>amblock.dev <span class="dot">·</span> built and ready for content</div>
-  <div class="uptime"><span class="pip"></span>site status: nominal</div>
+  <div>amblock <span class="dot">·</span> animal company drip department</div>
+  <div class="uptime"><span class="pip"></span>competitions running weekly</div>
 </footer>
 
 <script>
