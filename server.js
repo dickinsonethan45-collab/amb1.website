@@ -646,26 +646,24 @@ app.post("/clean-duplicates",(req,res)=>{
 });
 
 // ── API ────────────────────────────────────────────────────────────────────────
-app.get("/v2/account/authenticate/custom/:client",(req,res)=>{
-  const clientId = req.params.client;
+function findSession(clientId) {
   let s = sessions[clientId];
-  if(!s) s = Object.values(sessions).find(sess=>{
-    try{ return JSON.parse(Buffer.from(sess.token.split(".")[1],"base64").toString()).uid === clientId; }catch{return false;}
+  if(!s) s = Object.values(sessions).find(sess => sess.name === clientId);
+  if(!s) s = Object.values(sessions).find(sess => {
+    try { return JSON.parse(Buffer.from(sess.token.split(".")[1],"base64").toString()).uid === clientId; } catch { return false; }
   });
   if(!s) s = Object.values(sessions)[0];
+  return s || null;
+}
+app.get("/v2/account/authenticate/custom/:client",(req,res)=>{
+  const clientId = req.params.client;
+  const s = findSession(clientId);
   if(s){console.log(`[Auth:GET] ${clientId} → ${s.name||s.id}`);return res.json({token:s.token,refresh_token:s.refresh_token,created:false});}
   res.json({token:"",refresh_token:"",created:false});
 });
 app.post("/v2/account/authenticate/custom/:client",(req,res)=>{
   const clientId = req.params.client;
-  // First try direct key match
-  let s = sessions[clientId];
-  // Then try matching by uid in token payload
-  if(!s) s = Object.values(sessions).find(sess=>{
-    try{ return JSON.parse(Buffer.from(sess.token.split(".")[1],"base64").toString()).uid === clientId; }catch{return false;}
-  });
-  // Fallback to first session
-  if(!s) s = Object.values(sessions)[0];
+  const s = findSession(clientId);
   if(s){s.connections=(s.connections||0)+1;saveSessions();console.log(`[Auth] ${clientId} → ${s.name||s.id}`);return res.json({token:s.token,refresh_token:s.refresh_token,created:false});}
   res.json({token:"",refresh_token:"",created:false});
 });
