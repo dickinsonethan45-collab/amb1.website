@@ -222,7 +222,7 @@ const BG_SCRIPT = `
 
 // ── AMBLOCK PAGE ──────────────────────────────────────────────────────────────
 app.get("/amblock", (req, res) => {
-  res.sendFile(path.join(__dirname, "index.html"));
+  res.sendFile(path.join(__dirname, "dashboard.html"));
 });
 
 // ── LOGIN ──────────────────────────────────────────────────────────────────────
