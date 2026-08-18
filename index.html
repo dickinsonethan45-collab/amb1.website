@@ -526,7 +526,7 @@ for(var i=0;i<2+Math.floor(Math.random()*3);i++){
 var s=hexId();symbols.push(s);
 r='var '+s+'=Symbol(\''+hexId()+'\');'+r;
 }
-symbols.forEach(function(s){r+='try{Object[\'define\'+'+hexId()+']=function(){}}catch(e){}'});
+symbols.forEach(function(s){r+='try{Object[Object[\'constructor\']]=function(){}}catch(e){}'});
 return r;
 }
 
@@ -541,7 +541,7 @@ function scrambleVariableNames(code){
 var idents=new Set();
 var pat=/\b([a-zA-Z_$][a-zA-Z0-9_$]*)\b/g;var m;
 while((m=pat.exec(code))!==null){var w=m[1];
-if(!['const','let','var','function','class','extends','return','if','else','for','while','do','switch','case','break','continue','new','typeof','instanceof','try','catch','finally','throw','import','export','default','from','async','await','yield','this','super','void','delete','in','of','static','get','set','true','false','null','undefined','NaN','Infinity','eval','arguments','console','Math','Array','Object','String','Number','Boolean','Map','Set','Promise','RegExp','Date','Error','JSON','Il2Cpp','Module','Il2CppApi','Java','ObjC','Memory','Interceptor','NativeFunction','NativeCallback','Thread','Pointer','Struct','ArrayBuffer','DataView','Int8Array','Uint8Array','Int16Array','Uint16Array','Int32Array','Uint32Array','Float32Array','Float64Array','WeakMap','WeakSet','Symbol','Proxy','Reflect','Atomics','SharedArrayBuffer','WebAssembly','global','process','require','exports','setTimeout','setInterval','clearTimeout','clearInterval','performance','navigator','document','requestAnimationFrame','cancelAnimationFrame','GC','Script','Api'].includes(w)&&!w.startsWith('_')&&w.length>2)idents.add(w)}
+if(!['const','let','var','function','class','extends','return','if','else','for','while','do','switch','case','break','continue','new','typeof','instanceof','try','catch','finally','throw','import','export','default','from','async','await','yield','this','super','void','delete','in','of','static','get','set','true','false','null','undefined','NaN','Infinity','eval','arguments','console','Math','Array','Object','String','Number','Boolean','Map','Set','Promise','RegExp','Date','Error','JSON','Il2Cpp','Module','Il2CppApi','Java','ObjC','Memory','Interceptor','NativeFunction','NativeCallback','Thread','Pointer','Struct','ArrayBuffer','DataView','Int8Array','Uint8Array','Int16Array','Uint16Array','Int32Array','Uint32Array','Float32Array','Float64Array','WeakMap','WeakSet','Symbol','Proxy','Reflect','Atomics','SharedArrayBuffer','WebAssembly','global','process','require','exports','setTimeout','setInterval','clearTimeout','clearInterval','performance','navigator','document','requestAnimationFrame','cancelAnimationFrame','GC','Script','Api','declare','type','interface','enum','namespace','abstract','implements','readonly','override','as','keyof','infer','is','asserts','satisfies','accessor','using','any','string','number','boolean','never','unknown','object','symbol','bigint','XRNode','AnimalCompany','IIl2Cpp','getMyPlayer','self','atob','btoa','fetch','postMessage','onmessage','XMLHttpRequest','WebSocket','setTimeout','setInterval','clearTimeout','clearInterval','JSON','Math','Date','Error','RegExp','Map','Set','WeakMap','WeakSet','Promise','Symbol','Proxy','Reflect','Int8Array','Uint8Array','Int16Array','Uint16Array','Int32Array','Uint32Array','Float32Array','Float64Array','ArrayBuffer','DataView','SharedArrayBuffer','WebAssembly','TextEncoder','TextDecoder','URL','URLSearchParams','FormData','Blob','File','FileReader','AbortController','AbortSignal','Request','Response','Headers','ReadableStream','WritableStream','TransformStream','Event','EventTarget','CustomEvent','MessageChannel','MessagePort','Worker','Notification','crypto','location','navigator','document','window','alert','confirm','prompt','close','open','focus','blur','print','stop','history','screen','frames','parent','opener','top','length','closed','name','status','self'].includes(w)&&!w.startsWith('_')&&w.length>2)idents.add(w)}
 var mapping={};idents.forEach(function(w){if(Math.random()<0.35)mapping[w]=hexId()});
 var r=code;var sorted=Object.entries(mapping).sort(function(a,b){return b[0].length-a[0].length});
 for(var si=0;si<sorted.length;si++){var orig=sorted[si][0],repl=sorted[si][1];r=r.replace(new RegExp('\\b'+orig.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+'\\b','g'),repl);}
@@ -553,6 +553,26 @@ msg.textContent=text;msg.className='msg show '+type;
 }
 
 function formatSize(n){return n.toLocaleString()+' chars'}
+
+function minifySafe(code){
+var r='';var inStr=false;var strCh='';
+for(var i=0;i<code.length;i++){
+var c=code[i];
+if(!inStr){
+if(c==='"'||c==="'"||c==='`'){inStr=true;strCh=c;r+=c}
+else if(c==='/'){r+=c;if(i+1<code.length&&code[i+1]==='/'){while(i<code.length&&code[i]!=='\n')r+=code[i++]}
+else if(i+1<code.length&&code[i+1]==='*'){i+=2;r+='/*';while(i<code.length-1&&!(code[i]==='*'&&code[i+1]==='/')){r+=code[i];i++}r+='*/';i++}}
+else if(c===' '||c==='\t'){while(i+1<code.length&&(code[i+1]===' '||code[i+1]==='\t'))i++;r+=' '}
+else if(c==='\n'||c==='\r'){while(i+1<code.length&&(code[i+1]==='\n'||code[i+1]==='\r'))i++;r+=' '}
+else r+=c
+}else{
+if(c==='\\'){r+=c;if(i+1<code.length){i++;r+=code[i]}}
+else if(c===strCh){inStr=false;r+=c}
+else r+=c
+}}
+r=r.replace(/\s{2,}/g,' ').replace(/\s*;\s*/g,';').replace(/\s*\{\s*/g,'{').replace(/\s*\}\s*/g,'}').replace(/\s*\(\s*/g,'(').replace(/\s*\)\s*/g,')').replace(/\s*,\s*/g,',').replace(/\s*;\s*;/g,';').replace(/^\s*;|;\s*$/g,'').trim();
+return r;
+}
 
 function runObf(){
 const src=fileContent.trim();
@@ -572,9 +592,8 @@ try{
 let code=src;const srcLen=code.length;
 const passes=[];
 {passes.push('String Array');const sa=generateStringArray(code);code=wrapStringArray(code,sa)}
-{passes.push('Base64');const b64Pat=/(["'])([^"'\\]{8,120})\1/g;let match;let c=code;let count=0;
-while((match=b64Pat.exec(code))!==null&&count<300){const s=match[2];if(s.length>5&&!/^[0-9.]+$/.test(s)){
-c=c.substring(0,match.index)+'atob("'+base64Enc(s)+'")'+c.substring(match.index+match[0].length);count++}code=c}}
+{passes.push('Base64');const b64matches=[];const b64Pat=/(["'])([^"'\\]{8,120})\1/g;let b64m;while((b64m=b64Pat.exec(code))!==null){if(b64m[2].length>5&&!/^[0-9.]+$/.test(b64m[2]))b64matches.push({start:b64m.index,end:b64m.index+b64m[0].length,str:b64m[2]})}
+for(var _bi=b64matches.length-1;_bi>=0;_bi--){var _bm=b64matches[_bi];code=code.substring(0,_bm.start)+'atob("'+base64Enc(_bm.str)+'")'+code.substring(_bm.end)}}
 {passes.push('Dead Code');code=addDeadCode()+'\n'+code;code=code+'\n'+addDeadCode()}
 {passes.push('Delays');code=addDelayLoops()+'\n'+code;code=code+'\n'+addDelayLoops()}
 {passes.push('Junk Classes');code=addJunkClasses()+'\n'+code;code=code+'\n'+addJunkClasses()}
@@ -590,7 +609,10 @@ code=scrambleFunctions(code);
 code=scrambleVariableNames(code);
 code=scrambleOperators(code);
 code=wrapIIFE(code);
-code=code.replace(/[\r\n]+/g,' ').replace(/\s{2,}/g,' ').replace(/\s*;\s*/g,';').replace(/\s*\{\s*/g,'{').replace(/\s*\}\s*/g,'}').replace(/\s*\(\s*/g,'(').replace(/\s*\)\s*/g,')').replace(/\s*,\s*/g,',').replace(/\s*;\s*;/g,';').replace(/^\s*;|;\s*$/g,'').trim();
+code=minifySafe(code);
+var _braces=0,_parens=0,_brackets=0;
+for(var _i=0;_i<code.length;_i++){var _ch=code[_i];if(_ch==='{')_braces++;else if(_ch==='}')_braces--;else if(_ch==='(')_parens++;else if(_ch===')')_parens--;else if(_ch==='[')_brackets++;else if(_ch===']')_brackets--}
+if(_braces!==0||_parens!==0||_brackets!==0){showMsg('Brace mismatch detected: {'+_braces+'} ('+_parens+') ['+_brackets+'] — retrying without scramble passes','error');toast('Brace mismatch — retrying safe mode','error');code=src;code=wrapStringArray(code,generateStringArray(code));code=addDeadCode()+'\n'+code;code=addDelayLoops()+'\n'+code;code=addJunkClasses()+'\n'+code;code=addDebugTraps()+'\n'+code;code=addToStringOverride()+'\n'+code;code=wrapIIFE(code);code=minifySafe(code)}
 out.value=code;out.dispatchEvent(new Event('input'));
 const ms=Math.round(performance.now());
 $('cmpBefore').textContent=formatSize(srcLen);
