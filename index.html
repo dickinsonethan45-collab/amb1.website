@@ -12,7 +12,6 @@
 
 html {
     scroll-behavior: smooth;
-    scroll-padding-top: 100px;
 }
 
 body {
@@ -70,6 +69,22 @@ nav {
 .nav-links a:hover,
 .nav-links a.active {
     color: white;
+}
+
+nav .store-button {
+    margin-left: auto;
+    background: #e4e4e7;
+    color: #151515;
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 600;
+    padding: 7px 18px;
+    border-radius: 4px;
+    transition: background 0.2s ease;
+}
+
+nav .store-button:hover {
+    background: white;
 }
 
 /* Main content */
@@ -157,7 +172,7 @@ section {
     color: #92949c;
 }
 
-/* Coming soon boxes */
+/* Coming soon */
 
 .placeholder {
     width: 100%;
@@ -358,7 +373,7 @@ footer a:hover {
     color: white;
 }
 
-/* Mobile support */
+/* Mobile */
 
 @media (max-width: 600px) {
     main {
@@ -375,7 +390,9 @@ footer a:hover {
     }
 
     .nav-links {
-        gap: 20px;
+        gap: 15px;
+        order: 3;
+        width: 100%;
     }
 
     .pricing {
@@ -384,10 +401,6 @@ footer a:hover {
 
     .gallery {
         grid-template-columns: repeat(2, 1fr);
-    }
-
-    html {
-        scroll-padding-top: 125px;
     }
 }
 
@@ -404,8 +417,6 @@ footer a:hover {
 </head>
 
 <body>
-
-<!-- Navigation -->
 
 <header>
     <nav>
@@ -431,6 +442,13 @@ footer a:hover {
             </a>
 
         </div>
+
+        <a class="store-button"
+           href="https://amblock.mysellauth.com/"
+           target="_blank"
+           rel="noopener noreferrer">
+            Store ↗
+        </a>
 
     </nav>
 </header>
@@ -461,15 +479,17 @@ footer a:hover {
 
         </section>
 
-        <section class="order" id="home-order">
+        <section class="order">
 
             <h2>Place an order</h2>
 
-            <p>Join the Discord to place an order.</p>
+            <p>Purchase your custom Blender PFP through our store. Your finished PFP will be delivered by email.</p>
 
-            <a class="button discord-link"
-               href="https://discord.gg/YOURINVITE">
-                Join Discord
+            <a class="button"
+               href="https://amblock.mysellauth.com/"
+               target="_blank"
+               rel="noopener noreferrer">
+                Visit Store ↗
             </a>
 
         </section>
@@ -496,15 +516,17 @@ footer a:hover {
 
         <p>Prices are per profile picture and listed in USD.</p>
 
-        <section class="order" id="pricing-order">
+        <section class="order">
 
             <h2>Place an order</h2>
 
-            <p>Join the Discord to place an order.</p>
+            <p>Purchase your custom Blender PFP through our store. Your finished PFP will be delivered by email.</p>
 
-            <a class="button discord-link"
-               href="https://discord.gg/YOURINVITE">
-                Join Discord
+            <a class="button"
+               href="https://amblock.mysellauth.com/"
+               target="_blank"
+               rel="noopener noreferrer">
+                Visit Store ↗
             </a>
 
         </section>
@@ -513,7 +535,7 @@ footer a:hover {
 
 </main>
 
-<!-- Footer -->
+<!-- FOOTER -->
 
 <footer>
 
@@ -521,9 +543,10 @@ footer a:hover {
 
         <span>AMBLOCK &copy; 2026</span>
 
-        <a class="discord-link"
-           href="https://discord.gg/YOURINVITE">
-            Discord
+        <a href="https://amblock.mysellauth.com/"
+           target="_blank"
+           rel="noopener noreferrer">
+            Store
         </a>
 
     </div>
@@ -532,13 +555,13 @@ footer a:hover {
 
 <script>
 
-/* Discord invite */
+/* Store links */
 
-const discordInvite = "https://discord.gg/YOURINVITE";
-
-document.querySelectorAll(".discord-link").forEach(link => {
-    link.href = discordInvite;
-});
+const storeLinks = {
+    store: "https://amblock.mysellauth.com/",
+    basic: "https://amblock.mysellauth.com/product/basic-blender-pfp",
+    pro: "https://amblock.mysellauth.com/product/pro-blender-pfp"
+};
 
 /* Artwork */
 
@@ -585,12 +608,10 @@ function createArtwork(item) {
 
 }
 
-/* Home gallery */
+/* Galleries */
 
 document.getElementById("home-gallery").innerHTML =
     artwork.map(createArtwork).join("");
-
-/* Previous work gallery */
 
 document.getElementById("full-gallery").innerHTML =
     artwork.map(createArtwork).join("");
@@ -643,7 +664,7 @@ for (let i = 0; i < placeholderCount; i++) {
 
 /* Pricing cards */
 
-function createPricing(orderId) {
+function createPricing() {
 
     return `
 
@@ -663,8 +684,9 @@ function createPricing(orderId) {
             </ul>
 
             <a class="button"
-               href="#${orderId}"
-               data-order="${orderId}">
+               href="${storeLinks.basic}"
+               target="_blank"
+               rel="noopener noreferrer">
                 Order Basic
             </a>
 
@@ -687,8 +709,9 @@ function createPricing(orderId) {
             </ul>
 
             <a class="button"
-               href="#${orderId}"
-               data-order="${orderId}">
+               href="${storeLinks.pro}"
+               target="_blank"
+               rel="noopener noreferrer">
                 Order Pro
             </a>
 
@@ -699,27 +722,10 @@ function createPricing(orderId) {
 }
 
 document.getElementById("home-pricing").innerHTML =
-    createPricing("home-order");
+    createPricing();
 
 document.getElementById("full-pricing").innerHTML =
-    createPricing("pricing-order");
-
-/* Order buttons */
-
-document.querySelectorAll("[data-order]").forEach(button => {
-
-    button.addEventListener("click", event => {
-
-        event.preventDefault();
-
-        document.getElementById(button.dataset.order)
-            .scrollIntoView({
-                behavior: "smooth"
-            });
-
-    });
-
-});
+    createPricing();
 
 /* Tab navigation */
 
