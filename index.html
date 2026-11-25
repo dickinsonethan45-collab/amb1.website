@@ -48,7 +48,7 @@ nav a {
 
 main {
     max-width: 960px;
-    margin: 55px auto;
+    margin: 45px auto;
     padding: 0 25px;
 }
 
@@ -56,7 +56,7 @@ h1 {
     font-size: 46px;
     line-height: 1.2;
     letter-spacing: -1.5px;
-    margin: 0 0 12px;
+    margin: 0 0 25px;
     color: white;
 }
 
@@ -71,42 +71,50 @@ p {
     color: #a3a5ad;
 }
 
-.intro {
-    max-width: 680px;
-}
-
 section {
-    margin-top: 42px;
+    margin-top: 35px;
 }
 
 .gallery {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 12px;
+    gap: 15px;
 }
 
 .artwork {
-    position: relative;
-    aspect-ratio: 1;
     overflow: hidden;
-    background: #1b1c20;
+    background: #191a1e;
     border: 1px solid #303136;
     border-radius: 5px;
-    display: grid;
-    place-items: center;
-    color: #777982;
-    font-size: 13px;
 }
 
 .artwork img {
+    display: block;
     width: 100%;
-    height: 100%;
+    aspect-ratio: 1;
     object-fit: cover;
-    transition: transform .25s;
+    transition: filter .2s;
 }
 
-.artwork:hover img {
-    transform: scale(1.04);
+.artwork img:hover {
+    filter: brightness(1.1);
+}
+
+.artwork-info {
+    padding: 12px 15px;
+}
+
+.artwork-info h3 {
+    margin: 0;
+    font-size: 15px;
+    font-weight: 600;
+    color: white;
+}
+
+.artwork-info p {
+    margin: 3px 0 0;
+    font-size: 12px;
+    color: #92949c;
 }
 
 .pricing {
@@ -133,7 +141,7 @@ section {
 .price {
     font-size: 38px;
     font-weight: 700;
-    color: #fff;
+    color: white;
     margin: 8px 0;
 }
 
@@ -162,11 +170,10 @@ section {
     border-radius: 4px;
     display: inline-block;
     font-size: 14px;
-    transition: background .15s;
 }
 
 .button:hover {
-    background: #fff;
+    background: white;
 }
 
 .plan .button {
@@ -205,7 +212,7 @@ footer a {
 
 @media (max-width: 600px) {
     main {
-        margin-top: 35px;
+        margin-top: 30px;
     }
 
     h1 {
@@ -234,17 +241,7 @@ footer a {
 
 <main>
 
-    <div class="intro">
-        <h1>AMBLOCK</h1>
-        <p>
-            Custom profile pictures made in Blender.
-            Orders are handled directly through Discord.
-        </p>
-
-        <a class="button" href="#pricing">
-            View pricing
-        </a>
-    </div>
+    <h1>AMBLOCK</h1>
 
     <section>
         <h2>Previous work</h2>
@@ -252,18 +249,27 @@ footer a {
         <div class="gallery">
 
             <div class="artwork">
-                <img src="pfp1.png" alt="Blender PFP example 1"
-                onerror="this.replaceWith('Example 01')">
+                <img src="gilla.png" alt="Gilla VR character render">
+                <div class="artwork-info">
+                    <h3>Gilla</h3>
+                    <p>Character render</p>
+                </div>
             </div>
 
             <div class="artwork">
-                <img src="pfp2.png" alt="Blender PFP example 2"
-                onerror="this.replaceWith('Example 02')">
+                <img src="bedbreak.png" alt="Bed Break VR character render">
+                <div class="artwork-info">
+                    <h3>Bed Break VR</h3>
+                    <p>Character render</p>
+                </div>
             </div>
 
             <div class="artwork">
-                <img src="pfp3.png" alt="Blender PFP example 3"
-                onerror="this.replaceWith('Example 03')">
+                <img src="bed.png" alt="Bed Break VR bed render">
+                <div class="artwork-info">
+                    <h3>Bed Break VR</h3>
+                    <p>Object render</p>
+                </div>
             </div>
 
         </div>
@@ -320,9 +326,7 @@ footer a {
         <h2>Place an order</h2>
 
         <p>
-            Join the Discord, open a ticket and let me know
-            which package you want. Include any references
-            or ideas for your profile picture.
+            Join the Discord to place an order.
         </p>
 
         <a class="button"
