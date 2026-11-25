@@ -1,305 +1,228 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AMBLOCK - Home</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>amblock</title>
 
-<style>
-* {
-    box-sizing: border-box;
-}
+    <style>
+        * {
+            box-sizing: border-box;
+        }
 
-body {
-    margin: 0;
-    background: #0c0c0c;
-    color: #d4d4d4;
-    font-family: Arial, sans-serif;
-    font-size: 15px;
-    line-height: 1.7;
-}
+        body {
+            background: #0e0e0e;
+            color: #d4d4d4;
+            font-family: Arial, sans-serif;
+            font-size: 14px;
+            line-height: 1.7;
+            margin: 0;
+        }
 
-header {
-    background: #111;
-    border-bottom: 1px solid #272727;
-}
+        nav {
+            border-bottom: 1px solid #252525;
+            padding: 15px 25px;
+        }
 
-nav {
-    max-width: 1000px;
-    margin: auto;
-    padding: 18px 24px;
-    display: flex;
-    align-items: center;
-    gap: 30px;
-}
+        .nav-inner {
+            max-width: 800px;
+            margin: auto;
+            display: flex;
+            align-items: center;
+            gap: 30px;
+        }
 
-.logo {
-    font-size: 18px;
-    font-weight: bold;
-    letter-spacing: 2px;
-    color: white;
-}
+        .logo {
+            color: #fff;
+            font-weight: bold;
+            font-size: 18px;
+        }
 
-nav a {
-    color: #aaa;
-    text-decoration: none;
-}
+        a {
+            color: #aaa;
+            text-decoration: none;
+        }
 
-nav a:hover {
-    color: white;
-}
+        a:hover {
+            color: white;
+        }
 
-main {
-    max-width: 850px;
-    margin: 50px auto;
-    padding: 0 24px;
-}
+        main {
+            max-width: 800px;
+            margin: 60px auto;
+            padding: 0 25px;
+        }
 
-h1 {
-    font-size: 42px;
-    color: white;
-    margin: 0 0 12px;
-}
+        h1 {
+            color: #fff;
+            font-size: 32px;
+            margin-bottom: 5px;
+        }
 
-h2 {
-    font-size: 23px;
-    color: white;
-    margin-bottom: 16px;
-}
+        h2 {
+            color: #eee;
+            font-size: 19px;
+            margin-bottom: 10px;
+        }
 
-p {
-    color: #aaa;
-}
+        p {
+            color: #999;
+        }
 
-section {
-    margin-top: 35px;
-    padding-top: 20px;
-    border-top: 1px solid #272727;
-}
+        section {
+            margin-top: 35px;
+            padding-top: 20px;
+            border-top: 1px solid #252525;
+        }
 
-dt {
-    color: white;
-    font-weight: bold;
-    margin-top: 20px;
-}
+        .pricing {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-top: 20px;
+        }
 
-dd {
-    color: #aaa;
-    margin: 5px 0 0;
-}
+        .plan {
+            background: #131313;
+            border: 1px solid #292929;
+            border-radius: 5px;
+            padding: 20px;
+        }
 
-.pricing {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 16px;
-}
+        .plan h3 {
+            color: #eee;
+            margin: 0;
+            font-size: 16px;
+        }
 
-.plan {
-    padding: 24px;
-    background: #131313;
-    border: 1px solid #303030;
-    border-radius: 5px;
-}
+        .price {
+            font-size: 26px;
+            color: white;
+            margin: 8px 0;
+        }
 
-.plan h3 {
-    margin: 0;
-    color: white;
-}
+        ul {
+            padding-left: 18px;
+            color: #999;
+        }
 
-.price {
-    color: white;
-    font-size: 32px;
-    font-weight: bold;
-    margin: 10px 0;
-}
+        li {
+            margin: 5px 0;
+        }
 
-.price span {
-    font-size: 14px;
-    color: #888;
-    font-weight: normal;
-}
+        .button {
+            display: inline-block;
+            border: 1px solid #383838;
+            background: #1c1c1c;
+            padding: 8px 16px;
+            border-radius: 4px;
+            color: #ddd;
+        }
 
-ul {
-    padding-left: 20px;
-}
+        .button:hover {
+            background: #292929;
+        }
 
-li {
-    margin: 7px 0;
-}
+        footer {
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px 25px;
+            border-top: 1px solid #252525;
+            color: #666;
+            font-size: 12px;
+        }
 
-.button {
-    display: inline-block;
-    padding: 10px 20px;
-    background: #ededed;
-    color: #111;
-    text-decoration: none;
-    border-radius: 4px;
-    font-weight: bold;
-}
+        @media (max-width: 550px) {
+            .pricing {
+                grid-template-columns: 1fr;
+            }
 
-.button:hover {
-    background: #ccc;
-}
-
-footer {
-    border-top: 1px solid #272727;
-    color: #777;
-    text-align: center;
-    padding: 25px;
-    font-size: 13px;
-}
-
-footer a {
-    color: #aaa;
-    text-decoration: none;
-}
-
-@media (max-width: 600px) {
-    .pricing {
-        grid-template-columns: 1fr;
-    }
-}
-</style>
+            main {
+                margin-top: 30px;
+            }
+        }
+    </style>
 </head>
 
 <body>
 
-<header>
     <nav>
-        <div class="logo">AMBLOCK</div>
-        <a href="index.html">Home</a>
-    </nav>
-</header>
-
-<main>
-
-    <h1>AMBLOCK</h1>
-
-    <p>
-        Custom profile pictures made in Blender.
-        Two packages, affordable prices and
-        designs made specifically for you.
-    </p>
-
-    <section>
-        <h2>What it is</h2>
-
-        <p>
-            AMBLOCK creates custom Blender profile
-            pictures for Discord, YouTube and other
-            social media platforms.
-        </p>
-
-        <p>
-            Choose between Basic and Pro depending
-            on the style and detail you want.
-        </p>
-    </section>
-
-    <section>
-        <h2>What you get</h2>
-
-        <dl>
-            <dt>Custom profile pictures</dt>
-            <dd>
-                A personalised profile picture
-                created using Blender.
-            </dd>
-
-            <dt>Lighting</dt>
-            <dd>
-                Custom lighting to suit your
-                character and preferred style.
-            </dd>
-
-            <dt>Backgrounds</dt>
-            <dd>
-                Backgrounds designed to complement
-                your profile picture.
-            </dd>
-
-            <dt>High-quality renders</dt>
-            <dd>
-                Clean 3D renders ready to use
-                as your profile picture.
-            </dd>
-        </dl>
-    </section>
-
-    <section>
-        <h2>Pricing</h2>
-
-        <div class="pricing">
-
-            <div class="plan">
-                <h3>Basic</h3>
-
-                <div class="price">
-                    $5 <span>/ PFP</span>
-                </div>
-
-                <p>Simple and clean.</p>
-
-                <ul>
-                    <li>Custom Blender PFP</li>
-                    <li>Basic lighting</li>
-                    <li>Simple background</li>
-                    <li>PNG image</li>
-                </ul>
-            </div>
-
-            <div class="plan">
-                <h3>Pro</h3>
-
-                <div class="price">
-                    $10 <span>/ PFP</span>
-                </div>
-
-                <p>More detail and customisation.</p>
-
-                <ul>
-                    <li>Everything in Basic</li>
-                    <li>Advanced lighting</li>
-                    <li>Custom background</li>
-                    <li>Additional effects</li>
-                    <li>Detailed rendering</li>
-                </ul>
-            </div>
-
+        <div class="nav-inner">
+            <a class="logo" href="/">amblock</a>
+            <a href="/">Home</a>
         </div>
+    </nav>
 
-        <p>
-            One-time payments. No subscriptions.
-        </p>
-    </section>
+    <main>
 
-    <section>
-        <h2>Getting it</h2>
+        <h1>amblock</h1>
+        <p>Custom Blender profile pictures.</p>
 
-        <p>
-            Join the Discord, open a ticket and
-            tell us whether you want Basic or Pro.
-            Send your character and any references
-            you want us to use.
-        </p>
+        <section>
+            <h2>About</h2>
+            <p>
+                I make custom profile pictures using Blender.
+                You can choose between two packages depending
+                on what you're looking for.
+            </p>
+        </section>
 
-        <a class="button"
-           href="https://discord.gg/YOURINVITE">
-            Join the Discord
-        </a>
-    </section>
+        <section>
+            <h2>Pricing</h2>
 
-</main>
+            <div class="pricing">
 
-<footer>
-    AMBLOCK 2026
-    <br>
-    <a href="index.html">Home</a>
-    -
-    <a href="https://discord.gg/YOURINVITE">
-        Discord
-    </a>
-</footer>
+                <div class="plan">
+                    <h3>Basic</h3>
+                    <div class="price">$5</div>
+
+                    <ul>
+                        <li>Custom Blender PFP</li>
+                        <li>Basic lighting</li>
+                        <li>Simple background</li>
+                    </ul>
+
+                    <a class="button" href="#order">Purchase</a>
+                </div>
+
+                <div class="plan">
+                    <h3>Pro</h3>
+                    <div class="price">$10</div>
+
+                    <ul>
+                        <li>Custom Blender PFP</li>
+                        <li>Advanced lighting</li>
+                        <li>Custom background</li>
+                        <li>Additional effects</li>
+                    </ul>
+
+                    <a class="button" href="#order">Purchase</a>
+                </div>
+
+            </div>
+
+            <p>All prices are in USD.</p>
+        </section>
+
+        <section id="order">
+            <h2>Ordering</h2>
+
+            <p>
+                Join the Discord to place an order or
+                ask any questions.
+            </p>
+
+            <a class="button"
+               href="https://discord.gg/YOURINVITE">
+                Discord
+            </a>
+        </section>
+
+    </main>
+
+    <footer>
+        &copy; 2026 amblock
+    </footer>
 
 </body>
 </html>
