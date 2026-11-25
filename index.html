@@ -16,7 +16,7 @@
 body {
     margin: 0;
     background: #121314;
-    color: #ffffff;
+    color: #fff;
     font-family: Arial, sans-serif;
 }
 
@@ -50,7 +50,6 @@ nav a {
     color: #a6a8af;
     text-decoration: none;
     font-size: 14px;
-    cursor: pointer;
     transition: color 0.2s;
 }
 
@@ -88,7 +87,7 @@ section {
     display: block;
 }
 
-/* Previous Work */
+/* Previous work */
 
 .gallery {
     display: grid;
@@ -117,25 +116,6 @@ section {
     display: block;
 }
 
-/* AMBLOCK Watermark */
-
-.image-container::after {
-    content: "AMBLOCK";
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%) rotate(-30deg);
-    font-family: 'Bebas Neue', Impact, sans-serif;
-    font-size: clamp(28px, 5vw, 52px);
-    font-weight: 400;
-    letter-spacing: 5px;
-    color: rgba(255, 255, 255, 0.35);
-    pointer-events: none;
-    user-select: none;
-    white-space: nowrap;
-    z-index: 2;
-}
-
 .work-info {
     padding: 15px;
 }
@@ -149,14 +129,6 @@ section {
     color: #999da7;
     font-size: 12px;
     margin: 0;
-}
-
-.coming-soon {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #777b84;
-    font-size: 17px;
 }
 
 /* Pricing */
@@ -176,23 +148,30 @@ section {
     padding: 25px;
     display: flex;
     flex-direction: column;
-    transition: background-color 0.3s;
 }
 
-/* Hover Shade Effect */
+/* Silver moving shine */
 
 .price-card::before {
     content: "";
     position: absolute;
-    inset: 0;
-    background: rgba(255, 255, 255, 0.035);
-    transform: translateX(-100%);
-    transition: transform 0.45s ease;
+    top: -50%;
+    left: -100%;
+    width: 65%;
+    height: 200%;
+    background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(255, 255, 255, 0.10),
+        transparent
+    );
+    transform: skewX(-25deg);
+    transition: left 0.7s ease;
     pointer-events: none;
 }
 
 .price-card:hover::before {
-    transform: translateX(0);
+    left: 145%;
 }
 
 .price-card > * {
@@ -226,7 +205,7 @@ section {
     flex: 1;
 }
 
-/* Pro Gold Styling */
+/* Pro gold styling */
 
 .pro {
     border-color: #a17c36;
@@ -239,8 +218,15 @@ section {
     color: #efc675;
 }
 
+/* Gold moving shine */
+
 .pro::before {
-    background: rgba(239, 198, 117, 0.045);
+    background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(239, 198, 117, 0.20),
+        transparent
+    );
 }
 
 /* Buttons */
@@ -249,7 +235,7 @@ section {
     display: block;
     padding: 13px 20px;
     background: #e3e3e6;
-    color: #111111;
+    color: #111;
     text-decoration: none;
     text-align: center;
     border-radius: 4px;
@@ -259,7 +245,7 @@ section {
 }
 
 .button:hover {
-    background: #ffffff;
+    background: #fff;
 }
 
 .pro .button {
@@ -301,7 +287,7 @@ footer p {
     margin: 4px 0;
 }
 
-/* Mobile Support */
+/* Mobile */
 
 @media (max-width: 650px) {
     .gallery {
@@ -319,10 +305,11 @@ footer p {
     nav {
         gap: 16px;
     }
+}
 
-    .image-container::after {
-        font-size: 28px;
-        letter-spacing: 3px;
+@media (prefers-reduced-motion: reduce) {
+    .price-card::before {
+        transition: none;
     }
 }
 </style>
@@ -344,7 +331,7 @@ footer p {
 
 <main>
 
-<!-- HOME PAGE -->
+<!-- HOME -->
 
 <div id="home" class="page active">
 
@@ -381,7 +368,7 @@ footer p {
 
 </div>
 
-<!-- PREVIOUS WORK PAGE -->
+<!-- PREVIOUS WORK -->
 
 <div id="work" class="page">
 
@@ -391,7 +378,7 @@ footer p {
 
 </div>
 
-<!-- PRICING PAGE -->
+<!-- PRICING -->
 
 <div id="pricing" class="page">
 
@@ -428,64 +415,182 @@ footer p {
 
 <script>
 
-/* Previous Work Images */
+/* Gallery information */
 
-const galleryHTML = `
-    <div class="work-card">
-        <div class="image-container">
-            <img src="gilla.png" alt="Gilla VR character render">
-        </div>
-        <div class="work-info">
-            <h3>Gilla</h3>
-            <p>Character render</p>
-        </div>
-    </div>
+const works = [
+    {
+        image: "gilla.png",
+        name: "Gilla",
+        description: "Character render"
+    },
+    {
+        image: "bedbreak.png",
+        name: "Bed Break VR",
+        description: "Character render"
+    },
+    {
+        image: "bed.png",
+        name: "Bed Break VR",
+        description: "Object render"
+    }
+];
 
-    <div class="work-card">
-        <div class="image-container">
-            <img src="bedbreak.png" alt="Bed Break VR character render">
-        </div>
-        <div class="work-info">
-            <h3>Bed Break VR</h3>
-            <p>Character render</p>
-        </div>
-    </div>
+/* Embed watermark into image pixels */
 
-    <div class="work-card">
-        <div class="image-container">
-            <img src="bed.png" alt="Bed Break VR bed render">
-        </div>
-        <div class="work-info">
-            <h3>Bed Break VR</h3>
-            <p>Object render</p>
-        </div>
-    </div>
-`;
+function drawWatermark(ctx, width, height) {
 
-document.getElementById("home-gallery").innerHTML = galleryHTML;
+    ctx.save();
 
-document.getElementById("full-gallery").innerHTML = galleryHTML;
+    ctx.translate(width / 2, height / 2);
+    ctx.rotate(-30 * Math.PI / 180);
 
-/* Coming Soon Boxes */
+    ctx.font = `${width * 0.18}px "Bebas Neue", Impact, sans-serif`;
+    ctx.textAlign = "center";
+    ctx.textBaseline = "middle";
+    ctx.fillStyle = "rgba(255, 255, 255, 0.35)";
 
-for (let i = 0; i < 9; i++) {
-    document.getElementById("full-gallery").insertAdjacentHTML(
-        "beforeend",
-        `
-        <div class="work-card">
-            <div class="image-container coming-soon">
-                Coming Soon
-            </div>
-            <div class="work-info">
-                <h3>Coming Soon</h3>
-                <p>Upcoming work</p>
-            </div>
-        </div>
-        `
-    );
+    ctx.fillText("AMBLOCK", 0, 0, width * 0.85);
+
+    ctx.restore();
 }
 
-/* Pricing Cards */
+async function createWatermarkedImage(source) {
+
+    const image = new Image();
+    image.src = source;
+
+    await image.decode();
+
+    const canvas = document.createElement("canvas");
+
+    canvas.width = image.naturalWidth;
+    canvas.height = image.naturalHeight;
+
+    const ctx = canvas.getContext("2d");
+
+    ctx.drawImage(image, 0, 0);
+
+    drawWatermark(ctx, canvas.width, canvas.height);
+
+    return canvas.toDataURL("image/png");
+}
+
+/* Watermarked Coming Soon image */
+
+function createComingSoon() {
+
+    const canvas = document.createElement("canvas");
+
+    canvas.width = 1000;
+    canvas.height = 1000;
+
+    const ctx = canvas.getContext("2d");
+
+    ctx.fillStyle = "#17181a";
+    ctx.fillRect(0, 0, 1000, 1000);
+
+    ctx.font = "48px Arial";
+    ctx.textAlign = "center";
+    ctx.textBaseline = "middle";
+    ctx.fillStyle = "#777b84";
+
+    ctx.fillText("Coming Soon", 500, 500);
+
+    drawWatermark(ctx, 1000, 1000);
+
+    return canvas.toDataURL("image/png");
+}
+
+/* Create gallery cards */
+
+function createCard(source, name, description) {
+
+    const card = document.createElement("div");
+    card.className = "work-card";
+
+    const container = document.createElement("div");
+    container.className = "image-container";
+
+    const image = document.createElement("img");
+
+    image.src = source;
+    image.alt = name + " - " + description;
+    image.draggable = false;
+
+    container.appendChild(image);
+
+    const info = document.createElement("div");
+    info.className = "work-info";
+
+    const title = document.createElement("h3");
+    title.textContent = name;
+
+    const text = document.createElement("p");
+    text.textContent = description;
+
+    info.append(title, text);
+
+    card.append(container, info);
+
+    return card;
+}
+
+/* Load all gallery images */
+
+async function loadGallery() {
+
+    try {
+        await document.fonts.load('100px "Bebas Neue"');
+    } catch (error) {
+        console.warn("Using fallback watermark font.");
+    }
+
+    const homeGallery = document.getElementById("home-gallery");
+    const fullGallery = document.getElementById("full-gallery");
+
+    for (const work of works) {
+
+        try {
+
+            const watermarked = await createWatermarkedImage(work.image);
+
+            homeGallery.appendChild(
+                createCard(watermarked, work.name, work.description)
+            );
+
+            fullGallery.appendChild(
+                createCard(watermarked, work.name, work.description)
+            );
+
+        } catch (error) {
+
+            console.error("Unable to load image:", work.image);
+
+            const placeholder = createComingSoon();
+
+            homeGallery.appendChild(
+                createCard(placeholder, work.name, "Image unavailable")
+            );
+
+            fullGallery.appendChild(
+                createCard(placeholder, work.name, "Image unavailable")
+            );
+        }
+    }
+
+    const comingSoon = createComingSoon();
+
+    for (let i = 0; i < 9; i++) {
+
+        fullGallery.appendChild(
+            createCard(comingSoon, "Coming Soon", "Upcoming work")
+        );
+    }
+}
+
+loadGallery();
+
+/* Pricing cards */
 
 const pricingHTML = `
     <div class="price-card basic">
@@ -545,6 +650,7 @@ document.getElementById("full-pricing").innerHTML = pricingHTML;
 /* Navigation */
 
 function showPage() {
+
     let page = window.location.hash.substring(1) || "home";
 
     if (!["home", "work", "pricing"].includes(page)) {
