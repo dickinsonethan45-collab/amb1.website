@@ -10,6 +10,10 @@
     box-sizing: border-box;
 }
 
+html {
+    scroll-behavior: smooth;
+}
+
 body {
     margin: 0;
     background: #111214;
@@ -119,7 +123,7 @@ section {
     color: #92949c;
 }
 
-/* Pricing */
+/* Pricing cards */
 
 .pricing {
     display: grid;
@@ -137,8 +141,7 @@ section {
     padding: 25px;
     display: flex;
     flex-direction: column;
-    transition: border-color 0.6s ease,
-                box-shadow 0.6s ease;
+    transition: border-color 0.6s ease;
 }
 
 .plan h3 {
@@ -170,18 +173,20 @@ section {
     margin: 8px 0;
 }
 
-/* Silver shine */
+/* Basic silver hover shine */
 
 .plan::after {
     content: "";
     position: absolute;
     inset: 0;
+
     background: linear-gradient(
         115deg,
         transparent 25%,
         rgba(255, 255, 255, 0.14) 50%,
         transparent 75%
     );
+
     transform: translateX(-120%);
     transition: transform 0.8s ease;
     pointer-events: none;
@@ -195,20 +200,17 @@ section {
 
 .plan:not(.pro):hover {
     border-color: #aaaaaa;
-    box-shadow: 0 0 15px rgba(255,255,255,0.06);
 }
 
 /* Pro gold styling */
 
 .plan.pro {
-    border: 1px solid #98753b;
-    background: linear-gradient(
-        145deg,
-        #302719,
-        #191a1e 70%
-    );
-    box-shadow: 0 0 16px rgba(214,167,71,0.08);
+    background: #191a1e;
+    border: 1px solid #b99750;
+    box-shadow: none;
 }
+
+/* Pro gold hover shine */
 
 .plan.pro::after {
     background: linear-gradient(
@@ -220,16 +222,19 @@ section {
 }
 
 .plan.pro:hover {
-    border-color: #ffd477;
-    box-shadow: 0 0 24px rgba(214,167,71,0.25);
+    border-color: #e5c16c;
 }
+
+/* Gold Pro title and price */
 
 .pro h3,
 .pro .price {
     color: #f4ce80;
 }
 
-.pro li:last-child {
+/* Gold exclusive features */
+
+.pro li:nth-child(n+3) {
     color: #f4ce80;
 }
 
@@ -256,19 +261,15 @@ section {
     text-align: center;
 }
 
+/* Solid gold Pro button */
+
 .pro .button {
-    background: linear-gradient(
-        110deg,
-        #b88a38,
-        #f4d58c,
-        #c69a49
-    );
-    color: #241b0d;
-    transition: filter 0.3s ease;
+    background: #d4af60;
+    color: #151515;
 }
 
 .pro .button:hover {
-    filter: brightness(1.15);
+    background: #e5c16c;
 }
 
 /* Ordering */
@@ -324,7 +325,13 @@ footer a:hover {
     }
 }
 
+/* Reduced motion support */
+
 @media (prefers-reduced-motion: reduce) {
+    html {
+        scroll-behavior: auto;
+    }
+
     .plan,
     .plan::after {
         transition: none;
@@ -355,6 +362,8 @@ footer a:hover {
 
         <div class="gallery">
 
+            <!-- Gilla -->
+
             <div class="artwork">
                 <img src="gilla.png?v=2"
                      alt="Gilla VR character render">
@@ -365,6 +374,8 @@ footer a:hover {
                 </div>
             </div>
 
+            <!-- Bed Break VR character -->
+
             <div class="artwork">
                 <img src="bedbreak.png"
                      alt="Bed Break VR character render">
@@ -374,6 +385,8 @@ footer a:hover {
                     <p>Character render</p>
                 </div>
             </div>
+
+            <!-- Bed Break VR object -->
 
             <div class="artwork">
                 <img src="bed.png"
@@ -430,7 +443,7 @@ footer a:hover {
                 <ul>
                     <li>Custom Blender PFP</li>
                     <li>Standard lighting</li>
-                    <li>Simple background</li>
+                    <li>Enhanced background</li>
                     <li>Additional effects</li>
                     <li>Glossy &amp; reflective materials</li>
                 </ul>
