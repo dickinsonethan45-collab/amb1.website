@@ -7,6 +7,8 @@
 <title>AMBLOCK | Home</title>
 
 <style>
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap');
+
 * {
     box-sizing: border-box;
 }
@@ -86,7 +88,7 @@ section {
     display: block;
 }
 
-/* Previous work */
+/* Previous Work */
 
 .gallery {
     display: grid;
@@ -115,20 +117,22 @@ section {
     display: block;
 }
 
-/* Amblock watermark */
+/* AMBLOCK Watermark */
 
 .image-container::after {
-    content: "Amblock";
+    content: "AMBLOCK";
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%) rotate(-30deg);
-    color: rgba(255, 255, 255, 0.24);
-    font-size: clamp(25px, 4vw, 48px);
-    font-weight: bold;
-    letter-spacing: 2px;
+    font-family: 'Bebas Neue', Impact, sans-serif;
+    font-size: clamp(28px, 5vw, 52px);
+    font-weight: 400;
+    letter-spacing: 5px;
+    color: rgba(255, 255, 255, 0.35);
     pointer-events: none;
     user-select: none;
+    white-space: nowrap;
     z-index: 2;
 }
 
@@ -175,7 +179,7 @@ section {
     transition: background-color 0.3s;
 }
 
-/* Shade moves forward and backwards */
+/* Hover Shade Effect */
 
 .price-card::before {
     content: "";
@@ -222,7 +226,7 @@ section {
     flex: 1;
 }
 
-/* Pro gold styling - no gradients */
+/* Pro Gold Styling */
 
 .pro {
     border-color: #a17c36;
@@ -297,7 +301,7 @@ footer p {
     margin: 4px 0;
 }
 
-/* Mobile */
+/* Mobile Support */
 
 @media (max-width: 650px) {
     .gallery {
@@ -314,6 +318,11 @@ footer p {
 
     nav {
         gap: 16px;
+    }
+
+    .image-container::after {
+        font-size: 28px;
+        letter-spacing: 3px;
     }
 }
 </style>
@@ -364,7 +373,8 @@ footer p {
 
         <a class="button store-button"
            href="https://amblock.mysellauth.com/"
-           target="_blank" rel="noopener noreferrer">
+           target="_blank"
+           rel="noopener noreferrer">
             Visit Store
         </a>
     </section>
@@ -398,7 +408,8 @@ footer p {
 
         <a class="button store-button"
            href="https://amblock.mysellauth.com/"
-           target="_blank" rel="noopener noreferrer">
+           target="_blank"
+           rel="noopener noreferrer">
             Visit Store
         </a>
     </section>
@@ -417,7 +428,7 @@ footer p {
 
 <script>
 
-/* Previous work images */
+/* Previous Work Images */
 
 const galleryHTML = `
     <div class="work-card">
@@ -455,7 +466,7 @@ document.getElementById("home-gallery").innerHTML = galleryHTML;
 
 document.getElementById("full-gallery").innerHTML = galleryHTML;
 
-/* Coming Soon boxes */
+/* Coming Soon Boxes */
 
 for (let i = 0; i < 9; i++) {
     document.getElementById("full-gallery").insertAdjacentHTML(
@@ -474,7 +485,7 @@ for (let i = 0; i < 9; i++) {
     );
 }
 
-/* Pricing cards */
+/* Pricing Cards */
 
 const pricingHTML = `
     <div class="price-card basic">
@@ -494,7 +505,8 @@ const pricingHTML = `
 
         <a class="button"
            href="https://amblock.mysellauth.com/product/basic-blender-pfp"
-           target="_blank" rel="noopener noreferrer">
+           target="_blank"
+           rel="noopener noreferrer">
             Order Basic
         </a>
 
@@ -518,7 +530,8 @@ const pricingHTML = `
 
         <a class="button"
            href="https://amblock.mysellauth.com/product/pro-blender-pfp"
-           target="_blank" rel="noopener noreferrer">
+           target="_blank"
+           rel="noopener noreferrer">
             Order Pro
         </a>
 
