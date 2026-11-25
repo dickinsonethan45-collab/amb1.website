@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AMBLOCK</title>
+<title>AMBLOCK - Home</title>
 
 <style>
 * {
@@ -75,6 +75,8 @@ section {
     margin-top: 35px;
 }
 
+/* Artwork gallery */
+
 .gallery {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -93,7 +95,7 @@ section {
     width: 100%;
     aspect-ratio: 1;
     object-fit: cover;
-    transition: filter .2s;
+    transition: filter 0.2s;
 }
 
 .artwork img:hover {
@@ -117,6 +119,8 @@ section {
     color: #92949c;
 }
 
+/* Pricing */
+
 .pricing {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -124,12 +128,17 @@ section {
 }
 
 .plan {
+    position: relative;
+    overflow: hidden;
+    isolation: isolate;
     background: #191a1e;
-    border: 1px solid #33353b;
+    border: 1px solid #45464b;
     border-radius: 6px;
     padding: 25px;
     display: flex;
     flex-direction: column;
+    transition: border-color 0.6s ease,
+                box-shadow 0.6s ease;
 }
 
 .plan h3 {
@@ -161,6 +170,71 @@ section {
     margin: 8px 0;
 }
 
+/* Silver shine */
+
+.plan::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+        115deg,
+        transparent 25%,
+        rgba(255, 255, 255, 0.14) 50%,
+        transparent 75%
+    );
+    transform: translateX(-120%);
+    transition: transform 0.8s ease;
+    pointer-events: none;
+}
+
+/* Forward and reverse shine */
+
+.plan:hover::after {
+    transform: translateX(120%);
+}
+
+.plan:not(.pro):hover {
+    border-color: #aaaaaa;
+    box-shadow: 0 0 15px rgba(255,255,255,0.06);
+}
+
+/* Pro gold styling */
+
+.plan.pro {
+    border: 1px solid #98753b;
+    background: linear-gradient(
+        145deg,
+        #302719,
+        #191a1e 70%
+    );
+    box-shadow: 0 0 16px rgba(214,167,71,0.08);
+}
+
+.plan.pro::after {
+    background: linear-gradient(
+        115deg,
+        transparent 25%,
+        rgba(255, 210, 110, 0.25) 50%,
+        transparent 75%
+    );
+}
+
+.plan.pro:hover {
+    border-color: #ffd477;
+    box-shadow: 0 0 24px rgba(214,167,71,0.25);
+}
+
+.pro h3,
+.pro .price {
+    color: #f4ce80;
+}
+
+.pro li:last-child {
+    color: #f4ce80;
+}
+
+/* Buttons */
+
 .button {
     background: #e4e4e7;
     color: #151515;
@@ -170,6 +244,7 @@ section {
     border-radius: 4px;
     display: inline-block;
     font-size: 14px;
+    transition: background 0.2s ease;
 }
 
 .button:hover {
@@ -181,14 +256,29 @@ section {
     text-align: center;
 }
 
-.pro {
-    border-color: #62646c;
+.pro .button {
+    background: linear-gradient(
+        110deg,
+        #b88a38,
+        #f4d58c,
+        #c69a49
+    );
+    color: #241b0d;
+    transition: filter 0.3s ease;
 }
+
+.pro .button:hover {
+    filter: brightness(1.15);
+}
+
+/* Ordering */
 
 .order {
     border-top: 1px solid #303136;
     padding-top: 25px;
 }
+
+/* Footer */
 
 footer {
     border-top: 1px solid #303136;
@@ -210,6 +300,12 @@ footer a {
     text-decoration: none;
 }
 
+footer a:hover {
+    color: white;
+}
+
+/* Mobile support */
+
 @media (max-width: 600px) {
     main {
         margin-top: 30px;
@@ -225,6 +321,17 @@ footer a {
 
     .gallery {
         grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .plan,
+    .plan::after {
+        transition: none;
+    }
+
+    .plan::after {
+        display: none;
     }
 }
 </style>
@@ -249,7 +356,9 @@ footer a {
         <div class="gallery">
 
             <div class="artwork">
-                <img src="gilla.png" alt="Gilla VR character render">
+                <img src="gilla.png?v=2"
+                     alt="Gilla VR character render">
+
                 <div class="artwork-info">
                     <h3>Gilla</h3>
                     <p>Character render</p>
@@ -257,7 +366,9 @@ footer a {
             </div>
 
             <div class="artwork">
-                <img src="bedbreak.png" alt="Bed Break VR character render">
+                <img src="bedbreak.png"
+                     alt="Bed Break VR character render">
+
                 <div class="artwork-info">
                     <h3>Bed Break VR</h3>
                     <p>Character render</p>
@@ -265,7 +376,9 @@ footer a {
             </div>
 
             <div class="artwork">
-                <img src="bed.png" alt="Bed Break VR bed render">
+                <img src="bed.png"
+                     alt="Bed Break VR bed render">
+
                 <div class="artwork-info">
                     <h3>Bed Break VR</h3>
                     <p>Object render</p>
@@ -276,11 +389,15 @@ footer a {
     </section>
 
     <section id="pricing">
+
         <h2>Pricing</h2>
 
         <div class="pricing">
 
+            <!-- Basic package -->
+
             <div class="plan">
+
                 <h3>Basic</h3>
 
                 <div class="price">
@@ -291,14 +408,19 @@ footer a {
                     <li>Custom Blender PFP</li>
                     <li>Standard lighting</li>
                     <li>Simple background</li>
+                    <li>Minor effects</li>
                 </ul>
 
                 <a class="button" href="#order">
                     Order Basic
                 </a>
+
             </div>
 
+            <!-- Pro package -->
+
             <div class="plan pro">
+
                 <h3>Pro</h3>
 
                 <div class="price">
@@ -307,40 +429,48 @@ footer a {
 
                 <ul>
                     <li>Custom Blender PFP</li>
-                    <li>Advanced lighting</li>
-                    <li>Custom background</li>
+                    <li>Standard lighting</li>
+                    <li>Simple background</li>
                     <li>Additional effects</li>
+                    <li>Glossy &amp; reflective materials</li>
                 </ul>
 
                 <a class="button" href="#order">
                     Order Pro
                 </a>
+
             </div>
 
         </div>
 
         <p>All prices are one-time payments in USD.</p>
+
     </section>
 
     <section class="order" id="order">
+
         <h2>Place an order</h2>
 
-        <p>
-            Join the Discord to place an order.
-        </p>
+        <p>Join the Discord to place an order.</p>
 
         <a class="button"
            href="https://discord.gg/YOURINVITE">
             Join Discord
         </a>
+
     </section>
 
 </main>
 
 <footer>
     <div class="footer-inner">
+
         <span>AMBLOCK &copy; 2026</span>
-        <a href="https://discord.gg/YOURINVITE">Discord</a>
+
+        <a href="https://discord.gg/YOURINVITE">
+            Discord
+        </a>
+
     </div>
 </footer>
 
