@@ -1,228 +1,344 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>amblock</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AMBLOCK</title>
 
-    <style>
-        * {
-            box-sizing: border-box;
-        }
+<style>
+* {
+    box-sizing: border-box;
+}
 
-        body {
-            background: #0e0e0e;
-            color: #d4d4d4;
-            font-family: Arial, sans-serif;
-            font-size: 14px;
-            line-height: 1.7;
-            margin: 0;
-        }
+body {
+    margin: 0;
+    background: #111214;
+    color: #dedee1;
+    font-family: "Segoe UI", Arial, sans-serif;
+    font-size: 15px;
+    line-height: 1.6;
+}
 
-        nav {
-            border-bottom: 1px solid #252525;
-            padding: 15px 25px;
-        }
+header {
+    background: #17181b;
+    border-bottom: 1px solid #303136;
+}
 
-        .nav-inner {
-            max-width: 800px;
-            margin: auto;
-            display: flex;
-            align-items: center;
-            gap: 30px;
-        }
+nav {
+    max-width: 1100px;
+    margin: auto;
+    padding: 17px 25px;
+    display: flex;
+    align-items: center;
+    gap: 40px;
+}
 
-        .logo {
-            color: #fff;
-            font-weight: bold;
-            font-size: 18px;
-        }
+.logo {
+    font-size: 21px;
+    font-weight: 800;
+    letter-spacing: 1px;
+    color: white;
+}
 
-        a {
-            color: #aaa;
-            text-decoration: none;
-        }
+nav a {
+    color: #eee;
+    text-decoration: none;
+    font-size: 14px;
+}
 
-        a:hover {
-            color: white;
-        }
+main {
+    max-width: 960px;
+    margin: 55px auto;
+    padding: 0 25px;
+}
 
-        main {
-            max-width: 800px;
-            margin: 60px auto;
-            padding: 0 25px;
-        }
+h1 {
+    font-size: 46px;
+    line-height: 1.2;
+    letter-spacing: -1.5px;
+    margin: 0 0 12px;
+    color: white;
+}
 
-        h1 {
-            color: #fff;
-            font-size: 32px;
-            margin-bottom: 5px;
-        }
+h2 {
+    font-size: 24px;
+    font-weight: 600;
+    color: white;
+    margin-top: 0;
+}
 
-        h2 {
-            color: #eee;
-            font-size: 19px;
-            margin-bottom: 10px;
-        }
+p {
+    color: #a3a5ad;
+}
 
-        p {
-            color: #999;
-        }
+.intro {
+    max-width: 680px;
+}
 
-        section {
-            margin-top: 35px;
-            padding-top: 20px;
-            border-top: 1px solid #252525;
-        }
+section {
+    margin-top: 42px;
+}
 
-        .pricing {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 12px;
-            margin-top: 20px;
-        }
+.gallery {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+}
 
-        .plan {
-            background: #131313;
-            border: 1px solid #292929;
-            border-radius: 5px;
-            padding: 20px;
-        }
+.artwork {
+    position: relative;
+    aspect-ratio: 1;
+    overflow: hidden;
+    background: #1b1c20;
+    border: 1px solid #303136;
+    border-radius: 5px;
+    display: grid;
+    place-items: center;
+    color: #777982;
+    font-size: 13px;
+}
 
-        .plan h3 {
-            color: #eee;
-            margin: 0;
-            font-size: 16px;
-        }
+.artwork img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform .25s;
+}
 
-        .price {
-            font-size: 26px;
-            color: white;
-            margin: 8px 0;
-        }
+.artwork:hover img {
+    transform: scale(1.04);
+}
 
-        ul {
-            padding-left: 18px;
-            color: #999;
-        }
+.pricing {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+}
 
-        li {
-            margin: 5px 0;
-        }
+.plan {
+    background: #191a1e;
+    border: 1px solid #33353b;
+    border-radius: 6px;
+    padding: 25px;
+    display: flex;
+    flex-direction: column;
+}
 
-        .button {
-            display: inline-block;
-            border: 1px solid #383838;
-            background: #1c1c1c;
-            padding: 8px 16px;
-            border-radius: 4px;
-            color: #ddd;
-        }
+.plan h3 {
+    margin: 0;
+    font-size: 20px;
+    color: white;
+}
 
-        .button:hover {
-            background: #292929;
-        }
+.price {
+    font-size: 38px;
+    font-weight: 700;
+    color: #fff;
+    margin: 8px 0;
+}
 
-        footer {
-            max-width: 800px;
-            margin: 50px auto;
-            padding: 20px 25px;
-            border-top: 1px solid #252525;
-            color: #666;
-            font-size: 12px;
-        }
+.price small {
+    font-size: 13px;
+    font-weight: normal;
+    color: #92949c;
+}
 
-        @media (max-width: 550px) {
-            .pricing {
-                grid-template-columns: 1fr;
-            }
+.plan ul {
+    padding-left: 18px;
+    color: #b7b8bf;
+    margin: 15px 0 25px;
+}
 
-            main {
-                margin-top: 30px;
-            }
-        }
-    </style>
+.plan li {
+    margin: 8px 0;
+}
+
+.button {
+    background: #e4e4e7;
+    color: #151515;
+    font-weight: 600;
+    text-decoration: none;
+    padding: 10px 22px;
+    border-radius: 4px;
+    display: inline-block;
+    font-size: 14px;
+    transition: background .15s;
+}
+
+.button:hover {
+    background: #fff;
+}
+
+.plan .button {
+    margin-top: auto;
+    text-align: center;
+}
+
+.pro {
+    border-color: #62646c;
+}
+
+.order {
+    border-top: 1px solid #303136;
+    padding-top: 25px;
+}
+
+footer {
+    border-top: 1px solid #303136;
+    margin-top: 60px;
+    padding: 22px 25px;
+    font-size: 13px;
+    color: #777982;
+}
+
+.footer-inner {
+    max-width: 960px;
+    margin: auto;
+    display: flex;
+    justify-content: space-between;
+}
+
+footer a {
+    color: #a3a5ad;
+    text-decoration: none;
+}
+
+@media (max-width: 600px) {
+    main {
+        margin-top: 35px;
+    }
+
+    h1 {
+        font-size: 36px;
+    }
+
+    .pricing {
+        grid-template-columns: 1fr;
+    }
+
+    .gallery {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+</style>
 </head>
 
 <body>
 
+<header>
     <nav>
-        <div class="nav-inner">
-            <a class="logo" href="/">amblock</a>
-            <a href="/">Home</a>
-        </div>
+        <div class="logo">AMBLOCK</div>
+        <a href="/">Home</a>
     </nav>
+</header>
 
-    <main>
+<main>
 
-        <h1>amblock</h1>
-        <p>Custom Blender profile pictures.</p>
+    <div class="intro">
+        <h1>AMBLOCK</h1>
+        <p>
+            Custom profile pictures made in Blender.
+            Orders are handled directly through Discord.
+        </p>
 
-        <section>
-            <h2>About</h2>
-            <p>
-                I make custom profile pictures using Blender.
-                You can choose between two packages depending
-                on what you're looking for.
-            </p>
-        </section>
+        <a class="button" href="#pricing">
+            View pricing
+        </a>
+    </div>
 
-        <section>
-            <h2>Pricing</h2>
+    <section>
+        <h2>Previous work</h2>
 
-            <div class="pricing">
+        <div class="gallery">
 
-                <div class="plan">
-                    <h3>Basic</h3>
-                    <div class="price">$5</div>
-
-                    <ul>
-                        <li>Custom Blender PFP</li>
-                        <li>Basic lighting</li>
-                        <li>Simple background</li>
-                    </ul>
-
-                    <a class="button" href="#order">Purchase</a>
-                </div>
-
-                <div class="plan">
-                    <h3>Pro</h3>
-                    <div class="price">$10</div>
-
-                    <ul>
-                        <li>Custom Blender PFP</li>
-                        <li>Advanced lighting</li>
-                        <li>Custom background</li>
-                        <li>Additional effects</li>
-                    </ul>
-
-                    <a class="button" href="#order">Purchase</a>
-                </div>
-
+            <div class="artwork">
+                <img src="pfp1.png" alt="Blender PFP example 1"
+                onerror="this.replaceWith('Example 01')">
             </div>
 
-            <p>All prices are in USD.</p>
-        </section>
+            <div class="artwork">
+                <img src="pfp2.png" alt="Blender PFP example 2"
+                onerror="this.replaceWith('Example 02')">
+            </div>
 
-        <section id="order">
-            <h2>Ordering</h2>
+            <div class="artwork">
+                <img src="pfp3.png" alt="Blender PFP example 3"
+                onerror="this.replaceWith('Example 03')">
+            </div>
 
-            <p>
-                Join the Discord to place an order or
-                ask any questions.
-            </p>
+        </div>
+    </section>
 
-            <a class="button"
-               href="https://discord.gg/YOURINVITE">
-                Discord
-            </a>
-        </section>
+    <section id="pricing">
+        <h2>Pricing</h2>
 
-    </main>
+        <div class="pricing">
 
-    <footer>
-        &copy; 2026 amblock
-    </footer>
+            <div class="plan">
+                <h3>Basic</h3>
+
+                <div class="price">
+                    $5 <small>USD</small>
+                </div>
+
+                <ul>
+                    <li>Custom Blender PFP</li>
+                    <li>Standard lighting</li>
+                    <li>Simple background</li>
+                </ul>
+
+                <a class="button" href="#order">
+                    Order Basic
+                </a>
+            </div>
+
+            <div class="plan pro">
+                <h3>Pro</h3>
+
+                <div class="price">
+                    $10 <small>USD</small>
+                </div>
+
+                <ul>
+                    <li>Custom Blender PFP</li>
+                    <li>Advanced lighting</li>
+                    <li>Custom background</li>
+                    <li>Additional effects</li>
+                </ul>
+
+                <a class="button" href="#order">
+                    Order Pro
+                </a>
+            </div>
+
+        </div>
+
+        <p>All prices are one-time payments in USD.</p>
+    </section>
+
+    <section class="order" id="order">
+        <h2>Place an order</h2>
+
+        <p>
+            Join the Discord, open a ticket and let me know
+            which package you want. Include any references
+            or ideas for your profile picture.
+        </p>
+
+        <a class="button"
+           href="https://discord.gg/YOURINVITE">
+            Join Discord
+        </a>
+    </section>
+
+</main>
+
+<footer>
+    <div class="footer-inner">
+        <span>AMBLOCK &copy; 2026</span>
+        <a href="https://discord.gg/YOURINVITE">Discord</a>
+    </div>
+</footer>
 
 </body>
 </html>
