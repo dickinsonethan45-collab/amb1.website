@@ -12,6 +12,7 @@
 
 html {
     scroll-behavior: smooth;
+    scroll-padding-top: 100px;
 }
 
 body {
@@ -23,7 +24,12 @@ body {
     line-height: 1.6;
 }
 
+/* Navigation */
+
 header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
     background: #17181b;
     border-bottom: 1px solid #303136;
 }
@@ -42,13 +48,28 @@ nav {
     font-weight: 800;
     letter-spacing: 1px;
     color: white;
+    text-decoration: none;
 }
 
-nav a {
-    color: #eee;
+.nav-links {
+    display: flex;
+    align-items: center;
+    gap: 25px;
+}
+
+.nav-links a {
+    color: #a3a5ad;
     text-decoration: none;
     font-size: 14px;
+    transition: color 0.2s ease;
 }
+
+.nav-links a:hover,
+.nav-links a.active {
+    color: white;
+}
+
+/* Main content */
 
 main {
     max-width: 960px;
@@ -192,8 +213,6 @@ section {
     pointer-events: none;
 }
 
-/* Forward and reverse shine */
-
 .plan:hover::after {
     transform: translateX(120%);
 }
@@ -224,8 +243,6 @@ section {
 .plan.pro:hover {
     border-color: #e5c16c;
 }
-
-/* Gold Pro title and price */
 
 .pro h3,
 .pro .price {
@@ -316,12 +333,25 @@ footer a:hover {
         font-size: 36px;
     }
 
+    nav {
+        flex-wrap: wrap;
+        gap: 12px;
+    }
+
+    .nav-links {
+        gap: 20px;
+    }
+
     .pricing {
         grid-template-columns: 1fr;
     }
 
     .gallery {
         grid-template-columns: repeat(2, 1fr);
+    }
+
+    html {
+        scroll-padding-top: 125px;
     }
 }
 
@@ -344,12 +374,19 @@ footer a:hover {
 </style>
 </head>
 
-<body>
+<body id="home">
 
 <header>
     <nav>
-        <div class="logo">AMBLOCK</div>
-        <a href="/">Home</a>
+
+        <a class="logo" href="#home">AMBLOCK</a>
+
+        <div class="nav-links">
+            <a href="#home" class="active">Home</a>
+            <a href="#previous-work">Previous Work</a>
+            <a href="#pricing">Pricing</a>
+        </div>
+
     </nav>
 </header>
 
@@ -357,12 +394,13 @@ footer a:hover {
 
     <h1>AMBLOCK</h1>
 
-    <section>
+    <!-- Previous work -->
+
+    <section id="previous-work">
+
         <h2>Previous work</h2>
 
         <div class="gallery">
-
-            <!-- Gilla -->
 
             <div class="artwork">
                 <img src="gilla.png?v=2"
@@ -374,8 +412,6 @@ footer a:hover {
                 </div>
             </div>
 
-            <!-- Bed Break VR character -->
-
             <div class="artwork">
                 <img src="bedbreak.png"
                      alt="Bed Break VR character render">
@@ -385,8 +421,6 @@ footer a:hover {
                     <p>Character render</p>
                 </div>
             </div>
-
-            <!-- Bed Break VR object -->
 
             <div class="artwork">
                 <img src="bed.png"
@@ -401,6 +435,8 @@ footer a:hover {
         </div>
     </section>
 
+    <!-- Pricing -->
+
     <section id="pricing">
 
         <h2>Pricing</h2>
@@ -414,7 +450,7 @@ footer a:hover {
                 <h3>Basic</h3>
 
                 <div class="price">
-                    $5 <small>USD</small>
+                    $5 <small>USD / PFP</small>
                 </div>
 
                 <ul>
@@ -437,7 +473,7 @@ footer a:hover {
                 <h3>Pro</h3>
 
                 <div class="price">
-                    $10 <small>USD</small>
+                    $10 <small>USD / PFP</small>
                 </div>
 
                 <ul>
@@ -456,9 +492,11 @@ footer a:hover {
 
         </div>
 
-        <p>All prices are one-time payments in USD.</p>
+        <p>Prices are per profile picture and listed in USD.</p>
 
     </section>
+
+    <!-- Place an order -->
 
     <section class="order" id="order">
 
@@ -486,6 +524,39 @@ footer a:hover {
 
     </div>
 </footer>
+
+<script>
+const navLinks = document.querySelectorAll(".nav-links a");
+
+function updateNavigation() {
+    let current = "#home";
+
+    const sections = [
+        document.getElementById("previous-work"),
+        document.getElementById("pricing")
+    ];
+
+    sections.forEach(section => {
+        if (section.getBoundingClientRect().top <= 130) {
+            current = "#" + section.id;
+        }
+    });
+
+    if (window.scrollY < 30) {
+        current = "#home";
+    }
+
+    navLinks.forEach(link => {
+        link.classList.toggle(
+            "active",
+            link.getAttribute("href") === current
+        );
+    });
+}
+
+window.addEventListener("scroll", updateNavigation);
+window.addEventListener("load", updateNavigation);
+</script>
 
 </body>
 </html>
