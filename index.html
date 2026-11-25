@@ -1,4 +1,305 @@
 <!DOCTYPE html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>AMBLOCK | Home</title><style>
-*{box-sizing:border-box}body{margin:0;background:#101010;color:#dedede;font:15px/1.65 Arial,sans-serif}header{border-bottom:1px solid #303030;background:#171717}nav{max-width:960px;margin:auto;padding:16px 24px;display:flex;align-items:center;gap:32px}nav a{color:#ddd;text-decoration:none}nav strong{letter-spacing:2px;color:white}nav a.active{border-bottom:2px solid #ddd}main{max-width:850px;margin:45px auto;padding:0 24px}h1{font-size:40px;margin:0 0 12px;color:white}h2{font-size:23px;color:white;margin:0 0 15px}p{margin:0 0 15px;color:#bdbdbd}section{border-top:1px solid #333;padding:28px 0}.stats,.plans{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:15px}.panel{background:#181818;border:1px solid #333;border-radius:6px;padding:20px}.stat{font-size:35px;font-weight:bold;color:#eee}.muted{font-size:13px;color:#999;margin-top:12px}dt{font-weight:bold;color:#eee;margin-top:17px}dd{margin:4px 0 0;color:#bdbdbd}h3{margin:0 0 8px;color:white}.price{font-size:25px;color:white;font-weight:bold}ul{padding-left:20px;color:#bbb}li{margin:7px 0}.button{display:inline-block;padding:10px 18px;background:#ddd;color:#111;border-radius:4px;text-decoration:none}footer{border-top:1px solid #333;text-align:center;padding:24px;color:#999}footer a{color:#bbb}@media(max-width:560px){.stats,.plans{grid-template-columns:1fr}main{margin:28px auto}}
-</style></head><body><header><nav><strong>AMBLOCK</strong><a class="active" href="index.html" aria-current="page">Home</a></nav></header><main><h1>AMBLOCK</h1><p>A game security project for Quest developers. Explore our planned approach to device verification, multiplayer protection and fair play.</p><section><h2>What it is</h2><p>AMBLOCK is a project aiming to help developers protect multiplayer games through server-side checks and device integrity verification.</p><p>Development is ongoing. Features listed below are planned, not confirmed operational services.</p></section><section><h2>Last 30 days</h2><div class="stats"><div class="panel"><div class="stat">--</div>Players verified</div><div class="panel"><div class="stat">--</div>Suspicious attempts detected</div></div><p class="muted">Statistics will appear once reporting is available.</p></section><section><h2>What it does</h2><dl><dt>Hardware attestation</dt><dd>Planned checks to establish device authenticity.</dd><dt>Server-authoritative checks</dt><dd>Validate important game requests on the server.</dd><dt>Session protection</dt><dd>Reduce the risks of reused authentication requests.</dd><dt>Request integrity</dt><dd>Check whether requests have been modified.</dd><dt>Layered protection</dt><dd>Combine multiple checks rather than depending on a single safeguard.</dd><dt>Logging</dt><dd>Provide developers with useful security event records.</dd></dl></section><section><h2>Pricing</h2><div class="plans"><div class="panel"><h3>AMBLOCK Lite</h3><p class="price">TBA</p><p>Proposed core protection.</p><ul><li>Device verification</li><li>Server-side authentication</li><li>Session checks</li><li>Security logging</li></ul></div><div class="panel"><h3>AMBLOCK Max</h3><p class="price">TBA</p><p>Proposed advanced protection.</p><ul><li>Everything in Lite</li><li>Additional integrity checks</li><li>Detection alerts</li><li>Advanced security rules</li></ul></div></div></section><section><h2>Why there are no details</h2><p>Technical implementation details will remain private to help safeguard the project.</p></section><section><h2>Getting it</h2><p>Availability and contact information will be announced here.</p><span class="button">Coming soon</span></section></main><footer>AMBLOCK &copy; 2026<br><a href="index.html">Home</a></footer></body></html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AMBLOCK - Home</title>
+
+<style>
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    background: #0c0c0c;
+    color: #d4d4d4;
+    font-family: Arial, sans-serif;
+    font-size: 15px;
+    line-height: 1.7;
+}
+
+header {
+    background: #111;
+    border-bottom: 1px solid #272727;
+}
+
+nav {
+    max-width: 1000px;
+    margin: auto;
+    padding: 18px 24px;
+    display: flex;
+    align-items: center;
+    gap: 30px;
+}
+
+.logo {
+    font-size: 18px;
+    font-weight: bold;
+    letter-spacing: 2px;
+    color: white;
+}
+
+nav a {
+    color: #aaa;
+    text-decoration: none;
+}
+
+nav a:hover {
+    color: white;
+}
+
+main {
+    max-width: 850px;
+    margin: 50px auto;
+    padding: 0 24px;
+}
+
+h1 {
+    font-size: 42px;
+    color: white;
+    margin: 0 0 12px;
+}
+
+h2 {
+    font-size: 23px;
+    color: white;
+    margin-bottom: 16px;
+}
+
+p {
+    color: #aaa;
+}
+
+section {
+    margin-top: 35px;
+    padding-top: 20px;
+    border-top: 1px solid #272727;
+}
+
+dt {
+    color: white;
+    font-weight: bold;
+    margin-top: 20px;
+}
+
+dd {
+    color: #aaa;
+    margin: 5px 0 0;
+}
+
+.pricing {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+}
+
+.plan {
+    padding: 24px;
+    background: #131313;
+    border: 1px solid #303030;
+    border-radius: 5px;
+}
+
+.plan h3 {
+    margin: 0;
+    color: white;
+}
+
+.price {
+    color: white;
+    font-size: 32px;
+    font-weight: bold;
+    margin: 10px 0;
+}
+
+.price span {
+    font-size: 14px;
+    color: #888;
+    font-weight: normal;
+}
+
+ul {
+    padding-left: 20px;
+}
+
+li {
+    margin: 7px 0;
+}
+
+.button {
+    display: inline-block;
+    padding: 10px 20px;
+    background: #ededed;
+    color: #111;
+    text-decoration: none;
+    border-radius: 4px;
+    font-weight: bold;
+}
+
+.button:hover {
+    background: #ccc;
+}
+
+footer {
+    border-top: 1px solid #272727;
+    color: #777;
+    text-align: center;
+    padding: 25px;
+    font-size: 13px;
+}
+
+footer a {
+    color: #aaa;
+    text-decoration: none;
+}
+
+@media (max-width: 600px) {
+    .pricing {
+        grid-template-columns: 1fr;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <nav>
+        <div class="logo">AMBLOCK</div>
+        <a href="index.html">Home</a>
+    </nav>
+</header>
+
+<main>
+
+    <h1>AMBLOCK</h1>
+
+    <p>
+        Custom profile pictures made in Blender.
+        Two packages, affordable prices and
+        designs made specifically for you.
+    </p>
+
+    <section>
+        <h2>What it is</h2>
+
+        <p>
+            AMBLOCK creates custom Blender profile
+            pictures for Discord, YouTube and other
+            social media platforms.
+        </p>
+
+        <p>
+            Choose between Basic and Pro depending
+            on the style and detail you want.
+        </p>
+    </section>
+
+    <section>
+        <h2>What you get</h2>
+
+        <dl>
+            <dt>Custom profile pictures</dt>
+            <dd>
+                A personalised profile picture
+                created using Blender.
+            </dd>
+
+            <dt>Lighting</dt>
+            <dd>
+                Custom lighting to suit your
+                character and preferred style.
+            </dd>
+
+            <dt>Backgrounds</dt>
+            <dd>
+                Backgrounds designed to complement
+                your profile picture.
+            </dd>
+
+            <dt>High-quality renders</dt>
+            <dd>
+                Clean 3D renders ready to use
+                as your profile picture.
+            </dd>
+        </dl>
+    </section>
+
+    <section>
+        <h2>Pricing</h2>
+
+        <div class="pricing">
+
+            <div class="plan">
+                <h3>Basic</h3>
+
+                <div class="price">
+                    $5 <span>/ PFP</span>
+                </div>
+
+                <p>Simple and clean.</p>
+
+                <ul>
+                    <li>Custom Blender PFP</li>
+                    <li>Basic lighting</li>
+                    <li>Simple background</li>
+                    <li>PNG image</li>
+                </ul>
+            </div>
+
+            <div class="plan">
+                <h3>Pro</h3>
+
+                <div class="price">
+                    $10 <span>/ PFP</span>
+                </div>
+
+                <p>More detail and customisation.</p>
+
+                <ul>
+                    <li>Everything in Basic</li>
+                    <li>Advanced lighting</li>
+                    <li>Custom background</li>
+                    <li>Additional effects</li>
+                    <li>Detailed rendering</li>
+                </ul>
+            </div>
+
+        </div>
+
+        <p>
+            One-time payments. No subscriptions.
+        </p>
+    </section>
+
+    <section>
+        <h2>Getting it</h2>
+
+        <p>
+            Join the Discord, open a ticket and
+            tell us whether you want Basic or Pro.
+            Send your character and any references
+            you want us to use.
+        </p>
+
+        <a class="button"
+           href="https://discord.gg/YOURINVITE">
+            Join the Discord
+        </a>
+    </section>
+
+</main>
+
+<footer>
+    AMBLOCK 2026
+    <br>
+    <a href="index.html">Home</a>
+    -
+    <a href="https://discord.gg/YOURINVITE">
+        Discord
+    </a>
+</footer>
+
+</body>
+</html>
