@@ -7,8 +7,6 @@
 <title>AMBLOCK | Home</title>
 
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap');
-
 * {
     box-sizing: border-box;
 }
@@ -16,19 +14,19 @@
 body {
     margin: 0;
     background: #121314;
-    color: #fff;
-    font-family: Arial, sans-serif;
+    color: #ffffff;
+    font-family: Arial, Helvetica, sans-serif;
 }
 
 header {
-    background: #161719;
+    background: #151617;
     border-bottom: 1px solid #303136;
 }
 
-.navbar {
+nav {
     max-width: 960px;
     margin: auto;
-    padding: 18px 25px;
+    padding: 20px 25px;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -38,41 +36,44 @@ header {
 
 .logo {
     font-size: 21px;
-    font-weight: bold;
+    font-weight: 800;
 }
 
-nav {
+.nav-links {
     display: flex;
+    align-items: center;
     gap: 24px;
 }
 
-nav a {
-    color: #a6a8af;
+.nav-links a {
+    color: #aeb0b7;
     text-decoration: none;
     font-size: 14px;
+    cursor: pointer;
     transition: color 0.2s;
 }
 
-nav a:hover,
-nav a.active {
+.nav-links a:hover,
+.nav-links a.active {
     color: white;
 }
 
 main {
     max-width: 960px;
     margin: auto;
-    padding: 35px 25px 60px;
+    padding: 40px 25px 60px;
     min-height: 85vh;
 }
 
 h1 {
-    font-size: 44px;
-    margin: 0 0 38px;
+    font-size: 46px;
+    letter-spacing: -1.5px;
+    margin: 0 0 40px;
 }
 
 h2 {
     font-size: 24px;
-    margin: 0 0 23px;
+    margin: 0 0 24px;
 }
 
 section {
@@ -86,8 +87,6 @@ section {
 .page.active {
     display: block;
 }
-
-/* Previous work */
 
 .gallery {
     display: grid;
@@ -106,34 +105,40 @@ section {
     position: relative;
     aspect-ratio: 1 / 1;
     overflow: hidden;
-    background: #17181a;
+    background: #191a1d;
 }
 
 .image-container img {
+    display: block;
     width: 100%;
     height: 100%;
     object-fit: cover;
-    display: block;
 }
 
 .work-info {
     padding: 15px;
 }
 
-.work-info h3 {
+.work-info strong {
     font-size: 14px;
-    margin: 0 0 8px;
 }
 
 .work-info p {
-    color: #999da7;
     font-size: 12px;
-    margin: 0;
+    color: #9297a3;
+    margin: 8px 0 0;
 }
 
-/* Pricing */
+.coming-soon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #747780;
+    font-size: 15px;
+    font-weight: 500;
+}
 
-.pricing {
+.pricing-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 16px;
@@ -143,128 +148,116 @@ section {
     position: relative;
     overflow: hidden;
     background: #191a1d;
-    border: 1px solid #414248;
+    border: 1px solid #41434a;
     border-radius: 6px;
     padding: 25px;
     display: flex;
     flex-direction: column;
+    isolation: isolate;
 }
 
-/* Silver moving shine */
-
+/* Reversible silver hover effect */
 .price-card::before {
     content: "";
     position: absolute;
-    top: -50%;
-    left: -100%;
-    width: 65%;
-    height: 200%;
+    inset: 0;
+    width: 200%;
     background: linear-gradient(
-        90deg,
-        transparent,
-        rgba(255, 255, 255, 0.10),
-        transparent
+        110deg,
+        transparent 35%,
+        rgba(255, 255, 255, 0.075) 50%,
+        transparent 65%
     );
-    transform: skewX(-25deg);
-    transition: left 0.7s ease;
+    transform: translateX(-100%);
+    transition: transform 0.85s ease;
     pointer-events: none;
+    z-index: -1;
 }
 
 .price-card:hover::before {
-    left: 145%;
-}
-
-.price-card > * {
-    position: relative;
-    z-index: 1;
+    transform: translateX(50%);
 }
 
 .price-card h3 {
-    margin: 5px 0 20px;
     font-size: 20px;
+    margin: 5px 0 18px;
 }
 
 .price {
     font-size: 38px;
-    font-weight: bold;
-    margin-bottom: 24px;
+    font-weight: 700;
 }
 
-.price span {
+.currency {
     font-size: 12px;
+    color: #a0a5b0;
     font-weight: normal;
-    color: #999da7;
+    margin-left: 5px;
 }
 
 .price-card ul {
     padding-left: 18px;
-    color: #b8bac2;
+    margin: 35px 0;
+    color: #bfc1c8;
     font-size: 14px;
     line-height: 2.3;
-    margin-bottom: 30px;
-    flex: 1;
 }
 
-/* Pro gold styling */
+.price-card .button {
+    margin-top: auto;
+}
 
+/* Flat gold Pro styling */
 .pro {
-    border-color: #a17c36;
     background: #1e1c18;
+    border-color: #9b7938;
 }
 
 .pro h3,
 .pro .price,
 .gold {
-    color: #efc675;
+    color: #f2c56d;
 }
 
-/* Gold moving shine */
-
+/* Reversible gold hover effect */
 .pro::before {
     background: linear-gradient(
-        90deg,
-        transparent,
-        rgba(239, 198, 117, 0.20),
-        transparent
+        110deg,
+        transparent 35%,
+        rgba(240, 190, 85, 0.13) 50%,
+        transparent 65%
     );
 }
-
-/* Buttons */
 
 .button {
     display: block;
     padding: 13px 20px;
-    background: #e3e3e6;
-    color: #111;
-    text-decoration: none;
+    background: #e2e2e5;
+    color: #111111;
     text-align: center;
+    text-decoration: none;
     border-radius: 4px;
     font-size: 14px;
     font-weight: 500;
-    transition: background-color 0.2s;
+    transition: background 0.2s ease;
 }
 
 .button:hover {
-    background: #fff;
+    background: #ffffff;
 }
 
 .pro .button {
-    background: #d6ad60;
+    background: #d5ad60;
 }
 
 .pro .button:hover {
-    background: #efc675;
+    background: #e9c47c;
 }
 
-.store-button {
-    display: inline-block;
-    min-width: 140px;
-}
-
-.note {
+.price-note {
+    color: #aeb0b7;
     font-size: 14px;
-    color: #a6a8af;
-    line-height: 1.7;
+    margin-top: 18px;
 }
 
 .order-section {
@@ -272,44 +265,51 @@ section {
     padding-top: 30px;
 }
 
-/* Footer */
+.order-section p {
+    color: #aeb0b7;
+    font-size: 14px;
+    line-height: 1.7;
+}
+
+.store-button {
+    display: inline-block;
+    margin-top: 8px;
+}
 
 footer {
     border-top: 1px solid #303136;
-    padding: 25px 20px;
+    padding: 25px;
     text-align: center;
-    color: #858994;
+    color: #818692;
     font-size: 12px;
     line-height: 1.8;
 }
-
-footer p {
-    margin: 4px 0;
-}
-
-/* Mobile */
 
 @media (max-width: 650px) {
     .gallery {
         grid-template-columns: repeat(2, 1fr);
     }
 
-    .pricing {
+    .pricing-grid {
         grid-template-columns: 1fr;
     }
 
-    h1 {
-        font-size: 35px;
+    .nav-links {
+        gap: 16px;
     }
 
-    nav {
-        gap: 16px;
+    h1 {
+        font-size: 36px;
+    }
+
+    main {
+        padding: 30px 18px;
     }
 }
 
-@media (prefers-reduced-motion: reduce) {
-    .price-card::before {
-        transition: none;
+@media (max-width: 380px) {
+    .gallery {
+        grid-template-columns: 1fr;
     }
 }
 </style>
@@ -318,354 +318,110 @@ footer p {
 <body>
 
 <header>
-    <div class="navbar">
+    <nav>
         <div class="logo">AMBLOCK</div>
 
-        <nav>
-            <a href="#home" data-page="home">Home</a>
-            <a href="#work" data-page="work">Previous Work</a>
-            <a href="#pricing" data-page="pricing">Pricing</a>
-        </nav>
-    </div>
+        <div class="nav-links">
+            <a href="#home" data-tab="home" class="active">Home</a>
+            <a href="#work" data-tab="work">Previous Work</a>
+            <a href="#pricing" data-tab="pricing">Pricing</a>
+        </div>
+    </nav>
 </header>
 
 <main>
 
-<!-- HOME -->
+    <!-- HOME PAGE -->
+    <div class="page active" id="home">
 
-<div id="home" class="page active">
+        <h1>AMBLOCK</h1>
 
-    <h1>AMBLOCK</h1>
+        <section>
+            <h2>Previous work</h2>
+            <div class="gallery" id="home-gallery"></div>
+        </section>
 
-    <section>
-        <h2>Previous work</h2>
-        <div class="gallery" id="home-gallery"></div>
-    </section>
+        <section>
+            <h2>Pricing</h2>
+            <div id="home-pricing"></div>
+        </section>
 
-    <section>
-        <h2>Pricing</h2>
-        <div class="pricing" id="home-pricing"></div>
+        <section class="order-section">
+            <h2>Place an order</h2>
 
-        <p class="note">
-            Prices are in USD. Each purchase includes one custom Blender PFP.
-        </p>
-    </section>
+            <p>
+                Choose Basic or Pro through the official
+                AMBLOCK store.
+            </p>
 
-    <section class="order-section">
-        <h2>Place an order</h2>
+            <a class="button store-button"
+               href="https://amblock.mysellauth.com/"
+               target="_blank"
+               rel="noopener noreferrer">
+                Visit Store
+            </a>
+        </section>
 
-        <p class="note">
-            Purchase a Basic or Pro Blender PFP through the AMBLOCK store.
-        </p>
+    </div>
 
-        <a class="button store-button"
-           href="https://amblock.mysellauth.com/"
-           target="_blank"
-           rel="noopener noreferrer">
-            Visit Store
-        </a>
-    </section>
+    <!-- PREVIOUS WORK PAGE -->
+    <div class="page" id="work">
 
-</div>
+        <h1>Previous Work</h1>
 
-<!-- PREVIOUS WORK -->
+        <div class="gallery" id="full-gallery"></div>
 
-<div id="work" class="page">
+    </div>
 
-    <h1>Previous Work</h1>
+    <!-- PRICING PAGE -->
+    <div class="page" id="pricing">
 
-    <div class="gallery" id="full-gallery"></div>
+        <h1>Pricing</h1>
 
-</div>
+        <div id="full-pricing"></div>
 
-<!-- PRICING -->
+        <section class="order-section" style="margin-top: 40px;">
+            <h2>Store</h2>
 
-<div id="pricing" class="page">
+            <a class="button store-button"
+               href="https://amblock.mysellauth.com/"
+               target="_blank"
+               rel="noopener noreferrer">
+                Visit Store
+            </a>
+        </section>
 
-    <h1>Pricing</h1>
-
-    <div class="pricing" id="full-pricing"></div>
-
-    <p class="note">
-        Prices are in USD. Each purchase includes one custom Blender PFP.
-    </p>
-
-    <section class="order-section">
-        <h2>Store</h2>
-
-        <a class="button store-button"
-           href="https://amblock.mysellauth.com/"
-           target="_blank"
-           rel="noopener noreferrer">
-            Visit Store
-        </a>
-    </section>
-
-</div>
+    </div>
 
 </main>
 
-<!-- COPYRIGHT -->
-
 <footer>
-    <p>© 2026 AMBLOCK. All rights reserved.</p>
-    <p>All original artwork and renders are created by AMBLOCK.</p>
-    <p>Unauthorised reproduction, redistribution or resale is prohibited.</p>
+    © 2026 AMBLOCK. All rights reserved.
+    <br>
+    Artwork may not be copied, redistributed or used without permission.
 </footer>
 
 <script>
 
-/* Gallery information */
+/* PAGE TABS */
 
-const works = [
-    {
-        image: "gilla.png",
-        name: "Gilla",
-        description: "Character render"
-    },
-    {
-        image: "bedbreak.png",
-        name: "Bed Break VR",
-        description: "Character render"
-    },
-    {
-        image: "bed.png",
-        name: "Bed Break VR",
-        description: "Object render"
-    }
-];
-
-/* Embed watermark into image pixels */
-
-function drawWatermark(ctx, width, height) {
-
-    ctx.save();
-
-    ctx.translate(width / 2, height / 2);
-    ctx.rotate(-30 * Math.PI / 180);
-
-    ctx.font = `${width * 0.18}px "Bebas Neue", Impact, sans-serif`;
-    ctx.textAlign = "center";
-    ctx.textBaseline = "middle";
-    ctx.fillStyle = "rgba(255, 255, 255, 0.35)";
-
-    ctx.fillText("AMBLOCK", 0, 0, width * 0.85);
-
-    ctx.restore();
-}
-
-async function createWatermarkedImage(source) {
-
-    const image = new Image();
-    image.src = source;
-
-    await image.decode();
-
-    const canvas = document.createElement("canvas");
-
-    canvas.width = image.naturalWidth;
-    canvas.height = image.naturalHeight;
-
-    const ctx = canvas.getContext("2d");
-
-    ctx.drawImage(image, 0, 0);
-
-    drawWatermark(ctx, canvas.width, canvas.height);
-
-    return canvas.toDataURL("image/png");
-}
-
-/* Watermarked Coming Soon image */
-
-function createComingSoon() {
-
-    const canvas = document.createElement("canvas");
-
-    canvas.width = 1000;
-    canvas.height = 1000;
-
-    const ctx = canvas.getContext("2d");
-
-    ctx.fillStyle = "#17181a";
-    ctx.fillRect(0, 0, 1000, 1000);
-
-    ctx.font = "48px Arial";
-    ctx.textAlign = "center";
-    ctx.textBaseline = "middle";
-    ctx.fillStyle = "#777b84";
-
-    ctx.fillText("Coming Soon", 500, 500);
-
-    drawWatermark(ctx, 1000, 1000);
-
-    return canvas.toDataURL("image/png");
-}
-
-/* Create gallery cards */
-
-function createCard(source, name, description) {
-
-    const card = document.createElement("div");
-    card.className = "work-card";
-
-    const container = document.createElement("div");
-    container.className = "image-container";
-
-    const image = document.createElement("img");
-
-    image.src = source;
-    image.alt = name + " - " + description;
-    image.draggable = false;
-
-    container.appendChild(image);
-
-    const info = document.createElement("div");
-    info.className = "work-info";
-
-    const title = document.createElement("h3");
-    title.textContent = name;
-
-    const text = document.createElement("p");
-    text.textContent = description;
-
-    info.append(title, text);
-
-    card.append(container, info);
-
-    return card;
-}
-
-/* Load all gallery images */
-
-async function loadGallery() {
-
-    try {
-        await document.fonts.load('100px "Bebas Neue"');
-    } catch (error) {
-        console.warn("Using fallback watermark font.");
+function showPage(pageName) {
+    if (!["home", "work", "pricing"].includes(pageName)) {
+        pageName = "home";
     }
 
-    const homeGallery = document.getElementById("home-gallery");
-    const fullGallery = document.getElementById("full-gallery");
+    document.querySelectorAll(".page").forEach(page => {
+        page.classList.remove("active");
+    });
 
-    for (const work of works) {
-
-        try {
-
-            const watermarked = await createWatermarkedImage(work.image);
-
-            homeGallery.appendChild(
-                createCard(watermarked, work.name, work.description)
-            );
-
-            fullGallery.appendChild(
-                createCard(watermarked, work.name, work.description)
-            );
-
-        } catch (error) {
-
-            console.error("Unable to load image:", work.image);
-
-            const placeholder = createComingSoon();
-
-            homeGallery.appendChild(
-                createCard(placeholder, work.name, "Image unavailable")
-            );
-
-            fullGallery.appendChild(
-                createCard(placeholder, work.name, "Image unavailable")
-            );
-        }
-    }
-
-    const comingSoon = createComingSoon();
-
-    for (let i = 0; i < 9; i++) {
-
-        fullGallery.appendChild(
-            createCard(comingSoon, "Coming Soon", "Upcoming work")
+    document.querySelectorAll(".nav-links a").forEach(link => {
+        link.classList.toggle(
+            "active",
+            link.dataset.tab === pageName
         );
-    }
-}
-
-loadGallery();
-
-/* Pricing cards */
-
-const pricingHTML = `
-    <div class="price-card basic">
-
-        <h3>Basic</h3>
-
-        <div class="price">
-            $5 <span>USD</span>
-        </div>
-
-        <ul>
-            <li>Custom Blender PFP</li>
-            <li>Standard lighting</li>
-            <li>Simple background</li>
-            <li>Minor effects</li>
-        </ul>
-
-        <a class="button"
-           href="https://amblock.mysellauth.com/product/basic-blender-pfp"
-           target="_blank"
-           rel="noopener noreferrer">
-            Order Basic
-        </a>
-
-    </div>
-
-    <div class="price-card pro">
-
-        <h3>Pro</h3>
-
-        <div class="price">
-            $10 <span>USD</span>
-        </div>
-
-        <ul>
-            <li>Custom Blender PFP</li>
-            <li>Standard lighting</li>
-            <li class="gold">Enhanced background</li>
-            <li class="gold">Additional effects</li>
-            <li class="gold">Glossy & reflective materials</li>
-        </ul>
-
-        <a class="button"
-           href="https://amblock.mysellauth.com/product/pro-blender-pfp"
-           target="_blank"
-           rel="noopener noreferrer">
-            Order Pro
-        </a>
-
-    </div>
-`;
-
-document.getElementById("home-pricing").innerHTML = pricingHTML;
-
-document.getElementById("full-pricing").innerHTML = pricingHTML;
-
-/* Navigation */
-
-function showPage() {
-
-    let page = window.location.hash.substring(1) || "home";
-
-    if (!["home", "work", "pricing"].includes(page)) {
-        page = "home";
-    }
-
-    document.querySelectorAll(".page").forEach(element => {
-        element.classList.remove("active");
     });
 
-    document.getElementById(page).classList.add("active");
-
-    document.querySelectorAll("nav a").forEach(link => {
-        link.classList.toggle("active", link.dataset.page === page);
-    });
+    document.getElementById(pageName).classList.add("active");
 
     const titles = {
         home: "Home",
@@ -673,14 +429,267 @@ function showPage() {
         pricing: "Pricing"
     };
 
-    document.title = "AMBLOCK | " + titles[page];
+    document.title = "AMBLOCK | " + titles[pageName];
 
     window.scrollTo(0, 0);
 }
 
-window.addEventListener("hashchange", showPage);
+window.addEventListener("hashchange", () => {
+    showPage(location.hash.slice(1) || "home");
+});
 
-showPage();
+
+/* REPEATING WATERMARK */
+
+function drawWatermark(ctx, width, height) {
+    ctx.save();
+
+    const fontSize = width * 0.045;
+    const spacingX = width * 0.31;
+    const spacingY = width * 0.12;
+    const range = Math.hypot(width, height);
+
+    ctx.font = `${fontSize}px Arial, sans-serif`;
+    ctx.fillStyle = "rgba(255, 255, 255, 0.30)";
+    ctx.strokeStyle = "rgba(0, 0, 0, 0.12)";
+    ctx.lineWidth = Math.max(0.5, width * 0.0008);
+
+    ctx.textAlign = "center";
+    ctx.textBaseline = "middle";
+
+    ctx.translate(width / 2, height / 2);
+    ctx.rotate(-Math.PI / 4);
+
+    let row = 0;
+
+    for (let y = -range; y <= range; y += spacingY) {
+        const offset = row % 2 === 0 ? 0 : spacingX / 2;
+
+        for (let x = -range; x <= range; x += spacingX) {
+            ctx.strokeText("AMBLOCK", x + offset, y);
+            ctx.fillText("AMBLOCK", x + offset, y);
+        }
+
+        row++;
+    }
+
+    ctx.restore();
+}
+
+
+/* ARTWORK */
+
+const artworks = [
+    {
+        image: "gilla.png",
+        title: "Gilla",
+        description: "Character render"
+    },
+    {
+        image: "bedbreak.png",
+        title: "Bed Break VR",
+        description: "Character render"
+    },
+    {
+        image: "bed.png",
+        title: "Bed Break VR",
+        description: "Object render"
+    }
+];
+
+
+/* CREATE WATERMARKED IMAGE */
+
+function createWatermarkedImage(source, container, title) {
+    const original = new Image();
+
+    original.onload = function () {
+        const canvas = document.createElement("canvas");
+
+        canvas.width = original.naturalWidth;
+        canvas.height = original.naturalHeight;
+
+        const ctx = canvas.getContext("2d");
+
+        ctx.drawImage(
+            original,
+            0,
+            0,
+            canvas.width,
+            canvas.height
+        );
+
+        drawWatermark(
+            ctx,
+            canvas.width,
+            canvas.height
+        );
+
+        const finalImage = document.createElement("img");
+
+        finalImage.src = canvas.toDataURL("image/png");
+        finalImage.alt = title;
+        finalImage.draggable = false;
+
+        container.appendChild(finalImage);
+    };
+
+    original.onerror = function () {
+        container.classList.add("coming-soon");
+        container.textContent = "Image unavailable";
+    };
+
+    original.src = source;
+}
+
+
+/* CREATE GALLERY */
+
+function createGallery(containerId, emptyCards = 0) {
+    const gallery = document.getElementById(containerId);
+
+    artworks.forEach(art => {
+        const card = document.createElement("div");
+        card.className = "work-card";
+
+        const imageContainer = document.createElement("div");
+        imageContainer.className = "image-container";
+
+        createWatermarkedImage(
+            art.image,
+            imageContainer,
+            art.title
+        );
+
+        const info = document.createElement("div");
+        info.className = "work-info";
+
+        info.innerHTML = `
+            <strong>${art.title}</strong>
+            <p>${art.description}</p>
+        `;
+
+        card.appendChild(imageContainer);
+        card.appendChild(info);
+        gallery.appendChild(card);
+    });
+
+    for (let i = 0; i < emptyCards; i++) {
+        const card = document.createElement("div");
+        card.className = "work-card";
+
+        const container = document.createElement("div");
+        container.className = "image-container";
+
+        const canvas = document.createElement("canvas");
+        canvas.width = 800;
+        canvas.height = 800;
+
+        const ctx = canvas.getContext("2d");
+
+        ctx.fillStyle = "#191a1d";
+        ctx.fillRect(0, 0, 800, 800);
+
+        drawWatermark(ctx, 800, 800);
+
+        ctx.fillStyle = "#a0a3ac";
+        ctx.font = "30px Arial";
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+        ctx.fillText("Coming soon", 400, 400);
+
+        const image = document.createElement("img");
+        image.src = canvas.toDataURL("image/png");
+        image.alt = "Coming soon";
+        image.draggable = false;
+
+        container.appendChild(image);
+
+        const info = document.createElement("div");
+        info.className = "work-info";
+        info.innerHTML = `
+            <strong>Coming soon</strong>
+            <p>More artwork</p>
+        `;
+
+        card.appendChild(container);
+        card.appendChild(info);
+        gallery.appendChild(card);
+    }
+}
+
+
+/* PRICING */
+
+const pricingHTML = `
+    <div class="pricing-grid">
+
+        <div class="price-card basic">
+
+            <h3>Basic</h3>
+
+            <div class="price">
+                $5 <span class="currency">USD</span>
+            </div>
+
+            <ul>
+                <li>Custom Blender PFP</li>
+                <li>Standard lighting</li>
+                <li>Simple background</li>
+                <li>Minor effects</li>
+            </ul>
+
+            <a class="button"
+               href="https://amblock.mysellauth.com/product/basic-blender-pfp"
+               target="_blank"
+               rel="noopener noreferrer">
+                Order Basic
+            </a>
+
+        </div>
+
+        <div class="price-card pro">
+
+            <h3>Pro</h3>
+
+            <div class="price">
+                $10 <span class="currency">USD</span>
+            </div>
+
+            <ul>
+                <li>Custom Blender PFP</li>
+                <li>Standard lighting</li>
+                <li class="gold">Enhanced background</li>
+                <li class="gold">Additional effects</li>
+                <li class="gold">Glossy &amp; reflective materials</li>
+            </ul>
+
+            <a class="button"
+               href="https://amblock.mysellauth.com/product/pro-blender-pfp"
+               target="_blank"
+               rel="noopener noreferrer">
+                Order Pro
+            </a>
+
+        </div>
+
+    </div>
+
+    <p class="price-note">
+        Prices are in USD. Each purchase includes one custom Blender PFP.
+    </p>
+`;
+
+
+/* INITIALISE WEBSITE */
+
+createGallery("home-gallery");
+createGallery("full-gallery", 9);
+
+document.getElementById("home-pricing").innerHTML = pricingHTML;
+document.getElementById("full-pricing").innerHTML = pricingHTML;
+
+showPage(location.hash.slice(1) || "home");
 
 </script>
 
