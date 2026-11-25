@@ -22,6 +22,9 @@ body {
     font-family: "Segoe UI", Arial, sans-serif;
     font-size: 15px;
     line-height: 1.6;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
 }
 
 /* Navigation */
@@ -72,9 +75,19 @@ nav {
 /* Main content */
 
 main {
+    width: 100%;
     max-width: 960px;
     margin: 45px auto;
     padding: 0 25px;
+    flex: 1;
+}
+
+.page {
+    display: none;
+}
+
+.page.active {
+    display: block;
 }
 
 h1 {
@@ -100,7 +113,7 @@ section {
     margin-top: 35px;
 }
 
-/* Artwork gallery */
+/* Previous work */
 
 .gallery {
     display: grid;
@@ -144,7 +157,39 @@ section {
     color: #92949c;
 }
 
-/* Pricing cards */
+/* Coming soon boxes */
+
+.placeholder {
+    width: 100%;
+    aspect-ratio: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: #161719;
+    color: #73757e;
+    gap: 12px;
+}
+
+.placeholder svg {
+    width: 32px;
+    height: 32px;
+    stroke: #55575e;
+}
+
+.placeholder span {
+    font-size: 14px;
+}
+
+.coming-soon .artwork-info h3 {
+    color: #85878e;
+}
+
+.coming-soon .artwork-info p {
+    color: #73757e;
+}
+
+/* Pricing */
 
 .pricing {
     display: grid;
@@ -194,20 +239,18 @@ section {
     margin: 8px 0;
 }
 
-/* Basic silver hover shine */
+/* Basic silver shine */
 
 .plan::after {
     content: "";
     position: absolute;
     inset: 0;
-
     background: linear-gradient(
         115deg,
         transparent 25%,
-        rgba(255, 255, 255, 0.14) 50%,
+        rgba(255,255,255,0.14) 50%,
         transparent 75%
     );
-
     transform: translateX(-120%);
     transition: transform 0.8s ease;
     pointer-events: none;
@@ -226,16 +269,13 @@ section {
 .plan.pro {
     background: #191a1e;
     border: 1px solid #b99750;
-    box-shadow: none;
 }
-
-/* Pro gold hover shine */
 
 .plan.pro::after {
     background: linear-gradient(
         115deg,
         transparent 25%,
-        rgba(255, 210, 110, 0.25) 50%,
+        rgba(255,210,110,0.25) 50%,
         transparent 75%
     );
 }
@@ -248,8 +288,6 @@ section {
 .pro .price {
     color: #f4ce80;
 }
-
-/* Gold exclusive features */
 
 .pro li:nth-child(n+3) {
     color: #f4ce80;
@@ -277,8 +315,6 @@ section {
     margin-top: auto;
     text-align: center;
 }
-
-/* Solid gold Pro button */
 
 .pro .button {
     background: #d4af60;
@@ -355,16 +391,9 @@ footer a:hover {
     }
 }
 
-/* Reduced motion support */
-
 @media (prefers-reduced-motion: reduce) {
     html {
         scroll-behavior: auto;
-    }
-
-    .plan,
-    .plan::after {
-        transition: none;
     }
 
     .plan::after {
@@ -374,7 +403,9 @@ footer a:hover {
 </style>
 </head>
 
-<body id="home">
+<body>
+
+<!-- Navigation -->
 
 <header>
     <nav>
@@ -382,9 +413,23 @@ footer a:hover {
         <a class="logo" href="#home">AMBLOCK</a>
 
         <div class="nav-links">
-            <a href="#home" class="active">Home</a>
-            <a href="#previous-work">Previous Work</a>
-            <a href="#pricing">Pricing</a>
+
+            <a href="#home"
+               data-page="home"
+               class="active">
+                Home
+            </a>
+
+            <a href="#previous-work"
+               data-page="previous-work">
+                Previous Work
+            </a>
+
+            <a href="#pricing"
+               data-page="pricing">
+                Pricing
+            </a>
+
         </div>
 
     </nav>
@@ -392,170 +437,348 @@ footer a:hover {
 
 <main>
 
-    <h1>AMBLOCK</h1>
+    <!-- HOME PAGE -->
 
-    <!-- Previous work -->
+    <div class="page active" id="home">
 
-    <section id="previous-work">
+        <h1>AMBLOCK</h1>
 
-        <h2>Previous work</h2>
+        <section>
 
-        <div class="gallery">
+            <h2>Previous work</h2>
 
-            <div class="artwork">
-                <img src="gilla.png?v=2"
-                     alt="Gilla VR character render">
+            <div class="gallery" id="home-gallery"></div>
 
-                <div class="artwork-info">
-                    <h3>Gilla</h3>
-                    <p>Character render</p>
-                </div>
-            </div>
+        </section>
 
-            <div class="artwork">
-                <img src="bedbreak.png"
-                     alt="Bed Break VR character render">
+        <section>
 
-                <div class="artwork-info">
-                    <h3>Bed Break VR</h3>
-                    <p>Character render</p>
-                </div>
-            </div>
+            <h2>Pricing</h2>
 
-            <div class="artwork">
-                <img src="bed.png"
-                     alt="Bed Break VR bed render">
+            <div class="pricing" id="home-pricing"></div>
 
-                <div class="artwork-info">
-                    <h3>Bed Break VR</h3>
-                    <p>Object render</p>
-                </div>
-            </div>
+            <p>Prices are per profile picture and listed in USD.</p>
 
-        </div>
-    </section>
+        </section>
 
-    <!-- Pricing -->
+        <section class="order" id="home-order">
 
-    <section id="pricing">
+            <h2>Place an order</h2>
 
-        <h2>Pricing</h2>
+            <p>Join the Discord to place an order.</p>
 
-        <div class="pricing">
+            <a class="button discord-link"
+               href="https://discord.gg/YOURINVITE">
+                Join Discord
+            </a>
 
-            <!-- Basic package -->
+        </section>
 
-            <div class="plan">
+    </div>
 
-                <h3>Basic</h3>
+    <!-- PREVIOUS WORK PAGE -->
 
-                <div class="price">
-                    $5 <small>USD / PFP</small>
-                </div>
+    <div class="page" id="previous-work">
 
-                <ul>
-                    <li>Custom Blender PFP</li>
-                    <li>Standard lighting</li>
-                    <li>Simple background</li>
-                    <li>Minor effects</li>
-                </ul>
+        <h1>Previous Work</h1>
 
-                <a class="button" href="#order">
-                    Order Basic
-                </a>
+        <div class="gallery" id="full-gallery"></div>
 
-            </div>
+    </div>
 
-            <!-- Pro package -->
+    <!-- PRICING PAGE -->
 
-            <div class="plan pro">
+    <div class="page" id="pricing">
 
-                <h3>Pro</h3>
+        <h1>Pricing</h1>
 
-                <div class="price">
-                    $10 <small>USD / PFP</small>
-                </div>
-
-                <ul>
-                    <li>Custom Blender PFP</li>
-                    <li>Standard lighting</li>
-                    <li>Enhanced background</li>
-                    <li>Additional effects</li>
-                    <li>Glossy &amp; reflective materials</li>
-                </ul>
-
-                <a class="button" href="#order">
-                    Order Pro
-                </a>
-
-            </div>
-
-        </div>
+        <div class="pricing" id="full-pricing"></div>
 
         <p>Prices are per profile picture and listed in USD.</p>
 
-    </section>
+        <section class="order" id="pricing-order">
 
-    <!-- Place an order -->
+            <h2>Place an order</h2>
 
-    <section class="order" id="order">
+            <p>Join the Discord to place an order.</p>
 
-        <h2>Place an order</h2>
+            <a class="button discord-link"
+               href="https://discord.gg/YOURINVITE">
+                Join Discord
+            </a>
 
-        <p>Join the Discord to place an order.</p>
+        </section>
 
-        <a class="button"
-           href="https://discord.gg/YOURINVITE">
-            Join Discord
-        </a>
-
-    </section>
+    </div>
 
 </main>
 
+<!-- Footer -->
+
 <footer>
+
     <div class="footer-inner">
 
         <span>AMBLOCK &copy; 2026</span>
 
-        <a href="https://discord.gg/YOURINVITE">
+        <a class="discord-link"
+           href="https://discord.gg/YOURINVITE">
             Discord
         </a>
 
     </div>
+
 </footer>
 
 <script>
-const navLinks = document.querySelectorAll(".nav-links a");
 
-function updateNavigation() {
-    let current = "#home";
+/* Discord invite */
 
-    const sections = [
-        document.getElementById("previous-work"),
-        document.getElementById("pricing")
-    ];
+const discordInvite = "https://discord.gg/YOURINVITE";
 
-    sections.forEach(section => {
-        if (section.getBoundingClientRect().top <= 130) {
-            current = "#" + section.id;
-        }
-    });
+document.querySelectorAll(".discord-link").forEach(link => {
+    link.href = discordInvite;
+});
 
-    if (window.scrollY < 30) {
-        current = "#home";
+/* Artwork */
+
+const artwork = [
+
+    {
+        image: "gilla.png?v=2",
+        name: "Gilla",
+        description: "Character render"
+    },
+
+    {
+        image: "bedbreak.png",
+        name: "Bed Break VR",
+        description: "Character render"
+    },
+
+    {
+        image: "bed.png",
+        name: "Bed Break VR",
+        description: "Object render"
     }
 
-    navLinks.forEach(link => {
-        link.classList.toggle(
-            "active",
-            link.getAttribute("href") === current
-        );
-    });
+];
+
+function createArtwork(item) {
+
+    return `
+        <div class="artwork">
+
+            <img src="${item.image}"
+                 alt="${item.name} ${item.description}">
+
+            <div class="artwork-info">
+
+                <h3>${item.name}</h3>
+
+                <p>${item.description}</p>
+
+            </div>
+
+        </div>
+    `;
+
 }
 
-window.addEventListener("scroll", updateNavigation);
-window.addEventListener("load", updateNavigation);
+/* Home gallery */
+
+document.getElementById("home-gallery").innerHTML =
+    artwork.map(createArtwork).join("");
+
+/* Previous work gallery */
+
+document.getElementById("full-gallery").innerHTML =
+    artwork.map(createArtwork).join("");
+
+/* Coming soon boxes */
+
+const placeholderCount = 9;
+
+for (let i = 0; i < placeholderCount; i++) {
+
+    document.getElementById("full-gallery").insertAdjacentHTML(
+        "beforeend",
+        `
+        <div class="artwork coming-soon">
+
+            <div class="placeholder">
+
+                <svg viewBox="0 0 24 24"
+                     fill="none"
+                     stroke-width="1.5"
+                     stroke-linecap="round"
+                     stroke-linejoin="round">
+
+                    <rect x="3" y="3"
+                          width="18" height="18" rx="2"/>
+
+                    <circle cx="8.5" cy="8.5" r="1.5"/>
+
+                    <path d="M21 15l-5-5L5 21"/>
+
+                </svg>
+
+                <span>Coming soon</span>
+
+            </div>
+
+            <div class="artwork-info">
+
+                <h3>Coming Soon</h3>
+
+                <p>Future artwork</p>
+
+            </div>
+
+        </div>
+        `
+    );
+
+}
+
+/* Pricing cards */
+
+function createPricing(orderId) {
+
+    return `
+
+        <div class="plan">
+
+            <h3>Basic</h3>
+
+            <div class="price">
+                $5 <small>USD / PFP</small>
+            </div>
+
+            <ul>
+                <li>Custom Blender PFP</li>
+                <li>Standard lighting</li>
+                <li>Simple background</li>
+                <li>Minor effects</li>
+            </ul>
+
+            <a class="button"
+               href="#${orderId}"
+               data-order="${orderId}">
+                Order Basic
+            </a>
+
+        </div>
+
+        <div class="plan pro">
+
+            <h3>Pro</h3>
+
+            <div class="price">
+                $10 <small>USD / PFP</small>
+            </div>
+
+            <ul>
+                <li>Custom Blender PFP</li>
+                <li>Standard lighting</li>
+                <li>Enhanced background</li>
+                <li>Additional effects</li>
+                <li>Glossy &amp; reflective materials</li>
+            </ul>
+
+            <a class="button"
+               href="#${orderId}"
+               data-order="${orderId}">
+                Order Pro
+            </a>
+
+        </div>
+
+    `;
+
+}
+
+document.getElementById("home-pricing").innerHTML =
+    createPricing("home-order");
+
+document.getElementById("full-pricing").innerHTML =
+    createPricing("pricing-order");
+
+/* Order buttons */
+
+document.querySelectorAll("[data-order]").forEach(button => {
+
+    button.addEventListener("click", event => {
+
+        event.preventDefault();
+
+        document.getElementById(button.dataset.order)
+            .scrollIntoView({
+                behavior: "smooth"
+            });
+
+    });
+
+});
+
+/* Tab navigation */
+
+const pageNames = {
+    "home": "Home",
+    "previous-work": "Previous Work",
+    "pricing": "Pricing"
+};
+
+function showPage(pageId) {
+
+    if (!Object.hasOwn(pageNames, pageId)) {
+        pageId = "home";
+    }
+
+    document.querySelectorAll(".page").forEach(page => {
+
+        page.classList.toggle(
+            "active",
+            page.id === pageId
+        );
+
+    });
+
+    document.querySelectorAll(".nav-links a").forEach(link => {
+
+        const active = link.dataset.page === pageId;
+
+        link.classList.toggle("active", active);
+
+        if (active) {
+            link.setAttribute("aria-current", "page");
+        } else {
+            link.removeAttribute("aria-current");
+        }
+
+    });
+
+    document.title = "AMBLOCK - " + pageNames[pageId];
+
+    window.scrollTo({
+        top: 0,
+        behavior: "instant"
+    });
+
+}
+
+function updatePage() {
+
+    const pageId = window.location.hash.substring(1) || "home";
+
+    showPage(pageId);
+
+}
+
+window.addEventListener("hashchange", updatePage);
+
+updatePage();
+
 </script>
 
 </body>
