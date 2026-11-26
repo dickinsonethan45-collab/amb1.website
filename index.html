@@ -42,6 +42,7 @@ nav {
 .nav-links {
     display: flex;
     align-items: center;
+    flex-wrap: wrap;
     gap: 24px;
 }
 
@@ -49,7 +50,6 @@ nav {
     color: #aeb0b7;
     text-decoration: none;
     font-size: 14px;
-    cursor: pointer;
     transition: color 0.2s;
 }
 
@@ -135,7 +135,6 @@ section {
     align-items: center;
     color: #747780;
     font-size: 15px;
-    font-weight: 500;
 }
 
 .pricing-grid {
@@ -156,7 +155,8 @@ section {
     isolation: isolate;
 }
 
-/* Reversible silver hover effect */
+/* Silver shine animation */
+
 .price-card::before {
     content: "";
     position: absolute;
@@ -165,7 +165,7 @@ section {
     background: linear-gradient(
         110deg,
         transparent 35%,
-        rgba(255, 255, 255, 0.075) 50%,
+        rgba(255,255,255,0.075) 50%,
         transparent 65%
     );
     transform: translateX(-100%);
@@ -208,6 +208,7 @@ section {
 }
 
 /* Flat gold Pro styling */
+
 .pro {
     background: #1e1c18;
     border-color: #9b7938;
@@ -219,12 +220,13 @@ section {
     color: #f2c56d;
 }
 
-/* Reversible gold hover effect */
+/* Gold shine animation */
+
 .pro::before {
     background: linear-gradient(
         110deg,
         transparent 35%,
-        rgba(240, 190, 85, 0.13) 50%,
+        rgba(240,190,85,0.13) 50%,
         transparent 65%
     );
 }
@@ -276,6 +278,82 @@ section {
     margin-top: 8px;
 }
 
+/* Basic vs Pro comparison */
+
+.comparison-description {
+    color: #aeb0b7;
+    font-size: 14px;
+    line-height: 1.7;
+    margin: -20px 0 30px;
+}
+
+.comparison-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+}
+
+.comparison-card {
+    background: #191a1d;
+    border: 1px solid #41434a;
+    border-radius: 6px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+.comparison-card.pro {
+    background: #1e1c18;
+    border-color: #9b7938;
+}
+
+.comparison-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 18px 22px;
+}
+
+.comparison-header h3 {
+    font-size: 20px;
+    margin: 0;
+}
+
+.comparison-price {
+    font-size: 22px;
+    font-weight: bold;
+}
+
+.comparison-card.pro .comparison-price {
+    color: #f2c56d;
+}
+
+.comparison-content {
+    padding: 22px;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+.comparison-content ul {
+    padding-left: 18px;
+    margin: 0 0 25px;
+    color: #bfc1c8;
+    font-size: 14px;
+    line-height: 2.3;
+}
+
+.comparison-content .button {
+    margin-top: auto;
+}
+
+.comparison-note {
+    margin-top: 20px;
+    color: #9297a3;
+    font-size: 13px;
+    line-height: 1.7;
+}
+
 footer {
     border-top: 1px solid #303136;
     padding: 25px;
@@ -290,7 +368,8 @@ footer {
         grid-template-columns: repeat(2, 1fr);
     }
 
-    .pricing-grid {
+    .pricing-grid,
+    .comparison-grid {
         grid-template-columns: 1fr;
     }
 
@@ -325,13 +404,15 @@ footer {
             <a href="#home" data-tab="home" class="active">Home</a>
             <a href="#work" data-tab="work">Previous Work</a>
             <a href="#pricing" data-tab="pricing">Pricing</a>
+            <a href="#comparison" data-tab="comparison">Basic vs Pro</a>
         </div>
     </nav>
 </header>
 
 <main>
 
-    <!-- HOME PAGE -->
+    <!-- HOME -->
+
     <div class="page active" id="home">
 
         <h1>AMBLOCK</h1>
@@ -364,7 +445,8 @@ footer {
 
     </div>
 
-    <!-- PREVIOUS WORK PAGE -->
+    <!-- PREVIOUS WORK -->
+
     <div class="page" id="work">
 
         <h1>Previous Work</h1>
@@ -373,14 +455,15 @@ footer {
 
     </div>
 
-    <!-- PRICING PAGE -->
+    <!-- PRICING -->
+
     <div class="page" id="pricing">
 
         <h1>Pricing</h1>
 
         <div id="full-pricing"></div>
 
-        <section class="order-section" style="margin-top: 40px;">
+        <section class="order-section" style="margin-top:40px;">
             <h2>Store</h2>
 
             <a class="button store-button"
@@ -390,6 +473,102 @@ footer {
                 Visit Store
             </a>
         </section>
+
+    </div>
+
+    <!-- BASIC VS PRO -->
+
+    <div class="page" id="comparison">
+
+        <h1>Basic vs Pro</h1>
+
+        <p class="comparison-description">
+            The same character, two different styles.
+            Compare Basic and Pro before placing your order.
+        </p>
+
+        <div class="comparison-grid">
+
+            <!-- BASIC EXAMPLE -->
+
+            <div class="comparison-card basic">
+
+                <div class="comparison-header">
+                    <h3>Basic</h3>
+
+                    <div class="comparison-price">
+                        $5 <span class="currency">USD</span>
+                    </div>
+                </div>
+
+                <div class="image-container"
+                     id="basic-example">
+                </div>
+
+                <div class="comparison-content">
+
+                    <ul>
+                        <li>Custom Blender PFP</li>
+                        <li>Standard lighting</li>
+                        <li>Simple background</li>
+                        <li>Minor effects</li>
+                    </ul>
+
+                    <a class="button"
+                       href="https://amblock.mysellauth.com/product/basic-blender-pfp"
+                       target="_blank"
+                       rel="noopener noreferrer">
+                        Order Basic
+                    </a>
+
+                </div>
+
+            </div>
+
+            <!-- PRO EXAMPLE -->
+
+            <div class="comparison-card pro">
+
+                <div class="comparison-header">
+                    <h3>Pro</h3>
+
+                    <div class="comparison-price">
+                        $10 <span class="currency">USD</span>
+                    </div>
+                </div>
+
+                <div class="image-container"
+                     id="pro-example">
+                </div>
+
+                <div class="comparison-content">
+
+                    <ul>
+                        <li>Custom Blender PFP</li>
+                        <li>Standard lighting</li>
+                        <li class="gold">Enhanced background</li>
+                        <li class="gold">Additional effects</li>
+                        <li class="gold">Glossy &amp; reflective materials</li>
+                    </ul>
+
+                    <a class="button"
+                       href="https://amblock.mysellauth.com/product/pro-blender-pfp"
+                       target="_blank"
+                       rel="noopener noreferrer">
+                        Order Pro
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <p class="comparison-note">
+            Both examples feature the same Gilla character.
+            Each purchase includes one custom Blender PFP.
+            Watermarks are used on public previews only.
+        </p>
 
     </div>
 
@@ -406,7 +585,15 @@ footer {
 /* PAGE TABS */
 
 function showPage(pageName) {
-    if (!["home", "work", "pricing"].includes(pageName)) {
+
+    const validPages = [
+        "home",
+        "work",
+        "pricing",
+        "comparison"
+    ];
+
+    if (!validPages.includes(pageName)) {
         pageName = "home";
     }
 
@@ -426,7 +613,8 @@ function showPage(pageName) {
     const titles = {
         home: "Home",
         work: "Previous Work",
-        pricing: "Pricing"
+        pricing: "Pricing",
+        comparison: "Basic vs Pro"
     };
 
     document.title = "AMBLOCK | " + titles[pageName];
@@ -442,6 +630,7 @@ window.addEventListener("hashchange", () => {
 /* REPEATING WATERMARK */
 
 function drawWatermark(ctx, width, height) {
+
     ctx.save();
 
     const fontSize = width * 0.045;
@@ -450,8 +639,8 @@ function drawWatermark(ctx, width, height) {
     const range = Math.hypot(width, height);
 
     ctx.font = `${fontSize}px Arial, sans-serif`;
-    ctx.fillStyle = "rgba(255, 255, 255, 0.30)";
-    ctx.strokeStyle = "rgba(0, 0, 0, 0.12)";
+    ctx.fillStyle = "rgba(255,255,255,0.30)";
+    ctx.strokeStyle = "rgba(0,0,0,0.12)";
     ctx.lineWidth = Math.max(0.5, width * 0.0008);
 
     ctx.textAlign = "center";
@@ -463,11 +652,16 @@ function drawWatermark(ctx, width, height) {
     let row = 0;
 
     for (let y = -range; y <= range; y += spacingY) {
-        const offset = row % 2 === 0 ? 0 : spacingX / 2;
+
+        const offset = row % 2 === 0
+            ? 0
+            : spacingX / 2;
 
         for (let x = -range; x <= range; x += spacingX) {
+
             ctx.strokeText("AMBLOCK", x + offset, y);
             ctx.fillText("AMBLOCK", x + offset, y);
+
         }
 
         row++;
@@ -498,12 +692,14 @@ const artworks = [
 ];
 
 
-/* CREATE WATERMARKED IMAGE */
+/* WATERMARKED IMAGES */
 
 function createWatermarkedImage(source, container, title) {
+
     const original = new Image();
 
     original.onload = function () {
+
         const canvas = document.createElement("canvas");
 
         canvas.width = original.naturalWidth;
@@ -543,12 +739,14 @@ function createWatermarkedImage(source, container, title) {
 }
 
 
-/* CREATE GALLERY */
+/* GALLERY */
 
 function createGallery(containerId, emptyCards = 0) {
+
     const gallery = document.getElementById(containerId);
 
     artworks.forEach(art => {
+
         const card = document.createElement("div");
         card.className = "work-card";
 
@@ -575,6 +773,7 @@ function createGallery(containerId, emptyCards = 0) {
     });
 
     for (let i = 0; i < emptyCards; i++) {
+
         const card = document.createElement("div");
         card.className = "work-card";
 
@@ -582,6 +781,7 @@ function createGallery(containerId, emptyCards = 0) {
         container.className = "image-container";
 
         const canvas = document.createElement("canvas");
+
         canvas.width = 800;
         canvas.height = 800;
 
@@ -596,9 +796,11 @@ function createGallery(containerId, emptyCards = 0) {
         ctx.font = "30px Arial";
         ctx.textAlign = "center";
         ctx.textBaseline = "middle";
+
         ctx.fillText("Coming soon", 400, 400);
 
         const image = document.createElement("img");
+
         image.src = canvas.toDataURL("image/png");
         image.alt = "Coming soon";
         image.draggable = false;
@@ -607,6 +809,7 @@ function createGallery(containerId, emptyCards = 0) {
 
         const info = document.createElement("div");
         info.className = "work-info";
+
         info.innerHTML = `
             <strong>Coming soon</strong>
             <p>More artwork</p>
@@ -622,6 +825,7 @@ function createGallery(containerId, emptyCards = 0) {
 /* PRICING */
 
 const pricingHTML = `
+
     <div class="pricing-grid">
 
         <div class="price-card basic">
@@ -678,6 +882,7 @@ const pricingHTML = `
     <p class="price-note">
         Prices are in USD. Each purchase includes one custom Blender PFP.
     </p>
+
 `;
 
 
@@ -688,6 +893,21 @@ createGallery("full-gallery", 9);
 
 document.getElementById("home-pricing").innerHTML = pricingHTML;
 document.getElementById("full-pricing").innerHTML = pricingHTML;
+
+
+/* COMPARISON IMAGES */
+
+createWatermarkedImage(
+    "basic.png",
+    document.getElementById("basic-example"),
+    "Basic Gilla Blender PFP"
+);
+
+createWatermarkedImage(
+    "pro.png",
+    document.getElementById("pro-example"),
+    "Pro Gilla Blender PFP"
+);
 
 showPage(location.hash.slice(1) || "home");
 
