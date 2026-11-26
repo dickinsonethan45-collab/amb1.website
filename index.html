@@ -90,8 +90,12 @@ main {
     min-height: 85vh;
 }
 
+/* Wider comparison page */
+
 main.wide {
-    max-width: 1440px;
+    width: 94%;
+    max-width: 2100px;
+    padding: 40px 20px 70px;
 }
 
 .page {
@@ -122,6 +126,8 @@ p {
     color: var(--muted);
 }
 
+/* Previous work */
+
 .gallery {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -139,6 +145,7 @@ p {
     width: 100%;
     aspect-ratio: 1;
     display: block;
+    object-fit: cover;
     background: #1b1c1f;
 }
 
@@ -156,6 +163,8 @@ p {
     color: var(--muted);
     margin-top: 3px;
 }
+
+/* Pricing */
 
 .pricing-grid {
     display: grid;
@@ -274,13 +283,23 @@ p {
     margin-top: 15px;
 }
 
-/* Comparison page */
+/* Larger Basic vs Pro comparison */
+
+#comparison h1 {
+    font-size: 48px;
+    margin-bottom: 18px;
+}
+
+#comparison > p {
+    font-size: 16px;
+}
 
 .comparison-grid {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 26px;
+    gap: 42px;
     align-items: start;
+    margin-top: 25px;
 }
 
 .comparison-group {
@@ -288,14 +307,14 @@ p {
 }
 
 .comparison-group h2 {
-    margin: 18px 0 14px;
-    font-size: 21px;
+    margin: 18px 0 18px;
+    font-size: 26px;
 }
 
 .comparison-pair {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 12px;
+    gap: 16px;
 }
 
 .comparison-card {
@@ -307,34 +326,48 @@ p {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 15px;
+    padding: 20px;
     gap: 8px;
 }
 
 .comparison-heading h3 {
-    font-size: 18px;
+    font-size: 23px;
 }
 
 .comparison-heading .price {
-    font-size: 20px;
+    font-size: 27px;
     margin: 0;
 }
 
+.comparison-heading .currency {
+    font-size: 12px;
+}
+
 .comparison-content {
-    padding: 16px;
+    padding: 22px;
     flex-grow: 1;
     display: flex;
     flex-direction: column;
 }
 
 .comparison-content .features {
-    font-size: 13px;
-    margin: 0 0 20px;
+    font-size: 16px;
+    margin: 0 0 30px;
+    padding-left: 18px;
 }
 
-.comparison-note {
-    margin-top: 22px;
-    font-size: 13px;
+.comparison-content .features li {
+    margin-bottom: 12px;
+}
+
+.comparison-content .order-button {
+    font-size: 16px;
+    padding: 14px 15px;
+}
+
+#comparison .comparison-note {
+    margin-top: 25px;
+    font-size: 14px;
 }
 
 .store-section {
@@ -346,6 +379,8 @@ p {
 .store-section .order-button {
     max-width: 280px;
 }
+
+/* Footer */
 
 footer {
     border-top: 1px solid #292a2d;
@@ -359,17 +394,23 @@ footer {
     margin: auto;
 }
 
-@media (max-width: 1000px) {
+/* Smaller screens */
+
+@media (max-width: 1200px) {
+
     .comparison-grid {
         grid-template-columns: 1fr;
+        gap: 35px;
     }
 
     main.wide {
-        max-width: 760px;
+        width: 95%;
+        max-width: 960px;
     }
 }
 
 @media (max-width: 650px) {
+
     .gallery {
         grid-template-columns: repeat(2, minmax(0, 1fr));
     }
@@ -395,24 +436,38 @@ footer {
         padding: 25px 15px 50px;
     }
 
-    h1 {
+    main.wide {
+        width: 100%;
+        padding: 25px 15px 50px;
+    }
+
+    h1,
+    #comparison h1 {
         font-size: 36px;
     }
 
+    .comparison-group h2 {
+        font-size: 22px;
+    }
+
+    .comparison-pair {
+        gap: 10px;
+    }
+
     .comparison-content {
-        padding: 10px;
+        padding: 12px;
     }
 
     .comparison-heading {
-        padding: 10px;
+        padding: 12px;
     }
 
     .comparison-heading h3 {
-        font-size: 15px;
+        font-size: 16px;
     }
 
     .comparison-heading .price {
-        font-size: 16px;
+        font-size: 18px;
     }
 
     .comparison-heading .currency {
@@ -421,6 +476,11 @@ footer {
 
     .comparison-content .features {
         font-size: 12px;
+    }
+
+    .comparison-content .order-button {
+        font-size: 12px;
+        padding: 12px 8px;
     }
 }
 
@@ -436,11 +496,13 @@ footer {
 
 <header>
     <div class="navbar">
+
         <div class="logo" onclick="showPage('home')">
             AMBLOCK
         </div>
 
         <nav>
+
             <button data-page="home" class="active"
                 onclick="showPage('home')">
                 Home
@@ -467,7 +529,9 @@ footer {
                rel="noopener noreferrer">
                 Store
             </a>
+
         </nav>
+
     </div>
 </header>
 
@@ -493,6 +557,7 @@ footer {
         </p>
 
         <div class="store-section">
+
             <h2>Place an order</h2>
 
             <p>
@@ -506,6 +571,7 @@ footer {
                rel="noopener noreferrer">
                 Visit Store
             </a>
+
         </div>
 
     </section>
@@ -550,7 +616,7 @@ footer {
 
         <div class="comparison-grid">
 
-            <!-- GILLA - LEFT -->
+            <!-- GILLA -->
 
             <div class="comparison-group">
 
@@ -562,7 +628,7 @@ footer {
 
             </div>
 
-            <!-- ANIMAL COMPANY - RIGHT -->
+            <!-- ANIMAL COMPANY -->
 
             <div class="comparison-group">
 
@@ -585,12 +651,14 @@ footer {
 </main>
 
 <footer>
+
     <div class="footer-content">
         &copy; 2026 AMBLOCK. All rights reserved.
         All artwork and renders belong to their respective
         owners. Unauthorised use or redistribution of
         AMBLOCK artwork is prohibited.
     </div>
+
 </footer>
 
 <script>
@@ -638,10 +706,12 @@ function showPage(page, updateHash = true) {
     document.getElementById(page).classList.add("active");
 
     document.querySelectorAll("nav button").forEach(button => {
+
         button.classList.toggle(
             "active",
             button.dataset.page === page
         );
+
     });
 
     document.getElementById("main").classList.toggle(
@@ -701,6 +771,7 @@ function drawWatermark(canvas, source = null) {
             size / 2,
             size / 2
         );
+
     }
 
     ctx.save();
@@ -756,9 +827,6 @@ function createArtwork(filename, description) {
 
             drawWatermark(canvas, image);
 
-            // Display the flattened watermarked image.
-            // Copying or saving it includes the watermark.
-
             const protectedImage = document.createElement("img");
 
             protectedImage.className = "artwork";
@@ -766,10 +834,13 @@ function createArtwork(filename, description) {
             protectedImage.src = canvas.toDataURL("image/png");
 
             canvas.replaceWith(protectedImage);
+
         };
 
         image.onerror = function () {
+
             console.warn("Could not load image:", filename);
+
         };
 
         image.src = filename;
@@ -796,9 +867,11 @@ function createWorkCard(filename, title, description) {
     info.className = "work-info";
 
     const name = document.createElement("strong");
+
     name.textContent = title;
 
     const subtitle = document.createElement("span");
+
     subtitle.textContent = description;
 
     info.append(name, subtitle);
@@ -809,13 +882,17 @@ function createWorkCard(filename, title, description) {
 
 
 const originalWork = [
+
     ["gilla.png", "Gilla", "Character render"],
+
     ["bedbreak.png", "Bed Break VR", "Character render"],
+
     ["bed.png", "Bed Break VR", "Object render"]
+
 ];
 
 
-/* HOME GALLERY - ORIGINAL THREE ONLY */
+/* HOME GALLERY */
 
 originalWork.forEach(item => {
 
@@ -835,14 +912,16 @@ originalWork.forEach(item => {
 });
 
 
-/* ANIMAL COMPANY PRO ONLY */
+/* ANIMAL COMPANY PRO */
 
 document.getElementById("full-gallery").appendChild(
+
     createWorkCard(
         "animal-pro.png",
         "Animal Company",
         "Character render"
     )
+
 );
 
 
@@ -851,11 +930,13 @@ document.getElementById("full-gallery").appendChild(
 for (let i = 0; i < 8; i++) {
 
     document.getElementById("full-gallery").appendChild(
+
         createWorkCard(
             null,
             "Coming Soon",
             "Future render"
         )
+
     );
 
 }
@@ -878,7 +959,9 @@ function createFeatures(isPro) {
         item.textContent = feature;
 
         if (isPro && index >= 2) {
+
             item.className = "gold";
+
         }
 
         list.appendChild(item);
