@@ -3,29 +3,22 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AMBLOCK</title>
+<title>Home | AMBLOCK</title>
 
 <style>
 * {
     box-sizing: border-box;
 }
 
-:root {
-    --background: #131415;
-    --card: #191a1d;
-    --border: #343539;
-    --muted: #a5a9b3;
-    --gold: #f1c56e;
-    --gold-button: #d5ad60;
-}
-
 body {
     margin: 0;
-    background: var(--background);
-    color: white;
+    background: #131415;
+    color: #ffffff;
     font-family: Arial, Helvetica, sans-serif;
-    font-size: 15px;
-    line-height: 1.6;
+    font-size: 14px;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
 }
 
 header {
@@ -35,67 +28,63 @@ header {
 .navbar {
     max-width: 1400px;
     margin: auto;
-    padding: 20px 24px;
+    padding: 18px 25px;
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: 20px;
-    flex-wrap: wrap;
 }
 
 .logo {
-    font-size: 24px;
-    font-weight: 800;
-    letter-spacing: -1px;
+    font-size: 23px;
+    font-weight: 900;
+    color: white;
+    text-decoration: none;
     cursor: pointer;
 }
 
 nav {
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 6px;
     flex-wrap: wrap;
 }
 
 nav button {
-    background: transparent;
+    background: none;
     border: none;
-    color: #a5a9b3;
-    padding: 10px 14px;
+    color: #a6aab2;
+    font-size: 14px;
+    padding: 12px 15px;
     border-radius: 4px;
-    font: inherit;
     cursor: pointer;
     transition: background .2s, color .2s;
 }
 
 nav button:hover,
 nav button.active {
-    background: #242528;
+    background: #252629;
     color: white;
 }
 
 .store-button {
     background: #e2e2e5;
-    color: #111;
+    color: black;
     text-decoration: none;
-    padding: 9px 18px;
+    padding: 12px 18px;
     border-radius: 4px;
-    font-size: 14px;
 }
 
 main {
+    width: 100%;
     max-width: 960px;
-    margin: auto;
-    padding: 35px 24px 70px;
-    min-height: 85vh;
+    margin: 0 auto;
+    padding: 40px 25px 80px;
+    flex: 1;
 }
 
-/* Wider comparison page */
-
 main.wide {
-    width: 94%;
-    max-width: 2100px;
-    padding: 40px 20px 70px;
+    max-width: 1500px;
 }
 
 .page {
@@ -107,64 +96,78 @@ main.wide {
 }
 
 h1 {
-    font-size: 46px;
-    letter-spacing: -1.5px;
-    line-height: 1.2;
-    margin: 0 0 28px;
+    font-size: 44px;
+    margin: 0 0 34px;
+    letter-spacing: -1px;
 }
 
 h2 {
     font-size: 24px;
-    margin: 36px 0 18px;
-}
-
-h3 {
-    margin: 0;
+    margin: 40px 0 23px;
 }
 
 p {
-    color: var(--muted);
+    color: #aeb3bd;
+    line-height: 1.7;
 }
 
-/* Previous work */
-
-.gallery {
+.work-grid {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 15px;
+    gap: 16px;
 }
 
 .work-card {
-    background: var(--card);
-    border: 1px solid var(--border);
+    background: #191a1d;
+    border: 1px solid #323338;
     border-radius: 5px;
     overflow: hidden;
 }
 
-.artwork {
+.image-container {
+    position: relative;
+    aspect-ratio: 1 / 1;
     width: 100%;
-    aspect-ratio: 1;
+    overflow: hidden;
+    background: #17181a;
+}
+
+.image-container img {
+    width: 100%;
+    height: 100%;
     display: block;
     object-fit: cover;
-    background: #1b1c1f;
 }
 
 .work-info {
-    padding: 13px 15px;
+    padding: 15px;
 }
 
 .work-info strong {
-    font-size: 14px;
+    display: block;
+    margin-bottom: 8px;
 }
 
 .work-info span {
-    display: block;
     font-size: 12px;
-    color: var(--muted);
-    margin-top: 3px;
+    color: #9ca2af;
 }
 
-/* Pricing */
+.coming-soon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #777b83;
+    font-size: 17px;
+}
+
+.coming-soon::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='135' height='85'%3E%3Ctext x='8' y='55' transform='rotate(-40 8 55)' fill='white' fill-opacity='.08' font-family='Arial' font-size='17' font-weight='700'%3EAMBLOCK%3C/text%3E%3C/svg%3E");
+}
 
 .pricing-grid {
     display: grid;
@@ -175,243 +178,229 @@ p {
 .price-card {
     position: relative;
     overflow: hidden;
-    display: flex;
-    flex-direction: column;
-    background: var(--card);
-    border: 1px solid #41434a;
+    background: #191a1d;
+    border: 1px solid #414247;
     border-radius: 6px;
     padding: 25px;
+    display: flex;
+    flex-direction: column;
+    min-height: 380px;
     isolation: isolate;
 }
 
-/* Reversible shine animation */
+.price-card.pro {
+    background: #201d17;
+    border-color: #977130;
+}
+
+/* Reversible silver shine */
 
 .price-card::before {
     content: "";
     position: absolute;
-    top: -50%;
-    left: -90%;
+    inset: 0;
     width: 65%;
-    height: 200%;
-    transform: skewX(-25deg);
     background: linear-gradient(
-        90deg,
+        110deg,
         transparent,
-        rgba(255,255,255,.09),
+        rgba(255, 255, 255, 0.09),
         transparent
     );
-    transition: left .65s ease;
+    transform: translateX(-180%) skewX(-15deg);
+    transition: transform .85s ease-in-out;
     pointer-events: none;
     z-index: -1;
 }
 
 .price-card:hover::before {
-    left: 135%;
+    transform: translateX(270%) skewX(-15deg);
 }
 
-.price-card.pro {
-    background: #1e1c18;
-    border-color: #9b7938;
-}
+/* Gold shine for Pro */
 
 .price-card.pro::before {
     background: linear-gradient(
-        90deg,
+        110deg,
         transparent,
-        rgba(241,197,110,.17),
+        rgba(255, 207, 108, 0.16),
         transparent
     );
+}
+
+.price-card h3 {
+    font-size: 20px;
+    margin: 5px 0 20px;
+}
+
+.price {
+    font-size: 38px;
+    font-weight: bold;
+    margin-bottom: 25px;
+}
+
+.currency {
+    font-size: 12px;
+    font-weight: normal;
+    color: #a1a6b0;
+    margin-left: 5px;
 }
 
 .pro h3,
 .pro .price,
 .gold {
-    color: var(--gold);
-}
-
-.price {
-    font-size: 38px;
-    font-weight: 700;
-    margin: 12px 0 20px;
-}
-
-.currency {
-    font-size: 12px;
-    font-weight: 400;
-    color: var(--muted);
-    margin-left: 6px;
+    color: #f1c56e;
 }
 
 .features {
-    color: #bfc2ca;
     padding-left: 18px;
-    margin: 12px 0 30px;
-    flex-grow: 1;
-}
-
-.features li {
-    margin-bottom: 9px;
+    color: #bfc2ca;
+    line-height: 2.3;
+    margin: 10px 0 30px;
 }
 
 .order-button {
     display: block;
-    text-align: center;
     background: #e2e2e5;
     color: #111;
+    text-align: center;
     text-decoration: none;
-    padding: 11px 15px;
+    padding: 14px;
     border-radius: 4px;
-    font-size: 14px;
     margin-top: auto;
     transition: background .2s;
 }
 
 .order-button:hover {
-    background: #fff;
+    background: #ffffff;
 }
 
 .pro .order-button {
-    background: var(--gold-button);
+    background: #d5ac5b;
 }
 
 .pro .order-button:hover {
-    background: #e8c47c;
+    background: #efc776;
 }
 
-.price-note {
-    font-size: 14px;
-    margin-top: 15px;
+.note {
+    color: #a1a6b0;
+    font-size: 13px;
+    margin-top: 18px;
 }
 
-/* Larger Basic vs Pro comparison */
-
-#comparison h1 {
-    font-size: 48px;
-    margin-bottom: 18px;
+.order-section {
+    border-top: 1px solid #303136;
+    margin-top: 36px;
+    padding-top: 25px;
 }
 
-#comparison > p {
-    font-size: 16px;
+.order-section h2 {
+    margin-top: 0;
 }
+
+.visit-store {
+    display: inline-block;
+    background: #e2e2e5;
+    color: #111;
+    padding: 13px 22px;
+    border-radius: 4px;
+    text-decoration: none;
+}
+
+/* Basic vs Pro */
 
 .comparison-grid {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 42px;
-    align-items: start;
-    margin-top: 25px;
-}
-
-.comparison-group {
-    min-width: 0;
+    gap: 26px;
+    margin-top: 30px;
 }
 
 .comparison-group h2 {
-    margin: 18px 0 18px;
-    font-size: 26px;
+    margin: 0 0 18px;
+    font-size: 21px;
 }
 
 .comparison-pair {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 16px;
+    gap: 12px;
 }
 
 .comparison-card {
-    padding: 0;
-    height: 100%;
-}
-
-.comparison-heading {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 20px;
-    gap: 8px;
-}
-
-.comparison-heading h3 {
-    font-size: 23px;
-}
-
-.comparison-heading .price {
-    font-size: 27px;
-    margin: 0;
-}
-
-.comparison-heading .currency {
-    font-size: 12px;
-}
-
-.comparison-content {
-    padding: 22px;
-    flex-grow: 1;
+    background: #191a1d;
+    border: 1px solid #38393d;
+    border-radius: 5px;
+    overflow: hidden;
     display: flex;
     flex-direction: column;
 }
 
-.comparison-content .features {
-    font-size: 16px;
-    margin: 0 0 30px;
-    padding-left: 18px;
+.comparison-card.pro {
+    background: #201d17;
+    border-color: #977130;
 }
 
-.comparison-content .features li {
-    margin-bottom: 12px;
+.comparison-heading {
+    padding: 18px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 17px;
+    font-weight: bold;
 }
 
-.comparison-content .order-button {
-    font-size: 16px;
-    padding: 14px 15px;
+.comparison-card.pro .comparison-heading {
+    color: #f1c56e;
 }
 
-#comparison .comparison-note {
-    margin-top: 25px;
-    font-size: 14px;
+.comparison-body {
+    padding: 17px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
 }
 
-.store-section {
-    border-top: 1px solid var(--border);
-    margin-top: 38px;
-    padding-top: 8px;
+.comparison-body .features {
+    font-size: 13px;
+    margin: 0 0 25px;
 }
 
-.store-section .order-button {
-    max-width: 280px;
+.comparison-body .order-button {
+    font-size: 13px;
 }
-
-/* Footer */
 
 footer {
     border-top: 1px solid #292a2d;
-    padding: 28px 24px;
-    color: #818793;
+    color: #858a95;
     font-size: 12px;
+    padding: 28px 25px;
 }
 
 .footer-content {
     max-width: 1400px;
     margin: auto;
+    line-height: 1.8;
 }
 
-/* Smaller screens */
-
-@media (max-width: 1200px) {
-
+@media (max-width: 1050px) {
     .comparison-grid {
         grid-template-columns: 1fr;
-        gap: 35px;
-    }
-
-    main.wide {
-        width: 95%;
-        max-width: 960px;
     }
 }
 
-@media (max-width: 650px) {
+@media (max-width: 700px) {
+    .navbar {
+        flex-direction: column;
+        align-items: flex-start;
+    }
 
-    .gallery {
+    nav button {
+        padding: 9px;
+        font-size: 12px;
+    }
+
+    .work-grid {
         grid-template-columns: repeat(2, minmax(0, 1fr));
     }
 
@@ -419,74 +408,25 @@ footer {
         grid-template-columns: 1fr;
     }
 
-    .navbar {
-        padding: 15px;
-    }
-
-    nav {
-        gap: 3px;
-    }
-
-    nav button {
-        font-size: 12px;
-        padding: 8px;
-    }
-
-    main {
-        padding: 25px 15px 50px;
-    }
-
-    main.wide {
-        width: 100%;
-        padding: 25px 15px 50px;
-    }
-
-    h1,
-    #comparison h1 {
+    h1 {
         font-size: 36px;
     }
 
-    .comparison-group h2 {
-        font-size: 22px;
-    }
-
-    .comparison-pair {
-        gap: 10px;
-    }
-
-    .comparison-content {
-        padding: 12px;
+    main {
+        padding: 30px 18px 60px;
     }
 
     .comparison-heading {
+        font-size: 14px;
         padding: 12px;
     }
 
-    .comparison-heading h3 {
-        font-size: 16px;
+    .comparison-body {
+        padding: 12px;
     }
 
-    .comparison-heading .price {
-        font-size: 18px;
-    }
-
-    .comparison-heading .currency {
-        display: none;
-    }
-
-    .comparison-content .features {
+    .comparison-body .features {
         font-size: 12px;
-    }
-
-    .comparison-content .order-button {
-        font-size: 12px;
-        padding: 12px 8px;
-    }
-}
-
-@media (prefers-reduced-motion: reduce) {
-    * {
-        transition: none !important;
     }
 }
 </style>
@@ -496,13 +436,11 @@ footer {
 
 <header>
     <div class="navbar">
-
-        <div class="logo" onclick="showPage('home')">
+        <a class="logo" onclick="showPage('home')">
             AMBLOCK
-        </div>
+        </a>
 
         <nav>
-
             <button data-page="home" class="active"
                 onclick="showPage('home')">
                 Home
@@ -518,20 +456,17 @@ footer {
                 Pricing
             </button>
 
-            <button data-page="comparison"
-                onclick="showPage('comparison')">
+            <button data-page="compare"
+                onclick="showPage('compare')">
                 Basic vs Pro
             </button>
 
             <a class="store-button"
-               href="https://amblock.mysellauth.com/"
-               target="_blank"
-               rel="noopener noreferrer">
+                href="https://amblock.mysellauth.com/"
+                target="_blank" rel="noopener">
                 Store
             </a>
-
         </nav>
-
     </div>
 </header>
 
@@ -540,73 +475,66 @@ footer {
     <!-- HOME -->
 
     <section id="home" class="page active">
-
         <h1>AMBLOCK</h1>
 
         <h2>Previous work</h2>
-
-        <div class="gallery" id="home-gallery"></div>
+        <div id="home-work" class="work-grid"></div>
 
         <h2>Pricing</h2>
+        <div id="home-pricing" class="pricing-grid"></div>
 
-        <div class="pricing-grid" id="home-pricing"></div>
-
-        <p class="price-note">
+        <p class="note">
             Prices are in USD. Each purchase includes
             one custom Blender PFP.
         </p>
 
-        <div class="store-section">
-
+        <div class="order-section">
             <h2>Place an order</h2>
 
             <p>
-                Choose your preferred package and order
-                through the AMBLOCK store.
+                Choose Basic or Pro through our store.
             </p>
 
-            <a class="order-button"
-               href="https://amblock.mysellauth.com/"
-               target="_blank"
-               rel="noopener noreferrer">
+            <a class="visit-store"
+                href="https://amblock.mysellauth.com/"
+                target="_blank" rel="noopener">
                 Visit Store
             </a>
-
         </div>
-
     </section>
 
     <!-- PREVIOUS WORK -->
 
     <section id="work" class="page">
-
         <h1>Previous Work</h1>
 
-        <p>A collection of my previous Blender renders.</p>
-
-        <div class="gallery" id="full-gallery"></div>
-
+        <div id="all-work" class="work-grid"></div>
     </section>
 
     <!-- PRICING -->
 
     <section id="pricing" class="page">
-
         <h1>Pricing</h1>
 
-        <div class="pricing-grid" id="full-pricing"></div>
+        <div id="full-pricing" class="pricing-grid"></div>
 
-        <p class="price-note">
+        <p class="note">
             Prices are in USD. Each purchase includes
             one custom Blender PFP.
         </p>
 
+        <div class="order-section">
+            <a class="visit-store"
+                href="https://amblock.mysellauth.com/"
+                target="_blank" rel="noopener">
+                Visit Store
+            </a>
+        </div>
     </section>
 
     <!-- BASIC VS PRO -->
 
-    <section id="comparison" class="page">
-
+    <section id="compare" class="page">
         <h1>Basic vs Pro</h1>
 
         <p>
@@ -616,54 +544,41 @@ footer {
 
         <div class="comparison-grid">
 
-            <!-- GILLA -->
-
             <div class="comparison-group">
-
                 <h2>Gilla</h2>
 
                 <div class="comparison-pair"
-                     id="gilla-comparison">
+                    id="gilla-comparison">
                 </div>
-
             </div>
 
-            <!-- ANIMAL COMPANY -->
-
             <div class="comparison-group">
-
                 <h2>Animal Company</h2>
 
                 <div class="comparison-pair"
-                     id="animal-comparison">
+                    id="animal-comparison">
                 </div>
-
             </div>
 
         </div>
 
-        <p class="comparison-note">
+        <p class="note">
             Each purchase includes one custom Blender PFP.
         </p>
-
     </section>
 
 </main>
 
 <footer>
-
     <div class="footer-content">
-        &copy; 2026 AMBLOCK. All rights reserved.
-        All artwork and renders belong to their respective
-        owners. Unauthorised use or redistribution of
-        AMBLOCK artwork is prohibited.
+        © 2026 AMBLOCK. All rights reserved.
+        All artwork and renders belong to their respective owners.
+        Unauthorised use or redistribution of AMBLOCK artwork
+        is prohibited.
     </div>
-
 </footer>
 
 <script>
-
-/* STORE LINKS */
 
 const basicURL =
     "https://amblock.mysellauth.com/product/basic-blender-pfp";
@@ -672,33 +587,45 @@ const proURL =
     "https://amblock.mysellauth.com/product/pro-blender-pfp";
 
 
-/* PACKAGE FEATURES */
+// PREVIOUS WORK IMAGES
 
-const basicFeatures = [
-    "Custom Blender PFP",
-    "Standard lighting",
-    "Simple background",
-    "Minor effects"
-];
-
-const proFeatures = [
-    "Custom Blender PFP",
-    "Standard lighting",
-    "Enhanced background",
-    "Additional effects",
-    "Glossy & reflective materials"
-];
-
-
-/* PAGE NAVIGATION */
-
-function showPage(page, updateHash = true) {
-
-    if (!document.getElementById(page) ||
-        !document.getElementById(page).classList.contains("page")) {
-        page = "home";
+const artwork = [
+    {
+        image: "gilla.png",
+        name: "Gilla",
+        type: "Character render"
+    },
+    {
+        image: "bedbreak.png",
+        name: "Bed Break VR",
+        type: "Character render"
+    },
+    {
+        image: "bed.png",
+        name: "Bed Break VR",
+        type: "Object render"
+    },
+    {
+        image: "animal-pro.png",
+        name: "Animal Company",
+        type: "Character render"
+    },
+    {
+        image: "candy-logo.png",
+        name: "Candy Cane Logo",
+        type: "Logo render"
+    },
+    {
+        image: "wood-logo.png",
+        name: "Wooden Logo",
+        type: "Logo render"
     }
+];
 
+
+// TAB SWITCHING
+
+function showPage(page) {
     document.querySelectorAll(".page").forEach(section => {
         section.classList.remove("active");
     });
@@ -706,430 +633,294 @@ function showPage(page, updateHash = true) {
     document.getElementById(page).classList.add("active");
 
     document.querySelectorAll("nav button").forEach(button => {
-
         button.classList.toggle(
             "active",
             button.dataset.page === page
         );
-
     });
 
     document.getElementById("main").classList.toggle(
         "wide",
-        page === "comparison"
+        page === "compare"
     );
 
-    if (updateHash) {
-        location.hash = page;
-    }
+    const titles = {
+        home: "Home",
+        work: "Previous Work",
+        pricing: "Pricing",
+        compare: "Basic vs Pro"
+    };
+
+    document.title = titles[page] + " | AMBLOCK";
 
     window.scrollTo(0, 0);
 }
 
 
-/* REPEATING WATERMARK */
+// WORK CARDS
 
-function drawWatermark(canvas, source = null) {
+function workCard(item) {
+    return `
+        <article class="work-card">
+            <div class="image-container">
+                <img
+                    data-watermark="${item.image}"
+                    alt="${item.name}"
+                >
+            </div>
 
-    const size = 1200;
+            <div class="work-info">
+                <strong>${item.name}</strong>
+                <span>${item.type}</span>
+            </div>
+        </article>
+    `;
+}
 
-    canvas.width = size;
-    canvas.height = size;
+function comingSoonCard() {
+    return `
+        <article class="work-card">
+            <div class="image-container coming-soon">
+                Coming Soon
+            </div>
 
-    const ctx = canvas.getContext("2d");
-
-    ctx.fillStyle = "#1b1c1f";
-    ctx.fillRect(0, 0, size, size);
-
-    if (source) {
-
-        const scale = Math.max(
-            size / source.width,
-            size / source.height
-        );
-
-        const width = source.width * scale;
-        const height = source.height * scale;
-
-        ctx.drawImage(
-            source,
-            (size - width) / 2,
-            (size - height) / 2,
-            width,
-            height
-        );
-
-    } else {
-
-        ctx.fillStyle = "#969ba5";
-        ctx.font = "500 45px Arial";
-        ctx.textAlign = "center";
-        ctx.textBaseline = "middle";
-
-        ctx.fillText(
-            "Coming Soon",
-            size / 2,
-            size / 2
-        );
-
-    }
-
-    ctx.save();
-
-    ctx.translate(size / 2, size / 2);
-    ctx.rotate(-Math.PI / 4);
-
-    ctx.font = "500 55px Arial, Helvetica, sans-serif";
-    ctx.textAlign = "center";
-    ctx.textBaseline = "middle";
-
-    ctx.fillStyle = "rgba(255,255,255,0.28)";
-    ctx.strokeStyle = "rgba(0,0,0,0.12)";
-    ctx.lineWidth = 1.5;
-
-    let row = 0;
-
-    for (let y = -size; y <= size; y += 165) {
-
-        const offset = row % 2 === 0 ? 0 : 155;
-
-        for (let x = -size; x <= size; x += 310) {
-
-            ctx.strokeText("AMBLOCK", x + offset, y);
-            ctx.fillText("AMBLOCK", x + offset, y);
-
-        }
-
-        row++;
-    }
-
-    ctx.restore();
+            <div class="work-info">
+                <strong>Coming Soon</strong>
+                <span>More work will be added here</span>
+            </div>
+        </article>
+    `;
 }
 
 
-/* CREATE WATERMARKED IMAGE */
+// HOME PREVIEWS
 
-function createArtwork(filename, description) {
+document.getElementById("home-work").innerHTML =
+    artwork.slice(0, 3).map(workCard).join("");
 
-    const canvas = document.createElement("canvas");
 
-    canvas.className = "artwork";
-    canvas.setAttribute("role", "img");
-    canvas.setAttribute("aria-label", description);
+// FULL PREVIOUS WORK PAGE
 
-    drawWatermark(canvas);
+document.getElementById("all-work").innerHTML =
+    artwork.map(workCard).join("") +
+    Array.from(
+        { length: 6 },
+        comingSoonCard
+    ).join("");
 
-    if (filename) {
 
-        const image = new Image();
+// PRICING FEATURES
 
-        image.onload = function () {
+function features(pro) {
+    return `
+        <ul class="features">
+            <li>Custom Blender PFP</li>
+            <li>Standard lighting</li>
 
-            drawWatermark(canvas, image);
+            ${pro ? `
+                <li class="gold">Enhanced background</li>
+                <li class="gold">Additional effects</li>
+                <li class="gold">
+                    Glossy &amp; reflective materials
+                </li>
+            ` : `
+                <li>Simple background</li>
+                <li>Minor effects</li>
+            `}
+        </ul>
+    `;
+}
 
-            const protectedImage = document.createElement("img");
 
-            protectedImage.className = "artwork";
-            protectedImage.alt = description;
-            protectedImage.src = canvas.toDataURL("image/png");
+function pricingCard(pro) {
+    return `
+        <article class="price-card ${pro ? "pro" : ""}">
 
-            canvas.replaceWith(protectedImage);
+            <h3>${pro ? "Pro" : "Basic"}</h3>
 
+            <div class="price">
+                $${pro ? "10" : "5"}
+                <span class="currency">USD</span>
+            </div>
+
+            ${features(pro)}
+
+            <a
+                class="order-button"
+                href="${pro ? proURL : basicURL}"
+                target="_blank"
+                rel="noopener"
+            >
+                Order ${pro ? "Pro" : "Basic"}
+            </a>
+
+        </article>
+    `;
+}
+
+document.getElementById("home-pricing").innerHTML =
+    pricingCard(false) + pricingCard(true);
+
+document.getElementById("full-pricing").innerHTML =
+    pricingCard(false) + pricingCard(true);
+
+
+// COMPARISON CARDS
+
+function comparisonCard(pro, image) {
+    return `
+        <article class="comparison-card
+            ${pro ? "pro" : ""}">
+
+            <div class="comparison-heading">
+                <span>${pro ? "Pro" : "Basic"}</span>
+
+                <span>
+                    $${pro ? "10" : "5"}
+                    <span class="currency">USD</span>
+                </span>
+            </div>
+
+            <div class="image-container">
+                <img
+                    data-watermark="${image}"
+                    alt="${pro ? "Pro" : "Basic"} example"
+                >
+            </div>
+
+            <div class="comparison-body">
+
+                ${features(pro)}
+
+                <a
+                    class="order-button"
+                    href="${pro ? proURL : basicURL}"
+                    target="_blank"
+                    rel="noopener"
+                >
+                    Order ${pro ? "Pro" : "Basic"}
+                </a>
+
+            </div>
+        </article>
+    `;
+}
+
+
+document.getElementById("gilla-comparison").innerHTML =
+    comparisonCard(false, "gilla-basic.png") +
+    comparisonCard(true, "gilla-pro.png");
+
+document.getElementById("animal-comparison").innerHTML =
+    comparisonCard(false, "animal-basic.png") +
+    comparisonCard(true, "animal-pro.png");
+
+
+// REPEATING AMBLOCK WATERMARK
+// Drawn into the displayed image itself.
+
+const watermarkCache = new Map();
+
+function createWatermark(source) {
+
+    if (watermarkCache.has(source)) {
+        return watermarkCache.get(source);
+    }
+
+    const result = new Promise((resolve, reject) => {
+
+        const original = new Image();
+
+        original.onload = function () {
+
+            const canvas = document.createElement("canvas");
+            const ctx = canvas.getContext("2d");
+
+            canvas.width = original.naturalWidth;
+            canvas.height = original.naturalHeight;
+
+            const w = canvas.width;
+            const h = canvas.height;
+
+            ctx.drawImage(original, 0, 0, w, h);
+
+            const fontSize = w * 0.048;
+            const stepX = w * 0.29;
+            const stepY = w * 0.20;
+
+            ctx.save();
+
+            ctx.translate(w / 2, h / 2);
+            ctx.rotate(-Math.PI / 4);
+
+            ctx.font =
+                `700 ${fontSize}px Arial, Helvetica, sans-serif`;
+
+            ctx.fillStyle = "rgba(255,255,255,0.28)";
+            ctx.textAlign = "center";
+            ctx.textBaseline = "middle";
+
+            const distance = Math.hypot(w, h);
+
+            let row = 0;
+
+            for (
+                let y = -distance;
+                y <= distance;
+                y += stepY
+            ) {
+
+                const offset =
+                    row % 2 === 0 ? 0 : stepX / 2;
+
+                for (
+                    let x = -distance;
+                    x <= distance;
+                    x += stepX
+                ) {
+                    ctx.fillText(
+                        "AMBLOCK",
+                        x + offset,
+                        y
+                    );
+                }
+
+                row++;
+            }
+
+            ctx.restore();
+
+            resolve(canvas.toDataURL("image/png"));
         };
 
-        image.onerror = function () {
-
-            console.warn("Could not load image:", filename);
-
-        };
-
-        image.src = filename;
-    }
-
-    return canvas;
-}
-
-
-/* PORTFOLIO CARDS */
-
-function createWorkCard(filename, title, description) {
-
-    const card = document.createElement("article");
-
-    card.className = "work-card";
-
-    card.appendChild(
-        createArtwork(filename, title + " " + description)
-    );
-
-    const info = document.createElement("div");
-
-    info.className = "work-info";
-
-    const name = document.createElement("strong");
-
-    name.textContent = title;
-
-    const subtitle = document.createElement("span");
-
-    subtitle.textContent = description;
-
-    info.append(name, subtitle);
-    card.appendChild(info);
-
-    return card;
-}
-
-
-const originalWork = [
-
-    ["gilla.png", "Gilla", "Character render"],
-
-    ["bedbreak.png", "Bed Break VR", "Character render"],
-
-    ["bed.png", "Bed Break VR", "Object render"]
-
-];
-
-
-/* HOME GALLERY */
-
-originalWork.forEach(item => {
-
-    document.getElementById("home-gallery")
-        .appendChild(createWorkCard(...item));
-
-});
-
-
-/* PREVIOUS WORK GALLERY */
-
-originalWork.forEach(item => {
-
-    document.getElementById("full-gallery")
-        .appendChild(createWorkCard(...item));
-
-});
-
-
-/* ANIMAL COMPANY PRO */
-
-document.getElementById("full-gallery").appendChild(
-
-    createWorkCard(
-        "animal-pro.png",
-        "Animal Company",
-        "Character render"
-    )
-
-);
-
-
-/* COMING SOON BOXES */
-
-for (let i = 0; i < 8; i++) {
-
-    document.getElementById("full-gallery").appendChild(
-
-        createWorkCard(
-            null,
-            "Coming Soon",
-            "Future render"
-        )
-
-    );
-
-}
-
-
-/* FEATURE LIST */
-
-function createFeatures(isPro) {
-
-    const list = document.createElement("ul");
-
-    list.className = "features";
-
-    const features = isPro ? proFeatures : basicFeatures;
-
-    features.forEach((feature, index) => {
-
-        const item = document.createElement("li");
-
-        item.textContent = feature;
-
-        if (isPro && index >= 2) {
-
-            item.className = "gold";
-
-        }
-
-        list.appendChild(item);
-
+        original.onerror = reject;
+        original.src = source;
     });
 
-    return list;
+    watermarkCache.set(source, result);
+
+    return result;
 }
 
 
-/* ORDER BUTTON */
+document.querySelectorAll("img[data-watermark]")
+    .forEach(async image => {
 
-function createOrderButton(isPro) {
+        try {
+            image.src = await createWatermark(
+                image.dataset.watermark
+            );
 
-    const button = document.createElement("a");
+        } catch (error) {
 
-    button.className = "order-button";
+            const parent = image.parentElement;
 
-    button.href = isPro ? proURL : basicURL;
+            parent.classList.add("coming-soon");
 
-    button.target = "_blank";
+            parent.textContent = "Image unavailable";
+        }
 
-    button.rel = "noopener noreferrer";
-
-    button.textContent = isPro ? "Order Pro" : "Order Basic";
-
-    return button;
-}
-
-
-/* PRICING CARDS */
-
-function createPriceCard(isPro) {
-
-    const card = document.createElement("article");
-
-    card.className = "price-card" + (isPro ? " pro" : "");
-
-    const heading = document.createElement("h3");
-
-    heading.textContent = isPro ? "Pro" : "Basic";
-
-    const price = document.createElement("div");
-
-    price.className = "price";
-
-    price.innerHTML =
-        (isPro ? "$10" : "$5") +
-        '<span class="currency">USD</span>';
-
-    card.append(
-        heading,
-        price,
-        createFeatures(isPro),
-        createOrderButton(isPro)
-    );
-
-    return card;
-}
-
-
-["home-pricing", "full-pricing"].forEach(id => {
-
-    const container = document.getElementById(id);
-
-    container.append(
-        createPriceCard(false),
-        createPriceCard(true)
-    );
-
-});
-
-
-/* COMPARISON CARDS */
-
-function createComparisonCard(isPro, filename, character) {
-
-    const card = document.createElement("article");
-
-    card.className =
-        "price-card comparison-card" +
-        (isPro ? " pro" : "");
-
-    const heading = document.createElement("div");
-
-    heading.className = "comparison-heading";
-
-    const title = document.createElement("h3");
-
-    title.textContent = isPro ? "Pro" : "Basic";
-
-    const price = document.createElement("div");
-
-    price.className = "price";
-
-    price.innerHTML =
-        (isPro ? "$10" : "$5") +
-        '<span class="currency">USD</span>';
-
-    heading.append(title, price);
-
-    const artwork = createArtwork(
-        filename,
-        character + (isPro ? " Pro" : " Basic")
-    );
-
-    const content = document.createElement("div");
-
-    content.className = "comparison-content";
-
-    content.append(
-        createFeatures(isPro),
-        createOrderButton(isPro)
-    );
-
-    card.append(heading, artwork, content);
-
-    return card;
-}
-
-
-/* GILLA COMPARISON */
-
-document.getElementById("gilla-comparison").append(
-
-    createComparisonCard(
-        false,
-        "basic.png",
-        "Gilla"
-    ),
-
-    createComparisonCard(
-        true,
-        "pro.png",
-        "Gilla"
-    )
-
-);
-
-
-/* ANIMAL COMPANY COMPARISON */
-
-document.getElementById("animal-comparison").append(
-
-    createComparisonCard(
-        false,
-        "animal-basic.png",
-        "Animal Company"
-    ),
-
-    createComparisonCard(
-        true,
-        "animal-pro.png",
-        "Animal Company"
-    )
-
-);
-
-
-/* RESTORE SELECTED TAB */
-
-window.addEventListener("hashchange", function () {
-
-    showPage(location.hash.substring(1) || "home", false);
-
-});
-
-showPage(location.hash.substring(1) || "home", false);
+    });
 
 </script>
 
