@@ -69,7 +69,7 @@
         const x = position.x * innerWidth;
         const y = position.y * innerHeight;
         peer.element.style.transform = `translate(${x}px, ${y}px)`;
-        peer.arrow.hidden = peer.id === ownId || (!cursor && !message);
+        peer.arrow.hidden = peer.id === ownId && !message;
         peer.bubble.hidden = !message;
         if (message) {
             peer.bubble.classList.toggle("flip-x", x + 16 + peer.bubble.offsetWidth > innerWidth);
@@ -198,10 +198,12 @@
 
     function positionChat() {
         if (chat.hidden) return;
-        const left = Math.min(chatPoint.x * innerWidth + 12, innerWidth - chat.offsetWidth - 8);
-        const top = Math.min(chatPoint.y * innerHeight + 17, innerHeight - chat.offsetHeight - 8);
-        chat.style.left = `${Math.max(8, left)}px`;
-        chat.style.top = `${Math.max(8, top)}px`;
+        const x = chatPoint.x * innerWidth;
+        const y = chatPoint.y * innerHeight;
+        chat.style.left = `${x}px`;
+        chat.style.top = `${y}px`;
+        chat.classList.toggle("flip-x", x + 18 + input.offsetWidth > innerWidth);
+        chat.classList.toggle("flip-y", y + 20 + input.offsetHeight > innerHeight);
     }
 
     let chatOpener;
@@ -213,22 +215,24 @@
         chat.hidden = false;
         chatButton.setAttribute("aria-expanded", "true");
         positionChat();
-        input.focus();
+        input.focus({ preventScroll: true });
     }
 
     function closeChat(restoreFocus = false) {
         if (chat.hidden) return;
         chat.hidden = true;
         chatButton.setAttribute("aria-expanded", "false");
-        if (restoreFocus) chatOpener?.focus();
+        if (restoreFocus) chatOpener?.focus({ preventScroll: true });
     }
 
     chatButton.addEventListener("click", () => chat.hidden ? openChat() : closeChat(true));
-    document.getElementById("live-chat-close").addEventListener("click", () => closeChat(true));
     chat.addEventListener("submit", event => {
         event.preventDefault();
         const text = input.value.trim();
-        if (!text || !ownId) return;
+        if (!text) {
+            closeChat(true);
+            return;
+        }
         if (performance.now() - lastChat < chatInterval) {
             input.setCustomValidity("Wait a moment before sending another message.");
             input.reportValidity();
@@ -237,16 +241,25 @@
         }
         if (!send({ type: "chat", ...chatPoint, text })) return;
         input.value = "";
+        input.size = 5;
         lastChat = performance.now();
         closeChat(true);
     });
-    input.addEventListener("input", () => input.setCustomValidity(""));
+    input.addEventListener("input", () => {
+        input.setCustomValidity("");
+        input.size = Math.max(5, Math.min(18, input.value.length + 1));
+        positionChat();
+    });
     document.addEventListener("keydown", event => {
         if (event.key === "Escape" && !chat.hidden) closeChat(true);
-        if (event.key === "Enter" && !event.repeat && document.activeElement === document.body && ownId) {
+        if (event.key === "Enter" && !event.repeat && !event.isComposing && chat.hidden && ownId &&
+            !event.target.closest?.("a, button, input, select, textarea, [contenteditable]")) {
             event.preventDefault();
             openChat();
         }
+    });
+    document.addEventListener("pointerdown", event => {
+        if (!chat.hidden && !chat.contains(event.target) && event.target !== chatButton) closeChat();
     });
     document.addEventListener("pointermove", event => {
         if (event.pointerType === "touch" || !chat.hidden) return;

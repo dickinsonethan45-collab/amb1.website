@@ -29,8 +29,7 @@
     display: none;
 }
 
-.live-controls button,
-.live-chat button {
+.live-controls button {
     border: 1px solid #4b4c51;
     border-radius: 4px;
     background: #252629;
@@ -77,55 +76,54 @@
     clip-path: polygon(6% 6%, 87% 42%, 48% 55%, 35% 88%);
 }
 
-.live-bubble {
+.live-bubble,
+.live-chat input {
     position: absolute;
     left: 16px;
     top: 18px;
-    width: max-content;
     max-width: min(185px, 65vw);
-    overflow-wrap: anywhere;
-    border: 1px solid #c8c8cc;
-    border-radius: 3px;
+    border: 0;
+    border-radius: 0;
     background: #fff;
     color: #131415;
-    padding: 5px 8px;
-    font: 600 .875rem/1.2 ui-monospace, monospace;
+    padding: 6px 8px;
+    font: 700 1rem/1.2 ui-monospace, monospace;
     box-shadow: 0 3px 12px #0007;
 }
 
-.live-bubble.flip-x {
+.live-bubble {
+    width: max-content;
+    overflow-wrap: anywhere;
+}
+
+.live-bubble.flip-x,
+.live-chat.flip-x input {
     left: auto;
     right: 8px;
 }
 
-.live-bubble.flip-y {
+.live-bubble.flip-y,
+.live-chat.flip-y input {
     top: auto;
     bottom: 8px;
 }
 
 .live-chat {
     position: fixed;
-    display: flex;
-    gap: 5px;
-    width: min(270px, calc(100% - 16px));
+    width: 0;
+    height: 0;
     z-index: 901;
-    background: #131415;
-    border: 1px solid #4b4c51;
-    border-radius: 6px;
-    padding: 6px;
-    box-shadow: 0 3px 16px #0009;
-    font-size: .875rem;
 }
 
 .live-chat input {
-    min-width: 0;
-    flex: 1;
-    background: #fff;
-    color: #131415;
-    border: 0;
-    border-radius: 3px;
-    padding: 6px 7px;
-    font: .875rem ui-monospace, monospace;
+    width: auto;
+    min-width: 46px;
+    field-sizing: content;
+}
+
+.live-chat input:focus-visible {
+    outline: 1px solid #9ca2af;
+    outline-offset: 1px;
 }
 
 .live-sr-only {
