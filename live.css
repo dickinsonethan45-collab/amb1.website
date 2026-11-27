@@ -53,6 +53,10 @@ button {
     left: 0;
 }
 
+.live-peer.moving {
+    transition: transform 60ms linear;
+}
+
 .live-pointer {
     position: absolute;
     width: 24px;
@@ -60,6 +64,20 @@ button {
     top: -2px;
     left: -2px;
     background: var(--amblock-cursor) no-repeat center / contain;
+}
+
+.live-peer .live-pointer {
+    background: none;
+    filter: drop-shadow(0 1px 2px #000);
+}
+
+.live-peer .live-pointer::after {
+    content: "";
+    display: block;
+    width: 100%;
+    height: 100%;
+    background: var(--visitor-cursor-color, #fff);
+    clip-path: polygon(8% 8%, 88% 42%, 48% 54%, 33% 88%);
 }
 
 @media (any-pointer: fine) {
@@ -128,6 +146,10 @@ button {
 }
 
 @media (prefers-reduced-motion: reduce) {
+    .live-peer.moving {
+        transition: none;
+    }
+
     .live-bubble.fading {
         animation-name: live-fade-opacity;
     }

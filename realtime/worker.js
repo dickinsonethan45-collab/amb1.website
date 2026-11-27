@@ -8,7 +8,7 @@ const origins = new Set([
 const pages = new Set(["home", "work", "pricing", "compare"]);
 const visitorPattern = /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/;
 const openSocketsLimit = 100;
-const cursorInterval = 125;
+const cursorInterval = 40;
 const chatInterval = 2500;
 const typingInterval = 85;
 
@@ -56,18 +56,32 @@ export class LiveRoom extends DurableObject {
         });
         const [client, server] = Object.values(new WebSocketPair());
         const id = crypto.randomUUID();
+        const hue = this.cursorHue(visitor, peers);
         this.ctx.acceptWebSocket(server);
-        server.serializeAttachment({ id, visitor, cursor: null, draft: "", lastCursor: 0, lastChat: 0 });
+        server.serializeAttachment({ id, visitor, hue, cursor: null, draft: "", lastCursor: 0, lastChat: 0 });
         this.send(server, JSON.stringify({
             type: "welcome",
             id,
             cursors: peers.map(peer => {
-                const { id, cursor, draft } = peer.deserializeAttachment();
-                return cursor ? { id, ...cursor, draft } : null;
+                const { id, hue, cursor, draft } = peer.deserializeAttachment();
+                return cursor ? { id, hue, ...cursor, draft } : null;
             }).filter(Boolean)
         }));
         this.broadcast({ type: "counts", visits, online: this.online() });
         return new Response(null, { status: 101, webSocket: client });
+    }
+
+    cursorHue(visitor, sockets) {
+        const used = new Set();
+        for (const socket of sockets) {
+            const peer = socket.deserializeAttachment();
+            if (!Number.isInteger(peer?.hue)) continue;
+            if (peer.visitor === visitor) return peer.hue;
+            used.add(peer.hue);
+        }
+        let hue = 198;
+        while (used.has(hue)) hue = (hue + 137) % 360;
+        return hue;
     }
 
     online() {
@@ -120,12 +134,17 @@ export class LiveRoom extends DurableObject {
         const { x, y, page } = data;
         if (!Number.isFinite(x) || !Number.isFinite(y) || x < 0 || x > 1 || y < 0 || y > 1) return;
         const position = { x, y, page };
+        state.hue ??= this.cursorHue(state.visitor, this.ctx.getWebSockets());
+        const update = { id: state.id, hue: state.hue, ...position };
 
-        if (data.type === "cursor" && now - state.lastCursor >= cursorInterval) {
+        const sectionChanged = state.cursor?.page !== page;
+        if ((data.type === "cursor" && now - state.lastCursor >= cursorInterval) ||
+            (data.type === "section" && sectionChanged)) {
             state.lastCursor = now;
             state.cursor = position;
+            if (sectionChanged) state.draft = "";
             socket.serializeAttachment(state);
-            this.broadcast({ type: "cursor", id: state.id, ...position }, socket);
+            this.broadcast({ type: "cursor", ...update }, socket);
         }
 
         if (data.type === "typing" && now - (state.lastTyping ?? 0) >= typingInterval) {
@@ -133,7 +152,7 @@ export class LiveRoom extends DurableObject {
             state.cursor = position;
             state.draft = cursorText(data.text);
             socket.serializeAttachment(state);
-            this.broadcast({ type: "typing", id: state.id, text: state.draft, ...position }, socket);
+            this.broadcast({ type: "typing", ...update, text: state.draft }, socket);
         }
 
         if (data.type === "dismiss" && now - (state.lastDismiss ?? 0) >= typingInterval) {
@@ -142,7 +161,7 @@ export class LiveRoom extends DurableObject {
             state.cursor = position;
             socket.serializeAttachment(state);
             const text = data.fade === true ? cursorText(data.text).trim() : "";
-            this.broadcast({ type: "dismiss", id: state.id, text, ...position }, socket);
+            this.broadcast({ type: "dismiss", ...update, text }, socket);
         }
 
         if (data.type === "chat" && now - state.lastChat >= chatInterval && typeof data.text === "string") {
@@ -150,7 +169,7 @@ export class LiveRoom extends DurableObject {
             if (!text) return;
             state.lastChat = now;
             socket.serializeAttachment(state);
-            this.broadcast({ type: "chat", id: state.id, text, ...position });
+            this.broadcast({ type: "chat", ...update, text });
         }
     }
 

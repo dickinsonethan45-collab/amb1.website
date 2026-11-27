@@ -11,7 +11,8 @@
     const layer = document.getElementById("live-cursors");
     const peers = new Map();
     const formatCount = new Intl.NumberFormat();
-    const cursorInterval = 150;
+    const cursorInterval = 50;
+    const typingInterval = 150;
     let socket, ownId, pointer, chatPoint, cursorTimer, typingTimer, reconnectTimer;
     let retryDelay = 1000;
     let lastCursor = 0;
@@ -61,18 +62,22 @@
         const section = page();
         const bubble = [peer.draft, peer.message].find(entry => entry?.position.page === section);
         const position = peer.position ?? bubble?.position;
-        peer.element.hidden = !position;
-        if (!position) return;
+        peer.element.hidden = position?.page !== section;
+        if (peer.element.hidden) return;
 
         const x = position.x * innerWidth;
         const y = position.y * innerHeight;
-        peer.element.style.transform = `translate(${x}px, ${y}px)`;
+        peer.element.style.transform = `translate3d(${x}px, ${y}px, 0)`;
         peer.arrow.hidden = peer.id === ownId && !bubble;
         peer.bubble.hidden = !bubble;
         if (bubble) {
-            if (peer.bubble.textContent !== bubble.text) peer.bubble.textContent = bubble.text;
-            peer.bubble.classList.toggle("flip-x", x + 16 + peer.bubble.offsetWidth > innerWidth);
-            peer.bubble.classList.toggle("flip-y", y + 18 + peer.bubble.offsetHeight > innerHeight);
+            if (peer.bubble.textContent !== bubble.text) {
+                peer.bubble.textContent = bubble.text;
+                peer.bubbleSize = null;
+            }
+            peer.bubbleSize ??= [peer.bubble.offsetWidth, peer.bubble.offsetHeight];
+            peer.bubble.classList.toggle("flip-x", x + 16 + peer.bubbleSize[0] > innerWidth);
+            peer.bubble.classList.toggle("flip-y", y + 18 + peer.bubbleSize[1] > innerHeight);
         }
     }
 
@@ -94,18 +99,24 @@
         setTimeout(() => anchor.remove(), 500);
     }
 
-    function getPeer(id) {
-        if (peers.has(id)) return peers.get(id);
-        const element = document.createElement("div");
-        const arrow = document.createElement("span");
-        const bubble = document.createElement("span");
-        element.className = "live-peer";
-        arrow.className = "live-pointer";
-        bubble.className = "live-bubble";
-        element.append(arrow, bubble);
-        layer.append(element);
-        const peer = { id, element, arrow, bubble, position: null, message: null };
-        peers.set(id, peer);
+    function getPeer({ id, hue }) {
+        let peer = peers.get(id);
+        if (!peer) {
+            const element = document.createElement("div");
+            const arrow = document.createElement("span");
+            const bubble = document.createElement("span");
+            element.className = "live-peer moving";
+            arrow.className = "live-pointer";
+            bubble.className = "live-bubble";
+            element.append(arrow, bubble);
+            layer.append(element);
+            peer = { id, element, arrow, bubble, position: null, message: null };
+            peers.set(id, peer);
+        }
+        if (Number.isInteger(hue) && peer.hue !== hue) {
+            peer.hue = hue;
+            peer.arrow.style.setProperty("--visitor-cursor-color", `hsl(${hue} 90% 70%)`);
+        }
         return peer;
     }
 
@@ -118,8 +129,9 @@
     }
 
     function showCursor(data) {
-        const peer = getPeer(data.id);
+        const peer = getPeer(data);
         peer.position = data;
+        if (peer.draft?.position.page !== data.page) peer.draft = null;
         if (data.draft) peer.draft = { text: data.draft, position: data };
         renderPeer(peer);
     }
@@ -155,7 +167,7 @@
                 break;
             case "typing":
             case "dismiss": {
-                const peer = getPeer(data.id);
+                const peer = getPeer(data);
                 peer.position = data;
                 peer.draft = data.type === "typing" && data.text ? { text: data.text, position: data } : null;
                 if (data.type === "dismiss" && data.text && data.page === page()) {
@@ -166,7 +178,7 @@
                 break;
             }
             case "chat": {
-                const peer = getPeer(data.id);
+                const peer = getPeer(data);
                 peer.message = { position: data, text: data.text };
                 if (data.page === page() && data.id !== ownId) {
                     announcement.textContent = `Visitor says: ${data.text}`;
@@ -209,11 +221,15 @@
         if (!pointer || cursorTimer || document.hidden) return;
         cursorTimer = setTimeout(() => {
             cursorTimer = null;
-            if (pointer && send({ type: "cursor", ...pointer })) {
-                sharingCursor = true;
-                lastCursor = performance.now();
-            }
+            sendCursor("cursor");
         }, Math.max(0, cursorInterval - (performance.now() - lastCursor)));
+    }
+
+    function sendCursor(type) {
+        if (pointer && send({ type, ...pointer })) {
+            sharingCursor = true;
+            lastCursor = performance.now();
+        }
     }
 
     function hideCursor() {
@@ -270,7 +286,7 @@
                 sharingCursor = true;
                 lastTyping = performance.now();
             }
-        }, Math.max(0, cursorInterval - (performance.now() - lastTyping)));
+        }, Math.max(0, typingInterval - (performance.now() - lastTyping)));
     }
 
     function updateTyping() {
@@ -332,13 +348,20 @@
     document.addEventListener("amblock:pagechange", () => {
         closeChat();
         if (pointer) {
+            clearTimeout(cursorTimer);
+            cursorTimer = null;
             pointer = { ...pointer, page: page() };
-            queueCursor();
+            if (!document.hidden) sendCursor("section");
+        } else {
+            hideCursor();
         }
         peers.forEach(renderPeer);
     });
     window.addEventListener("resize", () => {
-        peers.forEach(renderPeer);
+        peers.forEach(peer => {
+            peer.bubbleSize = null;
+            renderPeer(peer);
+        });
         positionChat();
     });
     window.addEventListener("pagehide", () => {
