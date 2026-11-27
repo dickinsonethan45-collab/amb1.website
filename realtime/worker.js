@@ -10,6 +10,11 @@ const visitorPattern = /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-
 const openSocketsLimit = 100;
 const cursorInterval = 125;
 const chatInterval = 2500;
+const typingInterval = 85;
+
+function cursorText(value) {
+    return typeof value === "string" ? value.replace(/[\u0000-\u001f\u007f]/g, " ").slice(0, 100) : "";
+}
 
 export default {
     fetch(request, env) {
@@ -52,13 +57,13 @@ export class LiveRoom extends DurableObject {
         const [client, server] = Object.values(new WebSocketPair());
         const id = crypto.randomUUID();
         this.ctx.acceptWebSocket(server);
-        server.serializeAttachment({ id, visitor, cursor: null, lastCursor: 0, lastChat: 0 });
+        server.serializeAttachment({ id, visitor, cursor: null, draft: "", lastCursor: 0, lastChat: 0 });
         this.send(server, JSON.stringify({
             type: "welcome",
             id,
             cursors: peers.map(peer => {
-                const { id, cursor } = peer.deserializeAttachment();
-                return cursor ? { id, ...cursor } : null;
+                const { id, cursor, draft } = peer.deserializeAttachment();
+                return cursor ? { id, ...cursor, draft } : null;
             }).filter(Boolean)
         }));
         this.broadcast({ type: "counts", visits, online: this.online() });
@@ -106,6 +111,7 @@ export class LiveRoom extends DurableObject {
         const now = Date.now();
         if (data.type === "hide" && state.cursor) {
             state.cursor = null;
+            state.draft = "";
             socket.serializeAttachment(state);
             this.broadcast({ type: "hide", id: state.id });
             return;
@@ -122,8 +128,25 @@ export class LiveRoom extends DurableObject {
             this.broadcast({ type: "cursor", id: state.id, ...position }, socket);
         }
 
+        if (data.type === "typing" && now - (state.lastTyping ?? 0) >= typingInterval) {
+            state.lastTyping = now;
+            state.cursor = position;
+            state.draft = cursorText(data.text);
+            socket.serializeAttachment(state);
+            this.broadcast({ type: "typing", id: state.id, text: state.draft, ...position }, socket);
+        }
+
+        if (data.type === "dismiss" && now - (state.lastDismiss ?? 0) >= typingInterval) {
+            state.lastDismiss = now;
+            state.draft = "";
+            state.cursor = position;
+            socket.serializeAttachment(state);
+            const text = data.fade === true ? cursorText(data.text).trim() : "";
+            this.broadcast({ type: "dismiss", id: state.id, text, ...position }, socket);
+        }
+
         if (data.type === "chat" && now - state.lastChat >= chatInterval && typeof data.text === "string") {
-            const text = data.text.replace(/[\u0000-\u001f\u007f]/g, " ").trim().slice(0, 100);
+            const text = cursorText(data.text).trim();
             if (!text) return;
             state.lastChat = now;
             socket.serializeAttachment(state);

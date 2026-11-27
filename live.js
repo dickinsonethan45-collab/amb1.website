@@ -13,11 +13,11 @@
     const peers = new Map();
     const formatCount = new Intl.NumberFormat();
     const cursorInterval = 150;
-    const chatInterval = 2600;
-    let socket, ownId, pointer, chatPoint, cursorTimer, reconnectTimer;
+    let socket, ownId, pointer, chatPoint, cursorTimer, typingTimer, reconnectTimer;
     let retryDelay = 1000;
     let lastCursor = 0;
-    let lastChat = -Infinity;
+    let lastTyping = 0;
+    let draftShared = false;
     let sharingCursor = false;
     let active = true;
 
@@ -60,21 +60,40 @@
 
     function renderPeer(peer) {
         const section = page();
-        const message = peer.message?.position.page === section ? peer.message : null;
+        const bubble = [peer.draft, peer.message].find(entry => entry?.position.page === section);
         const cursor = peer.position?.page === section ? peer.position : null;
-        const position = cursor ?? message?.position;
+        const position = cursor ?? bubble?.position;
         peer.element.hidden = !position;
         if (!position) return;
 
         const x = position.x * innerWidth;
         const y = position.y * innerHeight;
         peer.element.style.transform = `translate(${x}px, ${y}px)`;
-        peer.arrow.hidden = peer.id === ownId && !message;
-        peer.bubble.hidden = !message;
-        if (message) {
+        peer.arrow.hidden = peer.id === ownId && !bubble;
+        peer.bubble.hidden = !bubble;
+        if (bubble) {
+            if (peer.bubble.textContent !== bubble.text) peer.bubble.textContent = bubble.text;
             peer.bubble.classList.toggle("flip-x", x + 16 + peer.bubble.offsetWidth > innerWidth);
             peer.bubble.classList.toggle("flip-y", y + 18 + peer.bubble.offsetHeight > innerHeight);
         }
+    }
+
+    function fadeText(position, text) {
+        if (!text || position.page !== page()) return;
+        const anchor = document.createElement("div");
+        const bubble = document.createElement("span");
+        const x = position.x * innerWidth;
+        const y = position.y * innerHeight;
+        anchor.className = "live-peer";
+        anchor.style.transform = `translate(${x}px, ${y}px)`;
+        bubble.className = "live-bubble fading";
+        bubble.textContent = text;
+        anchor.append(bubble);
+        layer.append(anchor);
+        bubble.classList.toggle("flip-x", x + 16 + bubble.offsetWidth > innerWidth);
+        bubble.classList.toggle("flip-y", y + 18 + bubble.offsetHeight > innerHeight);
+        bubble.addEventListener("animationend", () => anchor.remove(), { once: true });
+        setTimeout(() => anchor.remove(), 500);
     }
 
     function getPeer(id) {
@@ -103,6 +122,7 @@
     function showCursor(data) {
         const peer = getPeer(data.id);
         peer.position = data;
+        if (data.draft) peer.draft = { text: data.draft, position: data };
         renderPeer(peer);
     }
 
@@ -128,6 +148,7 @@
                 const peer = peers.get(data.id);
                 if (!peer) break;
                 peer.position = null;
+                peer.draft = null;
                 if (peer.message) renderPeer(peer);
                 else removePeer(data.id);
                 break;
@@ -135,10 +156,21 @@
             case "leave":
                 removePeer(data.id);
                 break;
+            case "typing":
+            case "dismiss": {
+                const peer = getPeer(data.id);
+                peer.position = data;
+                peer.draft = data.type === "typing" && data.text ? { text: data.text, position: data } : null;
+                if (data.type === "dismiss" && data.text && data.page === page()) {
+                    fadeText(data, data.text);
+                    announcement.textContent = `Visitor says: ${data.text}`;
+                }
+                renderPeer(peer);
+                break;
+            }
             case "chat": {
                 const peer = getPeer(data.id);
-                peer.message = { position: data };
-                peer.bubble.textContent = data.text;
+                peer.message = { position: data, text: data.text };
                 if (data.page === page() && data.id !== ownId) {
                     announcement.textContent = `Visitor says: ${data.text}`;
                 }
@@ -194,6 +226,7 @@
         pointer = null;
         if (sharingCursor) send({ type: "hide", page: page() });
         sharingCursor = false;
+        draftShared = false;
     }
 
     function positionChat() {
@@ -218,62 +251,93 @@
         input.focus({ preventScroll: true });
     }
 
-    function closeChat(restoreFocus = false) {
+    function closeChat({ restoreFocus = false, fade = false } = {}) {
         if (chat.hidden) return;
+        clearTimeout(typingTimer);
+        typingTimer = null;
+        const text = input.value.trim();
+        if (draftShared || (fade && text)) {
+            if (send({ type: "dismiss", ...chatPoint, fade, text })) sharingCursor = true;
+        }
+        if (fade) fadeText(chatPoint, text);
+        draftShared = false;
+        input.value = "";
+        input.size = 5;
         chat.hidden = true;
         chatButton.setAttribute("aria-expanded", "false");
         if (restoreFocus) chatOpener?.focus({ preventScroll: true });
     }
 
-    chatButton.addEventListener("click", () => chat.hidden ? openChat() : closeChat(true));
-    chat.addEventListener("submit", event => {
-        event.preventDefault();
-        const text = input.value.trim();
-        if (!text) {
-            closeChat(true);
-            return;
-        }
-        if (performance.now() - lastChat < chatInterval) {
-            input.setCustomValidity("Wait a moment before sending another message.");
-            input.reportValidity();
-            setTimeout(() => input.setCustomValidity(""), chatInterval);
-            return;
-        }
-        if (!send({ type: "chat", ...chatPoint, text })) return;
-        input.value = "";
-        input.size = 5;
-        lastChat = performance.now();
-        closeChat(true);
-    });
-    input.addEventListener("input", () => {
-        input.setCustomValidity("");
+    function queueTyping() {
+        if (typingTimer) return;
+        typingTimer = setTimeout(() => {
+            typingTimer = null;
+            if (!chat.hidden && (input.value || draftShared) &&
+                send({ type: "typing", ...chatPoint, text: input.value })) {
+                draftShared = true;
+                sharingCursor = true;
+                lastTyping = performance.now();
+            }
+        }, Math.max(0, cursorInterval - (performance.now() - lastTyping)));
+    }
+
+    function updateTyping() {
         input.size = Math.max(5, Math.min(18, input.value.length + 1));
         positionChat();
+        queueTyping();
+    }
+
+    chatButton.addEventListener("click", () => chat.hidden ? openChat() : closeChat({ restoreFocus: true }));
+    chat.addEventListener("submit", event => {
+        event.preventDefault();
+        closeChat({ restoreFocus: true, fade: true });
     });
+    input.addEventListener("input", updateTyping);
     document.addEventListener("keydown", event => {
-        if (event.key === "Escape" && !chat.hidden) closeChat(true);
-        if (event.key === "Enter" && !event.repeat && !event.isComposing && chat.hidden && ownId &&
-            !event.target.closest?.("a, button, input, select, textarea, [contenteditable]")) {
+        if (!chat.hidden && !event.isComposing && (event.key === "Enter" || event.key === "Escape")) {
+            event.preventDefault();
+            closeChat({ restoreFocus: true, fade: event.key === "Enter" });
+            return;
+        }
+        const printable = [...event.key].length === 1 && event.key.trim() && !event.isComposing &&
+            !event.ctrlKey && !event.metaKey && !event.altKey;
+        if (printable && chat.hidden && ownId && !event.defaultPrevented &&
+            !event.target.closest?.("input, textarea, select, [contenteditable]")) {
             event.preventDefault();
             openChat();
+            input.value = event.key;
+            input.setSelectionRange(input.value.length, input.value.length);
+            updateTyping();
         }
     });
     document.addEventListener("pointerdown", event => {
         if (!chat.hidden && !chat.contains(event.target) && event.target !== chatButton) closeChat();
     });
     document.addEventListener("pointermove", event => {
-        if (event.pointerType === "touch" || !chat.hidden) return;
+        if (event.pointerType === "touch") return;
+        const reentered = !pointer;
         pointer = point(event.clientX, event.clientY);
+        if (!chat.hidden) {
+            chatPoint = pointer;
+            positionChat();
+            if (reentered && input.value) queueTyping();
+        }
         queueCursor();
     }, { passive: true });
     document.documentElement.addEventListener("pointerleave", hideCursor);
-    window.addEventListener("blur", hideCursor);
+    window.addEventListener("blur", () => {
+        closeChat();
+        hideCursor();
+    });
     document.addEventListener("visibilitychange", () => {
-        if (document.hidden) hideCursor();
+        if (document.hidden) {
+            closeChat();
+            hideCursor();
+        }
     });
     document.addEventListener("amblock:pagechange", () => {
-        hideCursor();
         closeChat();
+        hideCursor();
         peers.forEach(renderPeer);
     });
     window.addEventListener("resize", () => {

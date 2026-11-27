@@ -126,6 +126,24 @@
     outline-offset: 1px;
 }
 
+.live-bubble.fading {
+    animation: live-fade .36s ease-out both;
+}
+
+@keyframes live-fade {
+    to { opacity: 0; transform: translateY(-12px); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .live-bubble.fading {
+        animation-name: live-fade-opacity;
+    }
+
+    @keyframes live-fade-opacity {
+        to { opacity: 0; }
+    }
+}
+
 .live-sr-only {
     position: absolute;
     width: 1px;

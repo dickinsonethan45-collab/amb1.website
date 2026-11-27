@@ -5,8 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="amblock-live-endpoint" content="wss://amblock-live.amblock-online-live.workers.dev/live">
 <title>Home | AMBLOCK</title>
-<link rel="stylesheet" href="live.css?v=2">
-<script src="live.js?v=2" defer></script>
+<link rel="stylesheet" href="live.css?v=3">
+<script src="live.js?v=3" defer></script>
 
 <style>
 * {
@@ -449,7 +449,7 @@ footer {
             <div id="live-controls" class="live-controls" hidden>
                 <span id="live-visits">— visitors</span>
                 <span id="live-online">— online</span>
-                <button id="live-chat-button" type="button" title="Press Enter to chat at your cursor" aria-controls="live-chat" aria-expanded="false" disabled>Chat</button>
+                <button id="live-chat-button" type="button" title="Start typing anywhere to chat at your cursor" aria-controls="live-chat" aria-expanded="false" disabled>Chat</button>
             </div>
         </div>
 
@@ -619,8 +619,8 @@ footer {
 <div id="live-announcement" class="live-sr-only" role="status"></div>
 <form id="live-chat" class="live-chat" hidden>
     <span class="live-pointer" aria-hidden="true"></span>
-    <label class="live-sr-only" for="live-message">Cursor message. Press Enter to send or Escape to close.</label>
-    <input id="live-message" type="text" placeholder="Type…" size="5" maxlength="100" autocomplete="off" enterkeyhint="send">
+    <label class="live-sr-only" for="live-message">Live cursor message. Press Enter to fade it out or Escape to close.</label>
+    <input id="live-message" type="text" placeholder="Type…" size="5" maxlength="100" autocomplete="off" enterkeyhint="done">
 </form>
 
 <script>
