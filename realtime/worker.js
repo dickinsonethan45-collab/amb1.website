@@ -8,12 +8,33 @@ const origins = new Set([
 const pages = new Set(["home", "work", "pricing", "compare"]);
 const visitorPattern = /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/;
 const openSocketsLimit = 100;
-const cursorInterval = 40;
+const cursorInterval = 12;
+const snapshotInterval = 160;
 const chatInterval = 2500;
 const typingInterval = 85;
 
 function cursorText(value) {
     return typeof value === "string" ? value.replace(/[\u0000-\u001f\u007f]/g, " ").slice(0, 100) : "";
+}
+
+function fraction(value) {
+    return Number.isFinite(value) && value >= 0 && value <= 1;
+}
+
+function cursorPosition(data) {
+    const { x, y, page, spot, content } = data;
+    if (!fraction(x) || !fraction(y)) return null;
+    const position = { x, y, page };
+    if (Array.isArray(spot) && spot.length === 3 && typeof spot[0] === "string" &&
+        /^[a-z0-9.-]{1,64}$/.test(spot[0]) && fraction(spot[1]) && fraction(spot[2])) {
+        position.spot = spot;
+    }
+    if (Array.isArray(content) && content.length === 2 &&
+        Number.isFinite(content[0]) && Math.abs(content[0]) <= 100 &&
+        Number.isFinite(content[1]) && Math.abs(content[1]) <= 50000) {
+        position.content = content;
+    }
+    return position;
 }
 
 export default {
@@ -38,6 +59,7 @@ export default {
 export class LiveRoom extends DurableObject {
     constructor(ctx, env) {
         super(ctx, env);
+        this.cursorStates = new WeakMap();
         this.sql = ctx.storage.sql;
         this.sql.exec("CREATE TABLE IF NOT EXISTS visitor (id TEXT PRIMARY KEY)");
         this.sql.exec("CREATE TABLE IF NOT EXISTS visit_total (id INTEGER PRIMARY KEY, total INTEGER NOT NULL)");
@@ -63,7 +85,7 @@ export class LiveRoom extends DurableObject {
             type: "welcome",
             id,
             cursors: peers.map(peer => {
-                const { id, hue, cursor, draft } = peer.deserializeAttachment();
+                const { id, hue, cursor, draft } = this.getCursorState(peer);
                 return cursor ? { id, hue, ...cursor, draft } : null;
             }).filter(Boolean)
         }));
@@ -71,10 +93,19 @@ export class LiveRoom extends DurableObject {
         return new Response(null, { status: 101, webSocket: client });
     }
 
+    getCursorState(socket) {
+        let state = this.cursorStates.get(socket);
+        if (!state) {
+            state = socket.deserializeAttachment();
+            this.cursorStates.set(socket, state);
+        }
+        return state;
+    }
+
     cursorHue(visitor, sockets) {
         const used = new Set();
         for (const socket of sockets) {
-            const peer = socket.deserializeAttachment();
+            const peer = this.getCursorState(socket);
             if (!Number.isInteger(peer?.hue)) continue;
             if (peer.visitor === visitor) return peer.hue;
             used.add(peer.hue);
@@ -121,7 +152,7 @@ export class LiveRoom extends DurableObject {
         }
         if (!data || !pages.has(data.page)) return;
 
-        const state = socket.deserializeAttachment();
+        const state = this.getCursorState(socket);
         const now = Date.now();
         if (data.type === "hide" && state.cursor) {
             state.cursor = null;
@@ -131,19 +162,22 @@ export class LiveRoom extends DurableObject {
             return;
         }
 
-        const { x, y, page } = data;
-        if (!Number.isFinite(x) || !Number.isFinite(y) || x < 0 || x > 1 || y < 0 || y > 1) return;
-        const position = { x, y, page };
+        const position = cursorPosition(data);
+        if (!position) return;
         state.hue ??= this.cursorHue(state.visitor, this.ctx.getWebSockets());
         const update = { id: state.id, hue: state.hue, ...position };
 
-        const sectionChanged = state.cursor?.page !== page;
+        const sectionChanged = state.cursor?.page !== position.page;
         if ((data.type === "cursor" && now - state.lastCursor >= cursorInterval) ||
-            (data.type === "section" && sectionChanged)) {
+            (data.type === "section" && sectionChanged) ||
+            (data.type === "settle" && now - state.lastCursor >= cursorInterval)) {
             state.lastCursor = now;
             state.cursor = position;
             if (sectionChanged) state.draft = "";
-            socket.serializeAttachment(state);
+            if (sectionChanged || data.type !== "cursor" || now - (state.lastSnapshot ?? 0) >= snapshotInterval) {
+                state.lastSnapshot = now;
+                socket.serializeAttachment(state);
+            }
             this.broadcast({ type: "cursor", ...update }, socket);
         }
 

@@ -53,10 +53,6 @@ button {
     left: 0;
 }
 
-.live-peer.moving {
-    transition: transform 60ms linear;
-}
-
 .live-pointer {
     position: absolute;
     width: 24px;
@@ -146,10 +142,6 @@ button {
 }
 
 @media (prefers-reduced-motion: reduce) {
-    .live-peer.moving {
-        transition: none;
-    }
-
     .live-bubble.fading {
         animation-name: live-fade-opacity;
     }

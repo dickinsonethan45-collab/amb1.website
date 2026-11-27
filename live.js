@@ -9,14 +9,16 @@
     const input = document.getElementById("live-message");
     const announcement = document.getElementById("live-announcement");
     const layer = document.getElementById("live-cursors");
+    const main = document.getElementById("main");
     const peers = new Map();
     const formatCount = new Intl.NumberFormat();
-    const cursorInterval = 50;
+    const anchors = new Map(Array.from(document.querySelectorAll("[data-live-anchor]"), element =>
+        [`${element.closest(".page")?.id ?? ""}:${element.dataset.liveAnchor}`, element]));
     const typingInterval = 150;
-    let socket, ownId, pointer, chatPoint, cursorTimer, typingTimer, reconnectTimer;
+    let socket, ownId, pointer, mouse, chatPoint, cursorFrame, settleTimer, typingTimer, reconnectTimer;
     let retryDelay = 1000;
-    let lastCursor = 0;
     let lastTyping = 0;
+    let lastMotionFrame = 0;
     let draftShared = false;
     let sharingCursor = false;
     let active = true;
@@ -45,11 +47,44 @@
     }
 
     function point(x, y) {
-        return {
-            page: page(),
+        const section = page();
+        const bounds = main.getBoundingClientRect();
+        const position = {
+            page: section,
             x: Math.max(0, Math.min(1, x / innerWidth)),
-            y: Math.max(0, Math.min(1, y / innerHeight))
+            y: Math.max(0, Math.min(1, y / innerHeight)),
+            content: [Math.round((x - bounds.left) / bounds.width * 10000) / 10000, Math.round(y - bounds.top)]
         };
+        let hit = document.elementFromPoint(x, y);
+        if (hit && chat.contains(hit)) hit = document.elementsFromPoint(x, y).find(element => !chat.contains(element));
+        const target = hit?.closest("[data-live-anchor]");
+        if (target) {
+            const box = target.getBoundingClientRect();
+            if (box.width && box.height) {
+                position.spot = [
+                    target.dataset.liveAnchor,
+                    Math.round(Math.max(0, Math.min(1, (x - box.left) / box.width)) * 10000) / 10000,
+                    Math.round(Math.max(0, Math.min(1, (y - box.top) / box.height)) * 10000) / 10000
+                ];
+            }
+        }
+        return position;
+    }
+
+    function viewportPoint(position) {
+        if (position.spot) {
+            const [key, x, y] = position.spot;
+            const node = anchors.get(`${position.page}:${key}`) ?? anchors.get(`:${key}`);
+            if (node) {
+                const box = node.getBoundingClientRect();
+                if (box.width && box.height) return [box.left + box.width * x, box.top + box.height * y];
+            }
+        }
+        if (position.content) {
+            const box = main.getBoundingClientRect();
+            return [box.left + box.width * position.content[0], box.top + position.content[1]];
+        }
+        return [position.x * innerWidth, position.y * innerHeight];
     }
 
     function send(message) {
@@ -65,8 +100,9 @@
         peer.element.hidden = position?.page !== section;
         if (peer.element.hidden) return;
 
-        const x = position.x * innerWidth;
-        const y = position.y * innerHeight;
+        const [x, y] = viewportPoint(position);
+        peer.element.hidden = x < 0 || y < 0 || x >= innerWidth || y >= innerHeight;
+        if (peer.element.hidden) return;
         peer.element.style.transform = `translate3d(${x}px, ${y}px, 0)`;
         peer.arrow.hidden = peer.id === ownId && !bubble;
         peer.bubble.hidden = !bubble;
@@ -85,8 +121,8 @@
         if (!text || position.page !== page()) return;
         const anchor = document.createElement("div");
         const bubble = document.createElement("span");
-        const x = position.x * innerWidth;
-        const y = position.y * innerHeight;
+        const [x, y] = viewportPoint(position);
+        if (x < 0 || y < 0 || x >= innerWidth || y >= innerHeight) return;
         anchor.className = "live-peer";
         anchor.style.transform = `translate(${x}px, ${y}px)`;
         bubble.className = "live-bubble fading";
@@ -105,7 +141,7 @@
             const element = document.createElement("div");
             const arrow = document.createElement("span");
             const bubble = document.createElement("span");
-            element.className = "live-peer moving";
+            element.className = "live-peer";
             arrow.className = "live-pointer";
             bubble.className = "live-bubble";
             element.append(arrow, bubble);
@@ -218,23 +254,43 @@
     }
 
     function queueCursor() {
-        if (!pointer || cursorTimer || document.hidden) return;
-        cursorTimer = setTimeout(() => {
-            cursorTimer = null;
+        if (!mouse || cursorFrame || document.hidden) return;
+        cursorFrame = requestAnimationFrame(timestamp => {
+            cursorFrame = null;
+            if (timestamp - lastMotionFrame < 12) {
+                queueCursor();
+                return;
+            }
+            lastMotionFrame = timestamp;
+            pointer = point(...mouse);
+            if (!chat.hidden) {
+                chatPoint = pointer;
+                positionChat();
+            }
             sendCursor("cursor");
-        }, Math.max(0, cursorInterval - (performance.now() - lastCursor)));
+        });
     }
 
     function sendCursor(type) {
-        if (pointer && send({ type, ...pointer })) {
+        if (!pointer || document.hidden) return;
+        if (type === "cursor" && socket?.bufferedAmount > 1024) {
+            clearTimeout(settleTimer);
+            settleTimer = setTimeout(() => sendCursor("settle"), 100);
+            return;
+        }
+        if (send({ type, ...pointer })) {
             sharingCursor = true;
-            lastCursor = performance.now();
+            clearTimeout(settleTimer);
+            if (type === "cursor") {
+                settleTimer = setTimeout(() => sendCursor("settle"), 100);
+            }
         }
     }
 
     function hideCursor() {
-        clearTimeout(cursorTimer);
-        cursorTimer = null;
+        cancelAnimationFrame(cursorFrame);
+        clearTimeout(settleTimer);
+        cursorFrame = null;
         if (sharingCursor) send({ type: "hide", page: page() });
         sharingCursor = false;
         draftShared = false;
@@ -253,7 +309,7 @@
     let chatOpener;
     function openChat() {
         if (!ownId || !chat.hidden) return;
-        chatPoint = pointer ?? point(innerWidth / 2, innerHeight / 2);
+        chatPoint = mouse ? point(...mouse) : point(innerWidth / 2, innerHeight / 2);
         chatOpener = document.activeElement;
         chat.hidden = false;
         positionChat();
@@ -322,18 +378,14 @@
     });
     document.addEventListener("pointerup", event => {
         if (event.pointerType === "touch" && event.target.matches("body, main, .page")) {
-            pointer = point(event.clientX, event.clientY);
+            mouse = [event.clientX, event.clientY];
             openChat();
             queueCursor();
         }
     });
     document.addEventListener("pointermove", event => {
         if (event.pointerType === "touch") return;
-        pointer = point(event.clientX, event.clientY);
-        if (!chat.hidden) {
-            chatPoint = pointer;
-            positionChat();
-        }
+        mouse = [event.clientX, event.clientY];
         queueCursor();
     }, { passive: true });
     window.addEventListener("blur", () => closeChat());
@@ -347,11 +399,11 @@
     });
     document.addEventListener("amblock:pagechange", () => {
         closeChat();
-        if (pointer) {
-            clearTimeout(cursorTimer);
-            cursorTimer = null;
-            pointer = { ...pointer, page: page() };
-            if (!document.hidden) sendCursor("section");
+        if (mouse) {
+            cancelAnimationFrame(cursorFrame);
+            cursorFrame = null;
+            pointer = point(...mouse);
+            sendCursor("section");
         } else {
             hideCursor();
         }
@@ -363,7 +415,12 @@
             renderPeer(peer);
         });
         positionChat();
+        queueCursor();
     });
+    window.addEventListener("scroll", () => {
+        peers.forEach(renderPeer);
+        queueCursor();
+    }, { passive: true });
     window.addEventListener("pagehide", () => {
         active = false;
         clearTimeout(reconnectTimer);

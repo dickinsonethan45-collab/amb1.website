@@ -5,8 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="amblock-live-endpoint" content="wss://amblock-live.amblock-online-live.workers.dev/live">
 <title>Home | AMBLOCK</title>
-<link rel="stylesheet" href="live.css?v=6">
-<script src="live.js?v=5" defer></script>
+<link rel="stylesheet" href="live.css?v=7">
+<script src="live.js?v=6" defer></script>
 
 <style>
 * {
@@ -438,7 +438,7 @@ footer {
 <body>
 
 <header>
-    <div class="navbar">
+    <div class="navbar" data-live-anchor="navbar">
 
         <div class="brand-group">
             <a class="logo" onclick="showPage('home')">
@@ -488,13 +488,13 @@ footer {
 
     <section id="home" class="page active">
 
-        <h1>AMBLOCK</h1>
+        <h1 data-live-anchor="home-title">AMBLOCK</h1>
 
-        <h2>Previous work</h2>
+        <h2 data-live-anchor="work-title">Previous work</h2>
 
         <div id="home-work" class="work-grid"></div>
 
-        <h2>Pricing</h2>
+        <h2 data-live-anchor="pricing-title">Pricing</h2>
 
         <div id="home-pricing" class="pricing-grid"></div>
 
@@ -706,7 +706,7 @@ function showPage(page) {
 function workCard(item) {
 
     return `
-        <article class="work-card">
+        <article class="work-card" data-live-anchor="work-${item.image}">
 
             <div class="image-container">
 
@@ -811,7 +811,7 @@ function features(pro) {
 function pricingCard(pro) {
 
     return `
-        <article class="price-card ${pro ? "pro" : ""}">
+        <article class="price-card ${pro ? "pro" : ""}" data-live-anchor="price-${pro ? "pro" : "basic"}">
 
             <h3>${pro ? "Pro" : "Basic"}</h3>
 
@@ -853,7 +853,7 @@ document.getElementById("full-pricing").innerHTML =
 function comparisonCard(pro, image) {
 
     return `
-        <article class="comparison-card
+        <article data-live-anchor="compare-${image}" class="comparison-card
             ${pro ? "pro" : ""}">
 
             <div class="comparison-heading">
