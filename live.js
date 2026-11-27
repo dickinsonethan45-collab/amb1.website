@@ -296,6 +296,24 @@
         draftShared = false;
     }
 
+    function leavePage() {
+        closeChat();
+        hideCursor();
+        mouse = null;
+        pointer = null;
+    }
+
+    function trackPointer(event) {
+        if (event.pointerType === "touch" || document.hidden) return;
+        const { clientX, clientY } = event;
+        if (clientX < 0 || clientY < 0 || clientX >= innerWidth || clientY >= innerHeight) {
+            leavePage();
+            return;
+        }
+        mouse = [clientX, clientY];
+        queueCursor();
+    }
+
     function positionChat() {
         if (chat.hidden) return;
         const x = chatPoint.x * innerWidth;
@@ -383,19 +401,14 @@
             queueCursor();
         }
     });
-    document.addEventListener("pointermove", event => {
-        if (event.pointerType === "touch") return;
-        mouse = [event.clientX, event.clientY];
-        queueCursor();
+    document.addEventListener("pointermove", trackPointer, { passive: true });
+    document.documentElement.addEventListener("pointerenter", trackPointer, { passive: true });
+    document.documentElement.addEventListener("pointerleave", event => {
+        if (event.pointerType !== "touch") leavePage();
     }, { passive: true });
-    window.addEventListener("blur", () => closeChat());
+    window.addEventListener("blur", leavePage);
     document.addEventListener("visibilitychange", () => {
-        if (document.hidden) {
-            closeChat();
-            hideCursor();
-        } else {
-            queueCursor();
-        }
+        if (document.hidden) leavePage();
     });
     document.addEventListener("amblock:pagechange", () => {
         closeChat();
