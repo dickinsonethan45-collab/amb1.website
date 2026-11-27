@@ -29,21 +29,6 @@
     display: none;
 }
 
-.live-controls button {
-    border: 1px solid #4b4c51;
-    border-radius: 4px;
-    background: #252629;
-    color: white;
-    padding: 5px 8px;
-    cursor: pointer;
-    font: inherit;
-}
-
-.live-controls button:disabled {
-    opacity: .5;
-    cursor: default;
-}
-
 #live-cursors {
     position: fixed;
     inset: 0;

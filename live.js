@@ -5,7 +5,6 @@
     const controls = document.getElementById("live-controls");
     const visits = document.getElementById("live-visits");
     const online = document.getElementById("live-online");
-    const chatButton = document.getElementById("live-chat-button");
     const chat = document.getElementById("live-chat");
     const input = document.getElementById("live-message");
     const announcement = document.getElementById("live-announcement");
@@ -61,8 +60,7 @@
     function renderPeer(peer) {
         const section = page();
         const bubble = [peer.draft, peer.message].find(entry => entry?.position.page === section);
-        const cursor = peer.position?.page === section ? peer.position : null;
-        const position = cursor ?? bubble?.position;
+        const position = peer.position ?? bubble?.position;
         peer.element.hidden = !position;
         if (!position) return;
 
@@ -132,7 +130,6 @@
             case "welcome":
                 ownId = data.id;
                 retryDelay = 1000;
-                chatButton.disabled = false;
                 online.setAttribute("data-connected", "");
                 data.cursors.forEach(showCursor);
                 if (pointer && !document.hidden) queueCursor();
@@ -197,7 +194,6 @@
             ownId = null;
             sharingCursor = false;
             peers.forEach(peer => removePeer(peer.id));
-            chatButton.disabled = true;
             online.textContent = "— online";
             online.removeAttribute("data-connected");
             closeChat();
@@ -210,7 +206,7 @@
     }
 
     function queueCursor() {
-        if (!pointer || cursorTimer) return;
+        if (!pointer || cursorTimer || document.hidden) return;
         cursorTimer = setTimeout(() => {
             cursorTimer = null;
             if (pointer && send({ type: "cursor", ...pointer })) {
@@ -223,7 +219,6 @@
     function hideCursor() {
         clearTimeout(cursorTimer);
         cursorTimer = null;
-        pointer = null;
         if (sharingCursor) send({ type: "hide", page: page() });
         sharingCursor = false;
         draftShared = false;
@@ -242,11 +237,9 @@
     let chatOpener;
     function openChat() {
         if (!ownId || !chat.hidden) return;
-        const bounds = chatButton.getBoundingClientRect();
-        chatPoint = pointer ?? point(bounds.right, Math.max(0, bounds.bottom));
+        chatPoint = pointer ?? point(innerWidth / 2, innerHeight / 2);
         chatOpener = document.activeElement;
         chat.hidden = false;
-        chatButton.setAttribute("aria-expanded", "true");
         positionChat();
         input.focus({ preventScroll: true });
     }
@@ -264,7 +257,6 @@
         input.value = "";
         input.size = 5;
         chat.hidden = true;
-        chatButton.setAttribute("aria-expanded", "false");
         if (restoreFocus) chatOpener?.focus({ preventScroll: true });
     }
 
@@ -287,7 +279,6 @@
         queueTyping();
     }
 
-    chatButton.addEventListener("click", () => chat.hidden ? openChat() : closeChat({ restoreFocus: true }));
     chat.addEventListener("submit", event => {
         event.preventDefault();
         closeChat({ restoreFocus: true, fade: true });
@@ -311,33 +302,39 @@
         }
     });
     document.addEventListener("pointerdown", event => {
-        if (!chat.hidden && !chat.contains(event.target) && event.target !== chatButton) closeChat();
+        if (!chat.hidden && !chat.contains(event.target)) closeChat();
+    });
+    document.addEventListener("pointerup", event => {
+        if (event.pointerType === "touch" && event.target.matches("body, main, .page")) {
+            pointer = point(event.clientX, event.clientY);
+            openChat();
+            queueCursor();
+        }
     });
     document.addEventListener("pointermove", event => {
         if (event.pointerType === "touch") return;
-        const reentered = !pointer;
         pointer = point(event.clientX, event.clientY);
         if (!chat.hidden) {
             chatPoint = pointer;
             positionChat();
-            if (reentered && input.value) queueTyping();
         }
         queueCursor();
     }, { passive: true });
-    document.documentElement.addEventListener("pointerleave", hideCursor);
-    window.addEventListener("blur", () => {
-        closeChat();
-        hideCursor();
-    });
+    window.addEventListener("blur", () => closeChat());
     document.addEventListener("visibilitychange", () => {
         if (document.hidden) {
             closeChat();
             hideCursor();
+        } else {
+            queueCursor();
         }
     });
     document.addEventListener("amblock:pagechange", () => {
         closeChat();
-        hideCursor();
+        if (pointer) {
+            pointer = { ...pointer, page: page() };
+            queueCursor();
+        }
         peers.forEach(renderPeer);
     });
     window.addEventListener("resize", () => {
