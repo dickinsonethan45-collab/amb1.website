@@ -193,7 +193,7 @@ p {
     border-color: #977130;
 }
 
-/* Reversible silver shine */
+/* Basic silver shine */
 
 .price-card::before {
     content: "";
@@ -216,7 +216,7 @@ p {
     transform: translateX(270%) skewX(-15deg);
 }
 
-/* Gold shine for Pro */
+/* Pro gold shine */
 
 .price-card.pro::before {
     background: linear-gradient(
@@ -383,6 +383,8 @@ footer {
     line-height: 1.8;
 }
 
+/* Mobile support */
+
 @media (max-width: 1050px) {
     .comparison-grid {
         grid-template-columns: 1fr;
@@ -436,11 +438,13 @@ footer {
 
 <header>
     <div class="navbar">
+
         <a class="logo" onclick="showPage('home')">
             AMBLOCK
         </a>
 
         <nav>
+
             <button data-page="home" class="active"
                 onclick="showPage('home')">
                 Home
@@ -466,6 +470,7 @@ footer {
                 target="_blank" rel="noopener">
                 Store
             </a>
+
         </nav>
     </div>
 </header>
@@ -475,12 +480,15 @@ footer {
     <!-- HOME -->
 
     <section id="home" class="page active">
+
         <h1>AMBLOCK</h1>
 
         <h2>Previous work</h2>
+
         <div id="home-work" class="work-grid"></div>
 
         <h2>Pricing</h2>
+
         <div id="home-pricing" class="pricing-grid"></div>
 
         <p class="note">
@@ -489,6 +497,7 @@ footer {
         </p>
 
         <div class="order-section">
+
             <h2>Place an order</h2>
 
             <p>
@@ -500,20 +509,25 @@ footer {
                 target="_blank" rel="noopener">
                 Visit Store
             </a>
+
         </div>
+
     </section>
 
     <!-- PREVIOUS WORK -->
 
     <section id="work" class="page">
+
         <h1>Previous Work</h1>
 
         <div id="all-work" class="work-grid"></div>
+
     </section>
 
     <!-- PRICING -->
 
     <section id="pricing" class="page">
+
         <h1>Pricing</h1>
 
         <div id="full-pricing" class="pricing-grid"></div>
@@ -524,17 +538,21 @@ footer {
         </p>
 
         <div class="order-section">
+
             <a class="visit-store"
                 href="https://amblock.mysellauth.com/"
                 target="_blank" rel="noopener">
                 Visit Store
             </a>
+
         </div>
+
     </section>
 
     <!-- BASIC VS PRO -->
 
     <section id="compare" class="page">
+
         <h1>Basic vs Pro</h1>
 
         <p>
@@ -545,19 +563,23 @@ footer {
         <div class="comparison-grid">
 
             <div class="comparison-group">
+
                 <h2>Gilla</h2>
 
                 <div class="comparison-pair"
                     id="gilla-comparison">
                 </div>
+
             </div>
 
             <div class="comparison-group">
+
                 <h2>Animal Company</h2>
 
                 <div class="comparison-pair"
                     id="animal-comparison">
                 </div>
+
             </div>
 
         </div>
@@ -565,17 +587,22 @@ footer {
         <p class="note">
             Each purchase includes one custom Blender PFP.
         </p>
+
     </section>
 
 </main>
 
 <footer>
+
     <div class="footer-content">
+
         © 2026 AMBLOCK. All rights reserved.
         All artwork and renders belong to their respective owners.
         Unauthorised use or redistribution of AMBLOCK artwork
         is prohibited.
+
     </div>
+
 </footer>
 
 <script>
@@ -612,13 +639,13 @@ const artwork = [
     },
     {
         image: "candy-logo.png",
-        name: "Candy Cane Logo",
-        type: "Logo render"
+        name: "Clunko Christmas",
+        type: "Object render"
     },
     {
         image: "wood-logo.png",
-        name: "Wooden Logo",
-        type: "Logo render"
+        name: "Clunko Wooden",
+        type: "Object render"
     }
 ];
 
@@ -626,6 +653,7 @@ const artwork = [
 // TAB SWITCHING
 
 function showPage(page) {
+
     document.querySelectorAll(".page").forEach(section => {
         section.classList.remove("active");
     });
@@ -660,34 +688,51 @@ function showPage(page) {
 // WORK CARDS
 
 function workCard(item) {
+
     return `
         <article class="work-card">
+
             <div class="image-container">
+
                 <img
                     data-watermark="${item.image}"
                     alt="${item.name}"
                 >
+
             </div>
 
             <div class="work-info">
+
                 <strong>${item.name}</strong>
+
                 <span>${item.type}</span>
+
             </div>
+
         </article>
     `;
 }
 
+
 function comingSoonCard() {
+
     return `
         <article class="work-card">
+
             <div class="image-container coming-soon">
+
                 Coming Soon
+
             </div>
 
             <div class="work-info">
+
                 <strong>Coming Soon</strong>
+
                 <span>More work will be added here</span>
+
             </div>
+
         </article>
     `;
 }
@@ -712,35 +757,54 @@ document.getElementById("all-work").innerHTML =
 // PRICING FEATURES
 
 function features(pro) {
+
     return `
         <ul class="features">
+
             <li>Custom Blender PFP</li>
+
             <li>Standard lighting</li>
 
             ${pro ? `
-                <li class="gold">Enhanced background</li>
-                <li class="gold">Additional effects</li>
+
+                <li class="gold">
+                    Enhanced background
+                </li>
+
+                <li class="gold">
+                    Additional effects
+                </li>
+
                 <li class="gold">
                     Glossy &amp; reflective materials
                 </li>
+
             ` : `
+
                 <li>Simple background</li>
+
                 <li>Minor effects</li>
+
             `}
+
         </ul>
     `;
 }
 
 
 function pricingCard(pro) {
+
     return `
         <article class="price-card ${pro ? "pro" : ""}">
 
             <h3>${pro ? "Pro" : "Basic"}</h3>
 
             <div class="price">
+
                 $${pro ? "10" : "5"}
+
                 <span class="currency">USD</span>
+
             </div>
 
             ${features(pro)}
@@ -751,12 +815,15 @@ function pricingCard(pro) {
                 target="_blank"
                 rel="noopener"
             >
+
                 Order ${pro ? "Pro" : "Basic"}
+
             </a>
 
         </article>
     `;
 }
+
 
 document.getElementById("home-pricing").innerHTML =
     pricingCard(false) + pricingCard(true);
@@ -768,24 +835,32 @@ document.getElementById("full-pricing").innerHTML =
 // COMPARISON CARDS
 
 function comparisonCard(pro, image) {
+
     return `
         <article class="comparison-card
             ${pro ? "pro" : ""}">
 
             <div class="comparison-heading">
+
                 <span>${pro ? "Pro" : "Basic"}</span>
 
                 <span>
+
                     $${pro ? "10" : "5"}
+
                     <span class="currency">USD</span>
+
                 </span>
+
             </div>
 
             <div class="image-container">
+
                 <img
                     data-watermark="${image}"
                     alt="${pro ? "Pro" : "Basic"} example"
                 >
+
             </div>
 
             <div class="comparison-body">
@@ -798,10 +873,13 @@ function comparisonCard(pro, image) {
                     target="_blank"
                     rel="noopener"
                 >
+
                     Order ${pro ? "Pro" : "Basic"}
+
                 </a>
 
             </div>
+
         </article>
     `;
 }
@@ -811,15 +889,16 @@ document.getElementById("gilla-comparison").innerHTML =
     comparisonCard(false, "gilla-basic.png") +
     comparisonCard(true, "gilla-pro.png");
 
+
 document.getElementById("animal-comparison").innerHTML =
     comparisonCard(false, "animal-basic.png") +
     comparisonCard(true, "animal-pro.png");
 
 
 // REPEATING AMBLOCK WATERMARK
-// Drawn into the displayed image itself.
 
 const watermarkCache = new Map();
+
 
 function createWatermark(source) {
 
@@ -834,6 +913,7 @@ function createWatermark(source) {
         original.onload = function () {
 
             const canvas = document.createElement("canvas");
+
             const ctx = canvas.getContext("2d");
 
             canvas.width = original.naturalWidth;
@@ -851,13 +931,16 @@ function createWatermark(source) {
             ctx.save();
 
             ctx.translate(w / 2, h / 2);
+
             ctx.rotate(-Math.PI / 4);
 
             ctx.font =
                 `700 ${fontSize}px Arial, Helvetica, sans-serif`;
 
             ctx.fillStyle = "rgba(255,255,255,0.28)";
+
             ctx.textAlign = "center";
+
             ctx.textBaseline = "middle";
 
             const distance = Math.hypot(w, h);
@@ -878,11 +961,13 @@ function createWatermark(source) {
                     x <= distance;
                     x += stepX
                 ) {
+
                     ctx.fillText(
                         "AMBLOCK",
                         x + offset,
                         y
                     );
+
                 }
 
                 row++;
@@ -891,10 +976,13 @@ function createWatermark(source) {
             ctx.restore();
 
             resolve(canvas.toDataURL("image/png"));
+
         };
 
         original.onerror = reject;
+
         original.src = source;
+
     });
 
     watermarkCache.set(source, result);
@@ -907,6 +995,7 @@ document.querySelectorAll("img[data-watermark]")
     .forEach(async image => {
 
         try {
+
             image.src = await createWatermark(
                 image.dataset.watermark
             );
@@ -918,6 +1007,7 @@ document.querySelectorAll("img[data-watermark]")
             parent.classList.add("coming-soon");
 
             parent.textContent = "Image unavailable";
+
         }
 
     });
