@@ -1,3 +1,13 @@
+:root {
+    --amblock-cursor: url("cursor.png");
+    cursor: var(--amblock-cursor) 2 2, default;
+}
+
+a,
+button {
+    cursor: var(--amblock-cursor) 2 2, pointer;
+}
+
 .brand-group,
 .live-controls {
     display: flex;
@@ -45,20 +55,17 @@
 
 .live-pointer {
     position: absolute;
-    width: 23px;
-    height: 25px;
+    width: 24px;
+    height: 24px;
     top: -2px;
     left: -2px;
-    filter: drop-shadow(0 1px 2px #000);
+    background: var(--amblock-cursor) no-repeat center / contain;
 }
 
-.live-pointer::after {
-    content: "";
-    display: block;
-    width: 100%;
-    height: 100%;
-    background: #fff;
-    clip-path: polygon(6% 6%, 87% 42%, 48% 55%, 35% 88%);
+@media (any-pointer: fine) {
+    .live-chat .live-pointer {
+        display: none;
+    }
 }
 
 .live-bubble,
@@ -104,6 +111,7 @@
     width: auto;
     min-width: 46px;
     field-sizing: content;
+    cursor: var(--amblock-cursor) 2 2, text;
 }
 
 .live-chat input:focus-visible {
