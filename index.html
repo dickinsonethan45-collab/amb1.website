@@ -3,7 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="amblock-live-endpoint" content="wss://amblock-live.amblock-online-live.workers.dev/live">
 <title>Home | AMBLOCK</title>
+<link rel="stylesheet" href="live.css">
+<script src="live.js" defer></script>
 
 <style>
 * {
@@ -439,9 +442,16 @@ footer {
 <header>
     <div class="navbar">
 
-        <a class="logo" onclick="showPage('home')">
-            AMBLOCK
-        </a>
+        <div class="brand-group">
+            <a class="logo" onclick="showPage('home')">
+                AMBLOCK
+            </a>
+            <div id="live-controls" class="live-controls" hidden>
+                <span id="live-visits">— visitors</span>
+                <span id="live-online">— online</span>
+                <button id="live-chat-button" type="button" aria-controls="live-chat" aria-expanded="false" disabled>Chat</button>
+            </div>
+        </div>
 
         <nav>
 
@@ -605,6 +615,15 @@ footer {
 
 </footer>
 
+<div id="live-cursors" aria-hidden="true"></div>
+<div id="live-announcement" class="live-sr-only" role="status"></div>
+<form id="live-chat" class="live-chat" hidden>
+    <label class="live-sr-only" for="live-message">Message for visitors on this section</label>
+    <input id="live-message" type="text" placeholder="Say something…" maxlength="100" autocomplete="off" required>
+    <button type="submit">Send</button>
+    <button id="live-chat-close" type="button" aria-label="Close chat">×</button>
+</form>
+
 <script>
 
 const basicURL =
@@ -682,6 +701,7 @@ function showPage(page) {
     document.title = titles[page] + " | AMBLOCK";
 
     window.scrollTo(0, 0);
+    document.dispatchEvent(new Event("amblock:pagechange"));
 }
 
 
